@@ -1,4 +1,4 @@
-package com.unigradeapp;
+package com.gradify_gpa_calculator;
 
 import android.os.Bundle;
 import com.facebook.react.ReactActivity;
@@ -20,7 +20,7 @@ public class MainActivity extends ReactActivity {
    */
   @Override
   protected String getMainComponentName() {
-    return "UnigradeApp";
+    return "GradifyGPACalculator";
   }
 
   /**

@@ -1,6 +1,7 @@
 // React Native Essential imports
 import React, {useEffect, useState} from 'react';
-import {View, Text, SafeAreaView, Dimensions, FlatList} from 'react-native';
+import {View, Text, Dimensions, FlatList} from 'react-native';
+import {SafeAreaView} from 'react-native-safe-area-context';
 
 // library imports
 import {LineChart} from 'react-native-chart-kit';

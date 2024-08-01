@@ -14,7 +14,7 @@
             android:id="@+id/textViewFirst"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="WELCOME TO UGM SYSTEM"
+            android:text="Welcome To Gradify"
             android:textAlignment="center"
             android:textColor="#3cb3fb"
             android:textSize="24sp"

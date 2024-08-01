@@ -11,7 +11,7 @@ export default StyleSheet.create({
     alignItems: 'center',
     flex: 1,
     justifyContent: 'center',
-    // marginTop: 20,
+    paddingBottom: 80,
   },
   flatListMainView: {flex: 1, width: '100%'},
   flatListText: {

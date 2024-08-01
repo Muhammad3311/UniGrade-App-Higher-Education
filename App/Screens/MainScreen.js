@@ -4,10 +4,11 @@ import {
   View,
   Text,
   StyleSheet,
-  SafeAreaView,
   TouchableOpacity,
   TextInput,
+  StatusBar,
 } from 'react-native';
+import {SafeAreaView} from 'react-native-safe-area-context';
 
 // library imports
 import Animated, {EasingNode} from 'react-native-reanimated';
@@ -39,8 +40,8 @@ const MainScreen = ({navigation}) => {
   const delay = 500;
 
   // The contant variables
-  const welcomeMessage = 'Welcome To';
-  const ugmSystem = 'UGM System';
+  const welcomeMessage = 'Welcome To The';
+  const ugmSystem = 'Gradify GPA Calculator';
   const successMessage = " You're one step away to track your success record";
 
   // animation function for circle
@@ -101,19 +102,17 @@ const MainScreen = ({navigation}) => {
   };
   return (
     <SafeAreaView style={Style.container}>
+      <StatusBar
+        translucent
+        barStyle={'light-content'}
+        backgroundColor={'transparent'}
+      />
       <View style={Style.titleView}>
         <Text style={Style.title}>{welcomeMessage}</Text>
-        <Text style={[Style.title, Style.marginTopView]}>{ugmSystem}</Text>
-      </View>
-      <Animated.View
-        style={{
-          opacity: fadeAnim,
-        }}>
-        <Text style={[Style.titleMsg, Style.titleMsgView]}>
-          {successMessage}
+        <Text style={{...Style.title, fontSize: 30, lineHeight: 60}}>
+          {ugmSystem}
         </Text>
-      </Animated.View>
-
+      </View>
       {/* <View style={{height: 100, marginTop: 20}}>
         <PacmanIndicator size={100} color="#3664dc" />
       </View> */}
@@ -158,42 +157,15 @@ const MainScreen = ({navigation}) => {
         />
       </View>
 
-      <View style={Style.buttonView}>
-        <TouchableOpacity
-          style={Style.button}
-          onPress={() => navigateToRoute('HomeScreen')}>
-          <Text style={Style.buttonText}>SGPA</Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={Style.button}
-          onPress={() => navigateToRoute('CumulativeScreen')}>
-          <Text style={Style.buttonText}>CGPA</Text>
-        </TouchableOpacity>
-      </View>
-      <View style={Style.buttonView}>
-        <TouchableOpacity
-          style={Style.button}
-          onPress={() => navigateToRoute('FAQScreen')}>
-          <Text style={Style.buttonText}>FAQs</Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={Style.button}
-          onPress={() => navigateToRoute('GradingSystem')}>
-          <Text style={Style.buttonText}>Grade Policy</Text>
-        </TouchableOpacity>
-      </View>
-      <View style={Style.buttonView}>
-        <TouchableOpacity
-          style={Style.button}
-          onPress={() => navigateToRoute('AboutUs')}>
-          <Text style={Style.buttonText}>About Us</Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={Style.button}
-          onPress={() => navigateToRoute('PerformanceScreen')}>
-          <Text style={Style.buttonText}>Grades Chart</Text>
-        </TouchableOpacity>
-      </View>
+      <Animated.View
+        style={{
+          opacity: fadeAnim,
+        }}>
+        <Text style={[Style.titleMsg, Style.titleMsgView]}>
+          {successMessage}
+        </Text>
+      </Animated.View>
+
       {showLoader && <Loader />}
     </SafeAreaView>
   );

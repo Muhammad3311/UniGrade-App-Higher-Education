@@ -1,6 +1,7 @@
 // React Native Essential imports
 import React, {useState, useRef} from 'react';
-import {View, Text, TextInput, SafeAreaView, Dimensions} from 'react-native';
+import {View, Text, TextInput, Dimensions} from 'react-native';
+import {SafeAreaView} from 'react-native-safe-area-context';
 
 // library imports
 import {TouchableOpacity} from 'react-native-gesture-handler';
@@ -12,6 +13,8 @@ import _ from 'lodash';
 // custom imports
 import Style from './styles/CumulativeScreenStyle';
 import Colors from '../theme';
+import Header from '../Components/Header';
+import IonIcon from 'react-native-vector-icons/Ionicons';
 
 const screenHeight = Dimensions.get('window').height;
 
@@ -74,7 +77,7 @@ const CumulativeScreen = ({navigation}) => {
       .reduce((accumulator, currentValue) => accumulator + currentValue, 0);
     let newChPoints = combineArraySumed;
     let totalSum = (combineArraySum / combineArraySumed).toFixed(2);
-    console.log('cgpa', totalSum, 'cr hrs', newChPoints);
+    //console.log('cgpa', totalSum, 'cr hrs', newChPoints);
     let data = {
       newChPoints,
       totalSum,
@@ -99,7 +102,7 @@ const CumulativeScreen = ({navigation}) => {
   };
 
   const navigationData = data => {
-    navigation.navigate('Chart', {data: data});
+    navigation.navigate('ChartScreen', {data: data});
   };
 
   const handleDeleteRecord = index => {
@@ -191,8 +194,37 @@ const CumulativeScreen = ({navigation}) => {
     ),
   };
 
+  function renderHeader() {
+    return (
+      <Header
+        title={'Calculate Cumulative GPA'}
+        noOfLines={1}
+        titleStyle={{
+          fontSize: 20,
+          fontFamily: 'Roboto-Regular',
+          color: Colors.white,
+        }}
+        containerStyle={{
+          alignItems: 'center',
+          alignSelf: 'center',
+        }}
+        leftComponent={
+          <IonIcon
+            name="arrow-back"
+            onPress={() => navigation.goBack()}
+            size={28}
+            color={Colors.white}
+            style={{left: 10}}
+          />
+        }
+        rightComponent={<View style={{marginRight: 10}} />}
+      />
+    );
+  }
+
   return (
     <SafeAreaView style={Style.mainView}>
+      {renderHeader()}
       <View style={Style.headerView}>
         <View style={Style.container}>
           <View style={Style.rowText}>
@@ -224,7 +256,7 @@ const CumulativeScreen = ({navigation}) => {
                 </Text>
               </TouchableOpacity>
               <TouchableOpacity onPress={calculateCGPA} style={Style.button}>
-                <Text style={Style.buttonText}>Calculate SGPA</Text>
+                <Text style={Style.buttonText}>Calculate CGPA</Text>
               </TouchableOpacity>
             </View>
           </View>

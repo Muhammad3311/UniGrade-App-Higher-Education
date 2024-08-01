@@ -9,23 +9,16 @@ export default StyleSheet.create({
     flex: 1,
     marginTop: -35,
     width: '100%',
+    paddingBottom: 80,
     paddingTop: 50,
     zIndex: -1,
-  },
-  container: {
-    alignItems: 'center',
-    backgroundColor: Colors.secondaryBlack,
-    flex: 1,
-    // marginHorizontal: '5%',
-    marginTop: 30,
-    width: '100%',
   },
   iconText: {
     color: Colors.white,
     fontFamily: 'Roboto-Light',
     fontSize: 15,
     paddingLeft: 10,
-    paddingTop: 5,
+    // paddingTop: 5,
     textAlign: 'left',
   },
   iconTextView: {
@@ -54,7 +47,11 @@ export default StyleSheet.create({
     borderRadius: 100,
     zIndex: 1,
   },
-  marginTopView: {marginTop: 5},
+  marginTopView: {
+    alignSelf: 'center',
+    flexDirection: 'row',
+    marginTop: 5,
+  },
   marginView: {paddingTop: 20},
   paragraphMainView: {
     alignItems: 'center',
@@ -78,12 +75,17 @@ export default StyleSheet.create({
     justifyContent: 'center',
     width: '100%',
   },
-  safeAreaView: {backgroundColor: Colors.secondaryBlack, flex: 1},
+  safeAreaView: {
+    alignItems: 'center',
+    backgroundColor: Colors.secondaryBlack,
+    flex: 1,
+  },
   text: {
     color: Colors.white,
     fontFamily: 'Roboto-Light',
     fontSize: 18,
-    textAlign: 'center',
+    marginLeft: 5,
+    // textAlign: 'center',
   },
   title: {
     color: Colors.white,

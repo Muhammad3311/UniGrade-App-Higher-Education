@@ -120,7 +120,7 @@ export default StyleSheet.create({
     // marginVertical: 30,
     textAlign: 'center',
   },
-  mainView: {backgroundColor: Colors.secondary, flex: 1},
+  mainView: {backgroundColor: Colors.secondary, flex: 1, marginBottom: 80},
   primaryButton: {
     alignItems: 'center',
     alignSelf: 'center',

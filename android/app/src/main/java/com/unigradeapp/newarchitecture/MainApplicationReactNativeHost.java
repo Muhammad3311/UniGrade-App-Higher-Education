@@ -1,4 +1,4 @@
-package com.unigradeapp.newarchitecture;
+package com.gradify_gpa_calculator.newarchitecture;
 
 import android.app.Application;
 import androidx.annotation.NonNull;
@@ -19,9 +19,9 @@ import com.facebook.react.fabric.CoreComponentsRegistry;
 import com.facebook.react.fabric.FabricJSIModuleProvider;
 import com.facebook.react.fabric.ReactNativeConfig;
 import com.facebook.react.uimanager.ViewManagerRegistry;
-import com.unigradeapp.BuildConfig;
-import com.unigradeapp.newarchitecture.components.MainComponentsRegistry;
-import com.unigradeapp.newarchitecture.modules.MainApplicationTurboModuleManagerDelegate;
+import com.gradify_gpa_calculator.BuildConfig;
+import com.gradify_gpa_calculator.newarchitecture.components.MainComponentsRegistry;
+import com.gradify_gpa_calculator.newarchitecture.modules.MainApplicationTurboModuleManagerDelegate;
 import java.util.ArrayList;
 import java.util.List;
 

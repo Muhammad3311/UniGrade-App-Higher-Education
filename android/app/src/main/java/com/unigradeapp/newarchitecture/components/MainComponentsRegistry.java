@@ -1,4 +1,4 @@
-package com.unigradeapp.newarchitecture.components;
+package com.gradify_gpa_calculator.newarchitecture.components;
 
 import com.facebook.jni.HybridData;
 import com.facebook.proguard.annotations.DoNotStrip;

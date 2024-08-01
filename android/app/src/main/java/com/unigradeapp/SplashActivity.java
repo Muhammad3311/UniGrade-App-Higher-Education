@@ -1,9 +1,9 @@
-package com.unigradeapp;
+package com.gradify_gpa_calculator;
 
 import android.content.Intent;
 import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
-import com.unigradeapp.MainActivity;
+import com.gradify_gpa_calculator.MainActivity;
 
 public class SplashActivity extends AppCompatActivity {
     @Override

@@ -77,7 +77,7 @@ export default StyleSheet.create({
     marginBottom: -10,
     paddingTop: 5,
   },
-  mainView: {backgroundColor: Colors.secondary, flex: 1},
+  mainView: {backgroundColor: Colors.secondary, flex: 1, marginBottom: 80},
   scrollView: {
     height: screenHeight / 1.5,
   },

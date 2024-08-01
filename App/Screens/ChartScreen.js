@@ -6,9 +6,9 @@ import {
   Animated,
   TextInput,
   StyleSheet,
-  SafeAreaView,
   TouchableOpacity,
 } from 'react-native';
+import {SafeAreaView} from 'react-native-safe-area-context';
 
 // library imports
 import {FlatList} from 'react-native-gesture-handler';
@@ -21,11 +21,14 @@ import Toast, {BaseToast} from 'react-native-toast-message';
 // custom imports
 import Style from './styles/ChartScreenStyle';
 import Colors from '../theme';
+import Header from '../Components/Header';
+import IonIcon from 'react-native-vector-icons/Ionicons';
+import Share from 'react-native-share';
 
 const AnimatedCircle = Animated.createAnimatedComponent(Circle);
 const AnimatedInput = Animated.createAnimatedComponent(TextInput);
 
-const ChartScreen = ({route}) => {
+const ChartScreen = ({route, navigation}) => {
   const [image, setImage] = useState('');
   const ref = useRef();
 
@@ -135,6 +138,23 @@ const ChartScreen = ({route}) => {
     };
   }, [max, percentage]);
 
+  // Function to share app name and results
+  const shareResults = async () => {
+    try {
+      await Share.open({
+        title: 'Share Results',
+        message: `Check out my results on MyApp!\nYour Score: ${totalSum}\nSgp Points: ${totalChPoints}\nAim to Achieve: ${remainingPercentage}%`,
+      });
+    } catch (error) {
+      Toast.show({
+        type: 'error',
+        text1: 'Failed to share',
+        position: 'bottom',
+        bottomOffset: 100,
+      });
+    }
+  };
+
   const renderItem = ({item, index}) => {
     return (
       <View key={index} style={Style.flatlistView}>
@@ -159,8 +179,46 @@ const ChartScreen = ({route}) => {
       </View>
     );
   };
+
+  function renderHeader() {
+    return (
+      <Header
+        title={'Your GPA Score'}
+        noOfLines={1}
+        titleStyle={{
+          fontSize: 20,
+          fontFamily: 'Roboto-Regular',
+          color: Colors.white,
+        }}
+        containerStyle={{
+          alignItems: 'center',
+          alignSelf: 'center',
+        }}
+        leftComponent={
+          <IonIcon
+            name="arrow-back"
+            onPress={() => navigation.goBack()}
+            size={28}
+            color={Colors.white}
+            style={{left: 10}}
+          />
+        }
+        rightComponent={
+          <IonIcon
+            name="share-social-outline"
+            onPress={shareResults}
+            size={28}
+            color={Colors.white}
+            style={{right: 10}}
+          />
+        }
+      />
+    );
+  }
+
   return (
     <SafeAreaView style={Style.container}>
+      {renderHeader()}
       <View style={Style.marginView}>
         <Svg
           width={220} // Updated for a circle diameter of 220

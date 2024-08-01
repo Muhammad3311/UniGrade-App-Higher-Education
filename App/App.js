@@ -1,7 +1,7 @@
 // React Native essentials imports
 import React from 'react';
 import {View, StatusBar} from 'react-native';
-import DrawerStack from './Navigators/DrawerNavigator';
+import AppStack from './Navigators/AppNavigator';
 
 // custom imports
 import Colors from './theme';
@@ -11,10 +11,8 @@ import Style from './AppStyle';
 const App = () => {
   return (
     <View style={Style.container}>
-      {/* Status bar color should be apply in order to control the flow of app theme */}
-      <StatusBar backgroundColor={Colors.secondary} barStyle="light-content" />
-      {/* Calling the drawer stack which contains stack navigators and screens */}
-      <DrawerStack />
+      {/* Calling the app stack which contains stack navigators and screens */}
+      <AppStack />
     </View>
   );
 };

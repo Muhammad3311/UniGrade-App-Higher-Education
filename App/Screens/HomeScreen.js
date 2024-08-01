@@ -4,10 +4,10 @@ import {
   View,
   Text,
   TextInput,
-  SafeAreaView,
   Dimensions,
   TouchableOpacity,
 } from 'react-native';
+import {SafeAreaView} from 'react-native-safe-area-context';
 
 // library imports
 import Icon from 'react-native-vector-icons/Entypo';
@@ -124,7 +124,7 @@ const HomeScreen = ({navigation}) => {
   };
 
   const navigationData = data => {
-    navigation.navigate('Chart', {data: data});
+    navigation.navigate('ChartScreen', {data: data});
   };
 
   const handleReset = () => {

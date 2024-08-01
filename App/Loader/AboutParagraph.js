@@ -1,7 +1,8 @@
 // Author message
-export const aboutParagraph = `Empowering students to take control of their academic journey, my app provides a user-friendly interface that allows them to input their grades and credits effortlessly.
- Whether you're tracking a single semester's performance or need to calculate your cumulative GPA over multiple semesters, my app has covered. 
- We understand that academic needs can vary, so my app is designed to be highly customizable and adaptable to your specific requirements.
+export const aboutParagraph = `DeTech Digital Stdio is an active provider of professional software and digital solutions. We prioritize perfection and satisfaction, turning your imagination into reality. Our expertise lies in transforming the dreams and ideas of entrepreneurs and startups into cutting-edge digital products.
+Empowering students to take control of their academic journey, our app provides a user-friendly interface that allows them to input their grades and credits effortlessly.
+Whether you're tracking a single semester's performance or need to calculate your cumulative GPA over multiple semesters, my app has covered. 
+We understand that academic needs can vary, so my app is designed to be highly customizable and adaptable to your specific requirements.
 `;
 // data for grade chart
 export const data = [
