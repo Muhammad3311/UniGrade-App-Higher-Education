@@ -1,6 +1,6 @@
 // React Native essential imports
 import React from 'react';
-import {View, Text, Image} from 'react-native';
+import {View, Text, Image, StatusBar} from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import IonIcons from 'react-native-vector-icons/Ionicons';
 import AntIcon from 'react-native-vector-icons/AntDesign';
@@ -12,13 +12,18 @@ import {aboutParagraph} from '../Loader/AboutParagraph';
 import images from '../Assets/images';
 import Colors from '../theme';
 import {Linking} from 'react-native';
+import {ThemeContext} from '../../ThemeContext';
+import {lightTheme, darkTheme} from '../../themes';
+import theme from '../theme';
 
 // The screen contains the information about author and user or customer can update their queries, problems by contacting the author
 const AboutUs = () => {
+  const {isDarkTheme, toggleTheme} = React.useContext(ThemeContext);
+  const theme = isDarkTheme ? darkTheme : lightTheme;
   const paragraph = aboutParagraph;
   const number = '+92 303 5317873';
   const mail = 'mdcesar0824@gmail.com';
-  const businessNumber = '+92 330 8245848';
+  const businessLink = 'instagram link';
   const linkedin = 'muhammad-okz';
   const authorName = 'DeTech Digital Stdio';
   const authorDesignation =
@@ -27,9 +32,16 @@ const AboutUs = () => {
   const handlePress = () => {
     Linking.openURL('https://detech-online.vercel.app');
   };
+  const handleInstaPress = () => {
+    Linking.openURL(
+      'https://www.instagram.com/muhammad_27001?utm_source=qr&igsh=MWp3Y2lvaTY5dzFsNw==',
+    );
+  };
 
   return (
-    <SafeAreaView style={Style.safeAreaView}>
+    <SafeAreaView
+      style={[Style.safeAreaView, {backgroundColor: theme.backgroundColor}]}>
+      <StatusBar barStyle={theme.statusContent} />
       <Image source={images.Detech} resizeMode="cover" style={Style.image} />
 
       <View style={Style.contactView}>
@@ -66,7 +78,7 @@ const AboutUs = () => {
                   textDecorationLine: 'underline',
                 }}
                 onPress={handlePress}>
-                detech-online.vercel.app
+                DeTech digital stdio link
               </Text>
             </View>
           </View>
@@ -80,10 +92,20 @@ const AboutUs = () => {
           </View>
 
           <View style={Style.iconView}>
-            <IonIcons name="logo-whatsapp" color={Colors.iconColor} size={30} />
+            <IonIcons name="logo-instagram" color={'#fff'} size={30} />
             <View>
-              <Text style={Style.iconText}>Business Number</Text>
-              <Text style={Style.iconText}>{businessNumber}</Text>
+              <Text style={Style.iconText}>Instagram link</Text>
+              <Text
+                style={{
+                  ...Style.iconText,
+                  color: '#1E90FF',
+                  textDecorationLine: 'underline',
+                }}
+                onPress={handleInstaPress}
+                ellipsizeMode="tail"
+                numberOfLines={1}>
+                {businessLink}
+              </Text>
             </View>
           </View>
         </View>

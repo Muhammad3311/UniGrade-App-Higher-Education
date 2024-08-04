@@ -59,7 +59,7 @@ export default StyleSheet.create({
     width: '100%',
   },
   configText: {
-    fontFamily: 'Roboto-Regular',
+    fontFamily: 'Roboto-Light',
     fontSize: 16,
     color: Colors.white,
   },
@@ -83,12 +83,10 @@ export default StyleSheet.create({
   },
   input: {
     alignSelf: 'flex-start',
-    backgroundColor: Colors.secondaryLight,
-    borderBottomColor: Colors.white,
+    backgroundColor: 'transparent',
     borderBottomWidth: 1,
     borderRadius: 10,
     borderWidth: 0,
-    color: Colors.white,
     fontFamily: 'Roboto-Regular',
     height: 40,
     padding: 5,
@@ -120,7 +118,7 @@ export default StyleSheet.create({
     // marginVertical: 30,
     textAlign: 'center',
   },
-  mainView: {backgroundColor: Colors.secondary, flex: 1, marginBottom: 80},
+  mainView: {backgroundColor: Colors.secondary, flex: 1, paddingBottom: 80},
   primaryButton: {
     alignItems: 'center',
     alignSelf: 'center',

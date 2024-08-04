@@ -1,6 +1,6 @@
 // React Native Essential imports
 import React, {useEffect, useState} from 'react';
-import {View, Text, Dimensions, FlatList} from 'react-native';
+import {View, Text, Dimensions, FlatList, StatusBar} from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
 
 // library imports
@@ -10,18 +10,27 @@ import {LineChart} from 'react-native-chart-kit';
 import {data} from '../Loader/AboutParagraph';
 import Style from './styles/PerformanceScreenStyle';
 import Colors from '../theme';
+import {ThemeContext} from '../../ThemeContext';
+import {lightTheme, darkTheme} from '../../themes';
 
 const screenWidth = Dimensions.get('window').width;
 
 const PerformaceScreen = () => {
+  const {isDarkTheme, toggleTheme} = React.useContext(ThemeContext);
+  const theme = isDarkTheme ? darkTheme : lightTheme;
   const [chartdata, setChartData] = useState([]);
   const chartConfig = {
-    backgroundColor: Colors.chartBackground,
-    backgroundGradientFrom: Colors.chartGradientFrom,
-    backgroundGradientTo: Colors.chartGradientTo,
-    decimalPlaces: 2, // optional, defaults to 2dp
-    color: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
-    labelColor: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
+    backgroundColor: theme.chartBackground,
+    backgroundGradientFrom: theme.chartGradientFrom,
+    backgroundGradientTo: theme.chartGradientTo,
+    color: (opacity = 1) =>
+      isDarkTheme
+        ? `rgba(255, 255, 255, ${opacity})`
+        : `rgba(0, 0, 0, ${opacity})`,
+    labelColor: (opacity = 1) =>
+      isDarkTheme
+        ? `rgba(255, 255, 255, ${opacity})`
+        : `rgba(0, 0, 0, ${opacity})`,
     style: {
       borderRadius: 15,
     },
@@ -49,18 +58,29 @@ const PerformaceScreen = () => {
           </Text>
         </View>
         <View style={Style.topText}>
-          <Text style={Style.flatListText}>{item.per}</Text>
+          <Text style={[Style.flatListText, {color: theme.textColor}]}>
+            {item.per}
+          </Text>
         </View>
         <View style={Style.topTextSecond}>
-          <Text style={Style.flatListText}>{item.grade}</Text>
+          <Text style={[Style.flatListText, {color: theme.textColor}]}>
+            {item.grade}
+          </Text>
         </View>
       </View>
     );
   };
   return (
-    <SafeAreaView style={Style.container}>
+    <SafeAreaView
+      style={[Style.container, {backgroundColor: theme.backgroundColor}]}>
+      <StatusBar
+        barStyle={theme.statusContent}
+        backgroundColor={'transparent'}
+      />
       <View>
-        <Text style={Style.mainTitle}>Grade Point Average Chart</Text>
+        <Text style={[Style.mainTitle, {color: theme.textColor}]}>
+          Grade Point Average Chart
+        </Text>
         <LineChart
           animate={true}
           duration={5000}

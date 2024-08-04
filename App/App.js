@@ -2,6 +2,7 @@
 import React from 'react';
 import {View, StatusBar} from 'react-native';
 import AppStack from './Navigators/AppNavigator';
+import {ThemeProvider} from '../ThemeContext';
 
 // custom imports
 import Colors from './theme';
@@ -11,8 +12,10 @@ import Style from './AppStyle';
 const App = () => {
   return (
     <View style={Style.container}>
-      {/* Calling the app stack which contains stack navigators and screens */}
-      <AppStack />
+      <ThemeProvider>
+        {/* Calling the app stack which contains stack navigators and screens */}
+        <AppStack />
+      </ThemeProvider>
     </View>
   );
 };

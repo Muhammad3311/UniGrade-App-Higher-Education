@@ -24,11 +24,15 @@ import Colors from '../theme';
 import Header from '../Components/Header';
 import IonIcon from 'react-native-vector-icons/Ionicons';
 import Share from 'react-native-share';
+import {ThemeContext} from '../../ThemeContext';
+import {lightTheme, darkTheme} from '../../themes';
 
 const AnimatedCircle = Animated.createAnimatedComponent(Circle);
 const AnimatedInput = Animated.createAnimatedComponent(TextInput);
 
 const ChartScreen = ({route, navigation}) => {
+  const {isDarkTheme, toggleTheme} = React.useContext(ThemeContext);
+  const theme = isDarkTheme ? darkTheme : lightTheme;
   const [image, setImage] = useState('');
   const ref = useRef();
 
@@ -74,11 +78,26 @@ const ChartScreen = ({route, navigation}) => {
             props.text1 === 'Image saved to gallery'
               ? Colors.primary
               : Colors.redColor,
-          backgroundColor: Colors.secondaryLight,
+          backgroundColor: theme.backgroundColorHome,
           color: Colors.primary,
         }}
         contentContainerStyle={Style.contentContainer}
-        text1Style={Style.contentContainerText}
+        text1Style={[Style.contentContainerText, {color: theme.textColor}]}
+      />
+    ),
+    error: props => (
+      <BaseToast
+        text1={props.text1}
+        style={{
+          borderLeftColor:
+            props.text1 === 'Image saved to gallery'
+              ? Colors.primary
+              : Colors.redColor,
+          backgroundColor: theme.backgroundColorHome,
+          color: Colors.primary,
+        }}
+        contentContainerStyle={Style.contentContainer}
+        text1Style={[Style.contentContainerText, {color: theme.textColor}]}
       />
     ),
   };
@@ -173,8 +192,12 @@ const ChartScreen = ({route, navigation}) => {
           ●
         </Text>
         <View style={Style.flatlistTextView}>
-          <Text style={Style.flatlistText}>{item.type}</Text>
-          <Text style={Style.flatlistText}>{item.value}</Text>
+          <Text style={[Style.flatlistText, {color: theme.textColor}]}>
+            {item.type}
+          </Text>
+          <Text style={[Style.flatlistText, {color: theme.textColor}]}>
+            {item.value}
+          </Text>
         </View>
       </View>
     );
@@ -188,7 +211,7 @@ const ChartScreen = ({route, navigation}) => {
         titleStyle={{
           fontSize: 20,
           fontFamily: 'Roboto-Regular',
-          color: Colors.white,
+          color: theme.textColor,
         }}
         containerStyle={{
           alignItems: 'center',
@@ -199,7 +222,7 @@ const ChartScreen = ({route, navigation}) => {
             name="arrow-back"
             onPress={() => navigation.goBack()}
             size={28}
-            color={Colors.white}
+            color={theme.textColor}
             style={{left: 10}}
           />
         }
@@ -208,7 +231,7 @@ const ChartScreen = ({route, navigation}) => {
             name="share-social-outline"
             onPress={shareResults}
             size={28}
-            color={Colors.white}
+            color={theme.textColor}
             style={{right: 10}}
           />
         }
@@ -217,7 +240,8 @@ const ChartScreen = ({route, navigation}) => {
   }
 
   return (
-    <SafeAreaView style={Style.container}>
+    <SafeAreaView
+      style={[Style.container, {backgroundColor: theme.backgroundColorHome}]}>
       {renderHeader()}
       <View style={Style.marginView}>
         <Svg
@@ -256,10 +280,18 @@ const ChartScreen = ({route, navigation}) => {
           underlineColorAndroid={'transparent'}
           editable={false}
           defaultValue="0"
-          style={[StyleSheet.absoluteFillObject, Style.progressText]}
+          style={[
+            StyleSheet.absoluteFillObject,
+            Style.progressText,
+            {color: theme.textColor},
+          ]}
         />
       </View>
-      <View style={Style.middleView}>
+      <View
+        style={[
+          Style.middleView,
+          {backgroundColor: theme.backgroundColorHome},
+        ]}>
         <View>
           <FlatList
             data={chartArray}
@@ -268,13 +300,22 @@ const ChartScreen = ({route, navigation}) => {
           />
         </View>
 
-        <View style={Style.mainPercentView}>
+        <View
+          style={[
+            Style.mainPercentView,
+            {backgroundColor: theme.backgroundColorHome},
+          ]}>
           <Text style={Style.percentageText}>Percentage</Text>
-          <Text style={Style.percentage}>{percentage.toFixed(2)}%</Text>
+          <Text style={[Style.percentage, {color: theme.textColor}]}>
+            {percentage.toFixed(2)}%
+          </Text>
         </View>
       </View>
-      <View style={Style.percentView}>
-        <Text style={Style.saveText}>Save Your Result</Text>
+      <View
+        style={[Style.percentView, {backgroundColor: theme.innerContainer}]}>
+        <Text style={[Style.saveText, {color: theme.textColor}]}>
+          Save Your Result
+        </Text>
         <TouchableOpacity onPress={takeScreenShot}>
           <Icon
             style={Style.iconStyle}

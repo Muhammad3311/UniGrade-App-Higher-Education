@@ -37,7 +37,7 @@ export default StyleSheet.create({
   },
   mainTitle: {
     color: Colors.white,
-    fontFamily: 'Roboto-Regular',
+    fontFamily: 'Roboto-Medium',
     fontSize: 20,
     paddingVertical: 10,
     textAlign: 'center',

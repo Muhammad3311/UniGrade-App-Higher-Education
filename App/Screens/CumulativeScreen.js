@@ -1,103 +1,57 @@
-// React Native Essential imports
-import React, {useState, useRef} from 'react';
-import {View, Text, TextInput, Dimensions} from 'react-native';
-import {SafeAreaView} from 'react-native-safe-area-context';
-
-// library imports
-import {TouchableOpacity} from 'react-native-gesture-handler';
-import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
-import Icon from 'react-native-vector-icons/Entypo';
-import Toast, {BaseToast} from 'react-native-toast-message';
-import _ from 'lodash';
-
-// custom imports
-import Style from './styles/CumulativeScreenStyle';
+import React, {useState} from 'react';
+import {
+  View,
+  Text,
+  TextInput,
+  Button,
+  FlatList,
+  StyleSheet,
+  TouchableOpacity,
+  StatusBar,
+} from 'react-native';
+import Modal from 'react-native-modal';
+import Big from 'big.js';
 import Colors from '../theme';
-import Header from '../Components/Header';
-import IonIcon from 'react-native-vector-icons/Ionicons';
-
-const screenHeight = Dimensions.get('window').height;
+import {SafeAreaView} from 'react-native-safe-area-context';
+import Icon from 'react-native-vector-icons/Ionicons';
+import {ThemeContext} from '../../ThemeContext';
+import {darkTheme, lightTheme} from '../../themes';
 
 const CumulativeScreen = ({navigation}) => {
-  const [marksCrHrsArray, setMarksCrHrsArray] = useState(Array(24).fill(''));
-  const [inputHasData, setInputHasData] = useState(Array(8).fill(false));
-  const [oddArray, setOddArray] = useState([]);
-  const [evenArray, setEvenArray] = useState([]);
-  const [totalSum, setTotalSum] = useState('0.00');
-  const [totalSgpPoints, setTotalSgpPoints] = useState(0);
-  const [totalChPoints, setTotalChPoints] = useState(0);
+  const {isDarkTheme, toggleTheme} = React.useContext(ThemeContext);
+  const theme = isDarkTheme ? darkTheme : lightTheme;
+  const [numberOfSemesters, setNumberOfSemesters] = useState(null);
+  const [entries, setEntries] = useState([]);
+  const [cgpa, setCgpa] = useState(null);
+  const [isSemesterModalVisible, setSemesterModalVisible] = useState(false);
+  const [isCreditHoursModalVisible, setCreditHoursModalVisible] =
+    useState(false);
+  const [selectedEntryIndex, setSelectedEntryIndex] = useState(null);
 
-  const firstInputRefs = useRef([...Array(8)].map(() => React.createRef()));
-
-  // Inside the handleInputChange function:
-  const handleInputChange = (index, text) => {
-    if (
-      /^\d{0,3}(\.\d{0,2})?$/.test(text) &&
-      ((index % 2 === 1 && parseFloat(text) <= 30) ||
-        (index % 2 === 0 && parseFloat(text) <= 120))
-    ) {
-      const updatedArray = [...marksCrHrsArray];
-      updatedArray[index] = text.trim();
-      setMarksCrHrsArray(updatedArray);
-      const newInputHasData = [...inputHasData];
-      newInputHasData[index] = text.trim() !== '';
-      setInputHasData(newInputHasData);
-    } else {
-      // Reset the inputHasData state when input is invalid
-      const newInputHasData = [...inputHasData];
-      newInputHasData[index] = false;
-      setInputHasData(newInputHasData);
-    }
+  const initializeEntries = numSemesters => {
+    const initialEntries = Array.from({length: numSemesters}, (_, i) => ({
+      semester: i + 1,
+      sgpa: '',
+      creditHours: '',
+    }));
+    setEntries(initialEntries);
   };
 
-  const handleBackspacePress = index => {
-    if (index === 0) {
-      setMarksCrHrsArray(prevMarks => {
-        const marksCrHrsArray = [...prevMarks];
-        marksCrHrsArray[0] = '';
-        return marksCrHrsArray;
-      });
-    } else if (index % 2 === 1) {
-      setMarksCrHrsArray(prevMarks => {
-        const marksCrHrsArray = [...prevMarks];
-        marksCrHrsArray[index] = marksCrHrsArray[index].slice(0, -1);
-        return marksCrHrsArray;
-      });
-    }
+  const handleInputChange = (index, field, value) => {
+    const updatedEntries = [...entries];
+    updatedEntries[index][field] = value;
+    setEntries(updatedEntries);
   };
 
-  const calculateCGPA = () => {
-    const nonEmptyValues = marksCrHrsArray.filter(value => value !== '');
-    let marksCrHrsInt = nonEmptyValues.map(parseFloat);
-    const combineArraySum = marksCrHrsInt
-      .filter((_, index) => index % 2 === 0)
-      .reduce((accumulator, currentValue) => accumulator + currentValue, 0);
-    const combineArraySumed = marksCrHrsInt
-      .filter((_, index) => index % 2 !== 0)
-      .reduce((accumulator, currentValue) => accumulator + currentValue, 0);
-    let newChPoints = combineArraySumed;
-    let totalSum = (combineArraySum / combineArraySumed).toFixed(2);
-    //console.log('cgpa', totalSum, 'cr hrs', newChPoints);
-    let data = {
-      newChPoints,
-      totalSum,
-    };
-    validateData(data);
-  };
-
-  const validateData = data => {
-    const sgpa = _.get(data, 'totalSum');
-    const crPoints = _.get(data, 'newChPoints');
-    // console.log('sgpa', sgpa, 'cr points', crPoints, 'sgpPoints', sgpPoints);
-    if (sgpa === NaN || crPoints === 0) {
-      Toast.show({
-        // type: 'fail',
-        text1: 'Empty fields are required',
-        position: 'top',
-        bottomOffset: 100,
-      });
-    } else {
-      navigationData(data);
+  const calculateCgpa = () => {
+    if (entries.length > 0) {
+      const totalSemesters = entries.length;
+      const totalSgpa = entries.reduce(
+        (acc, entry) => acc.plus(new Big(entry.sgpa || 0)),
+        new Big(0),
+      );
+      const calculatedCgpa = totalSgpa.div(totalSemesters);
+      setCgpa(calculatedCgpa.toFixed(2));
     }
   };
 
@@ -105,166 +59,176 @@ const CumulativeScreen = ({navigation}) => {
     navigation.navigate('ChartScreen', {data: data});
   };
 
-  const handleDeleteRecord = index => {
-    const newMarksCrHrsArray = [...marksCrHrsArray];
-    newMarksCrHrsArray.splice(index, 2); // Remove marks and credit hours
-    setMarksCrHrsArray(newMarksCrHrsArray);
-
-    const newInputHasData = [...inputHasData];
-    newInputHasData.splice(index, 2); // Remove inputHasData for the deleted record
-    setInputHasData(newInputHasData);
-  };
-
-  const renderGrid = () => {
-    const gridItems = [];
-    for (let i = 0; i < 26; i += 2) {
-      gridItems.push(
-        <View key={i} style={Style.row}>
-          <View style={Style.inputContainer}>
-            <TextInput
-              keyboardAppearance="dark"
-              ref={firstInputRefs[i / 2]}
-              style={[Style.input, {marginBottom: i === 24 ? 20 : 0}]}
-              value={marksCrHrsArray[i]}
-              caretHidden={false}
-              cursorColor={Colors.primary}
-              onChangeText={text => handleInputChange(i, text)}
-              keyboardType="numeric"
-              placeholder="Marks"
-              placeholderTextColor={Colors.placeholder}
-              // maxLength={5}
-              onKeyPress={({nativeEvent}) => {
-                if (nativeEvent.key === 'Backspace') {
-                  handleBackspacePress(i);
-                }
-              }}
-            />
-          </View>
-          <View style={Style.inputContainer}>
-            <TextInput
-              style={[Style.input, {marginBottom: i === 24 ? 20 : 0}]}
-              value={marksCrHrsArray[i + 1]}
-              onChangeText={text => handleInputChange(i + 1, text)}
-              cursorColor={Colors.primary}
-              caretHidden={false}
-              keyboardType="numeric"
-              placeholder="Cr Hours"
-              placeholderTextColor={Colors.placeholder}
-              // maxLength={2}
-              onKeyPress={({nativeEvent}) => {
-                if (nativeEvent.key === 'Backspace') {
-                  handleBackspacePress(i + 1);
-                }
-              }}
-            />
-          </View>
-        </View>,
-      );
-    }
-    return gridItems;
-  };
-
-  const handleReset = () => {
-    const emptyArray = Array(24).fill('');
-    setMarksCrHrsArray(emptyArray);
-    setTotalSgpPoints(0);
-    setTotalChPoints(0);
-    setTotalSum('0.00');
-    setInputHasData([]);
-
-    if (firstInputRefs.current[0] && firstInputRefs.current[0].current) {
-      firstInputRefs.current[0].current.focus();
-    }
-  };
-  const toastConfig = {
-    success: props => (
-      <BaseToast
-        text1={props.text1}
-        style={{
-          borderLeftColor:
-            props.text1 === 'Image saved to gallery'
-              ? Colors.primary
-              : Colors.redColor,
-          backgroundColor: Colors.secondaryLight,
-          color: Colors.primary,
-        }}
-        contentContainerStyle={Style.contentContainerStyle}
-        text1Style={Style.contentContainerText}
-      />
-    ),
-  };
-
-  function renderHeader() {
-    return (
-      <Header
-        title={'Calculate Cumulative GPA'}
-        noOfLines={1}
-        titleStyle={{
-          fontSize: 20,
-          fontFamily: 'Roboto-Regular',
-          color: Colors.white,
-        }}
-        containerStyle={{
-          alignItems: 'center',
-          alignSelf: 'center',
-        }}
-        leftComponent={
-          <IonIcon
-            name="arrow-back"
-            onPress={() => navigation.goBack()}
-            size={28}
-            color={Colors.white}
-            style={{left: 10}}
-          />
-        }
-        rightComponent={<View style={{marginRight: 10}} />}
-      />
-    );
-  }
-
   return (
-    <SafeAreaView style={Style.mainView}>
-      {renderHeader()}
-      <View style={Style.headerView}>
-        <View style={Style.container}>
-          <View style={Style.rowText}>
-            <Text style={Style.tag}>T. Semester Quality Points</Text>
-            <Text style={Style.tagLeft}>T. Semester Credit Hours</Text>
-          </View>
-          <View style={Style.border}></View>
-          <View style={Style.scrollView}>
-            <KeyboardAwareScrollView
-              style={Style.keyboardViewStyle}
-              // contentContainerStyle={{flexGrow: 1}}
-              extraScrollHeight={screenHeight / 8} // Adjust this value based on your UI needs
-              enableOnAndroid={true}
-              enableAutomaticScroll={true}>
-              {renderGrid()}
-              {/* <FlatList
-                data={renderGrid()}
-                keyExtractor={(item, index) => index.toString()}
-                renderItem={renderGridItem}
-              /> */}
-            </KeyboardAwareScrollView>
-          </View>
-          <View style={Style.btnView}>
-            <View style={Style.buttonView}>
-              <TouchableOpacity onPress={handleReset} style={Style.buttonReset}>
-                <Text style={Style.buttonText}>
-                  {/*'#3664dc'*/}
-                  Reset
-                </Text>
-              </TouchableOpacity>
-              <TouchableOpacity onPress={calculateCGPA} style={Style.button}>
-                <Text style={Style.buttonText}>Calculate CGPA</Text>
-              </TouchableOpacity>
+    <SafeAreaView
+      style={[styles.container, {backgroundColor: theme.backgroundColorHome}]}>
+      {/* <StatusBar
+        backgroundColor={'transparent'}
+        barStyle={theme.statusContent}
+      /> */}
+      <TouchableOpacity
+        style={styles.pickerContainer}
+        onPress={() => setSemesterModalVisible(true)}>
+        <Text style={styles.pickerText}>Add Semesters</Text>
+        {/* <Text style={styles.pickerText}>
+          {numberOfSemesters !== null
+            ? `Semester ${numberOfSemesters}`
+            : 'Add Semesters'}
+        </Text> */}
+        <Icon
+          name="caret-down"
+          size={16}
+          color={Colors.white}
+          style={{left: 5}}
+        />
+      </TouchableOpacity>
+
+      <FlatList
+        data={entries}
+        style={{marginVertical: 10}}
+        showsVerticalScrollIndicator={false}
+        keyExtractor={(item, index) => index.toString()}
+        renderItem={({item, index}) => (
+          <View style={styles.entry}>
+            <View style={styles.semesterContainer}>
+              <Text style={styles.semesterText}>Semester {item.semester}</Text>
             </View>
+            <TextInput
+              style={styles.input}
+              placeholder="SGPA"
+              placeholderTextColor={'silver'}
+              keyboardType="numeric"
+              value={item.sgpa}
+              onChangeText={text => handleInputChange(index, 'sgpa', text)}
+              maxLength={5}
+            />
+            <TouchableOpacity
+              style={styles.creditHoursContainer}
+              onPress={() => {
+                setSelectedEntryIndex(index);
+                setCreditHoursModalVisible(true);
+              }}>
+              <Text style={styles.pickerText}>
+                {item.creditHours ? `${item.creditHours} Cr Hrs` : 'Cr Hrs'}
+              </Text>
+              <Icon
+                name="caret-down"
+                size={16}
+                color={Colors.white}
+                style={{left: 5}}
+              />
+            </TouchableOpacity>
           </View>
+        )}
+      />
+
+      <Button title="Calculate CGPA" onPress={calculateCgpa} />
+      {cgpa !== null && <Text style={styles.result}>Your CGPA: {cgpa}</Text>}
+
+      <Modal
+        isVisible={isSemesterModalVisible}
+        onBackdropPress={() => setSemesterModalVisible(false)}>
+        <View style={styles.modalContent}>
+          <TouchableOpacity
+            onPress={() => {
+              setNumberOfSemesters(null);
+              setEntries([]);
+              setSemesterModalVisible(false);
+            }}>
+            <Text style={styles.modalItem}>No Semesters</Text>
+          </TouchableOpacity>
+          {Array.from({length: 10}, (_, i) => i + 1).map(num => (
+            <TouchableOpacity
+              key={num}
+              onPress={() => {
+                setNumberOfSemesters(num);
+                initializeEntries(num);
+                setSemesterModalVisible(false);
+              }}>
+              <Text style={styles.modalItem}>Semester {num}</Text>
+            </TouchableOpacity>
+          ))}
         </View>
-      </View>
-      <Toast config={toastConfig} />
+      </Modal>
+
+      <Modal
+        isVisible={isCreditHoursModalVisible}
+        onBackdropPress={() => setCreditHoursModalVisible(false)}>
+        <View style={styles.modalContent}>
+          {Array.from({length: 5}, (_, i) => i + 1).map(num => (
+            <TouchableOpacity
+              key={num}
+              onPress={() => {
+                handleInputChange(selectedEntryIndex, 'creditHours', num);
+                setCreditHoursModalVisible(false);
+              }}>
+              <Text style={styles.modalItem}>{num} Cr Hrs</Text>
+            </TouchableOpacity>
+          ))}
+        </View>
+      </Modal>
     </SafeAreaView>
   );
 };
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    padding: 20,
+    backgroundColor: '#000',
+  },
+  pickerContainer: {
+    alignItems: 'center',
+    backgroundColor: Colors.primary,
+    borderRadius: 8,
+    flexDirection: 'row',
+    overflow: 'hidden',
+    marginBottom: 20,
+    alignSelf: 'flex-start',
+    padding: 15,
+  },
+  pickerText: {
+    color: '#fff',
+  },
+  input: {
+    color: '#fff',
+    borderRadius: 5,
+    // textAlign: 'center',
+  },
+  entry: {
+    borderWidth: 1,
+    borderColor: Colors.primary,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    paddingHorizontal: 10,
+    marginTop: 10,
+    borderRadius: 8,
+    width: '100%',
+  },
+  semesterContainer: {},
+  semesterText: {
+    color: '#fff',
+  },
+  creditHoursContainer: {
+    alignItems: 'center',
+    flexDirection: 'row',
+  },
+  result: {
+    color: '#fff',
+    marginTop: 20,
+    fontSize: 20,
+    fontWeight: 'bold',
+  },
+  modalContent: {
+    backgroundColor: '#fff',
+    padding: 20,
+    borderRadius: 10,
+  },
+  modalItem: {
+    paddingVertical: 10,
+    fontSize: 18,
+  },
+});
 
 export default CumulativeScreen;

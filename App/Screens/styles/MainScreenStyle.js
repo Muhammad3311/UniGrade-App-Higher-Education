@@ -31,9 +31,6 @@ export default StyleSheet.create({
   container: {
     alignItems: 'center',
     flex: 1,
-    justifyContent: 'space-evenly',
-    paddingHorizontal: 10,
-    width: '100%',
   },
   graphText: {
     fontSize: 48, // Updated for a circle diameter of 220
@@ -44,7 +41,6 @@ export default StyleSheet.create({
   // graphView: {marginBottom: 30, marginTop: 40},
   marginTopView: {fontSize: 30, marginTop: 10},
   title: {
-    color: Colors.white,
     fontFamily: 'Roboto-Regular',
     fontSize: 38,
     letterSpacing: 1,

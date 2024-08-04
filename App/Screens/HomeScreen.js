@@ -6,6 +6,7 @@ import {
   TextInput,
   Dimensions,
   TouchableOpacity,
+  StatusBar,
 } from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
 
@@ -19,11 +20,15 @@ import Toast, {BaseToast} from 'react-native-toast-message';
 // cutom imports
 import Style from './styles/HomeScreenStyle';
 import Colors from '../theme';
+import {ThemeContext} from '../../ThemeContext';
+import {lightTheme, darkTheme} from '../../themes';
 
 const screenHeight = Dimensions.get('window').height;
 
 // This is the screen where user can get grades by adding marks & credit hrs and also view the progress
 const HomeScreen = ({navigation}) => {
+  const {isDarkTheme, toggleTheme} = React.useContext(ThemeContext);
+  const theme = isDarkTheme ? darkTheme : lightTheme;
   const [showLoader, setShowLoader] = useState(true);
   const firstInputRefs = useRef([]);
   const [totalSgpPoints, setTotalSgpPoints] = useState(0);
@@ -317,14 +322,21 @@ const HomeScreen = ({navigation}) => {
             <TextInput
               keyboardAppearance="dark"
               ref={firstInputRefs[i / 2]}
-              style={[Style.input, {marginBottom: i === 24 ? 20 : 0}]} // inorder to align the last item above the keyboard
+              style={[
+                Style.input,
+                {
+                  color: theme.textColor,
+                  borderColor: theme.textColor,
+                  marginBottom: i === 24 ? 20 : 0,
+                },
+              ]} // inorder to align the last item above the keyboard
               value={marksCrHrsArray[i]}
               cursorColor={Colors.primary}
               caretHidden={false}
               onChangeText={text => handleInputChange(i, text)}
               keyboardType="numeric"
               placeholder="Marks"
-              placeholderTextColor={Colors.placeholder}
+              placeholderTextColor={theme.placeholderColor}
               maxLength={4}
               onKeyPress={({nativeEvent}) => {
                 if (nativeEvent.key === 'Backspace') {
@@ -335,14 +347,21 @@ const HomeScreen = ({navigation}) => {
           </View>
           <View style={Style.inputContainer}>
             <TextInput
-              style={[Style.input, {marginBottom: i === 24 ? 20 : 0}]} // inorder to align last item above the keyboard
+              style={[
+                Style.input,
+                {
+                  color: theme.textColor,
+                  borderColor: theme.textColor,
+                  marginBottom: i === 24 ? 20 : 0,
+                },
+              ]} // inorder to align last item above the keyboard
               value={marksCrHrsArray[i + 1]}
               cursorColor={Colors.primary}
               onChangeText={text => handleInputChange(i + 1, text)}
               keyboardType="numeric"
               placeholder="Cr Hours"
               caretHidden={false}
-              placeholderTextColor={Colors.placeholder}
+              placeholderTextColor={theme.placeholderColor}
               // maxLength={1}
               onKeyPress={({nativeEvent}) => {
                 if (nativeEvent.key === 'Backspace') {
@@ -355,7 +374,9 @@ const HomeScreen = ({navigation}) => {
             {/* <Text style={Style.result}>{isEmpty ? '' : result}</Text> */}
             <View style={Style.resultView}>
               <View style={Style.resultTextView}>
-                <Text style={Style.result}>{result}</Text>
+                <Text style={[Style.result, {color: theme.textColor}]}>
+                  {result}
+                </Text>
               </View>
               <View style={Style.flexStyle}>
                 {inputHasData[i] && (
@@ -384,29 +405,42 @@ const HomeScreen = ({navigation}) => {
             props.text1 === 'Image saved to gallery'
               ? Colors.primary
               : Colors.redColor,
-          backgroundColor: Colors.secondaryLight,
+          backgroundColor: theme.backgroundColorHome,
           color: Colors.primary,
         }}
         contentContainerStyle={Style.contentStyle}
-        text1Style={Style.configText}
+        text1Style={[Style.configText, {color: theme.textColor}]}
       />
     ),
   };
   return (
-    <SafeAreaView style={Style.mainView}>
-      <View style={Style.mainContainer}>
+    <SafeAreaView
+      style={[Style.mainView, {backgroundColor: theme.backgroundColorHome}]}>
+      <StatusBar
+        barStyle={theme.statusContent}
+        backgroundColor={'transparent'}
+        translucent
+      />
+      <View style={[Style.mainContainer, {backgroundColor: 'transparent'}]}>
         {/* <ScrollView> */}
         <View style={Style.container}>
           <View style={Style.row}>
-            <Text style={Style.tag}>Subject Marks</Text>
-            <Text style={Style.tag}>Subject CH</Text>
-            <Text style={Style.tag}>Grade</Text>
+            <Text style={[Style.tag, {color: theme.textColor}]}>
+              Subject Marks
+            </Text>
+            <Text style={[Style.tag, {color: theme.textColor}]}>
+              Subject CH
+            </Text>
+            <Text style={[Style.tag, {color: theme.textColor}]}>Grade</Text>
           </View>
           <View style={Style.border}></View>
 
           <View style={Style.scrollView}>
             <KeyboardAwareScrollView
-              style={Style.keyboardViewStyle}
+              style={[
+                Style.keyboardViewStyle,
+                {backgroundColor: theme.innerContainer},
+              ]}
               // contentContainerStyle={{flexGrow: 1}}
               extraScrollHeight={screenHeight / 8} // Adjust this value based on your UI needs
               enableOnAndroid={true}
@@ -420,7 +454,11 @@ const HomeScreen = ({navigation}) => {
             </KeyboardAwareScrollView>
           </View>
 
-          <View style={Style.btnView}>
+          <View
+            style={[
+              Style.btnView,
+              {backgroundColor: theme.backgroundColorHome},
+            ]}>
             <View style={Style.buttonView}>
               <TouchableOpacity onPress={handleReset} style={Style.buttonBlack}>
                 <Text style={Style.buttonTextWhite}>

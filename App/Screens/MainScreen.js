@@ -9,6 +9,8 @@ import {
   StatusBar,
 } from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
+import {ThemeContext} from '../../ThemeContext';
+import {lightTheme, darkTheme} from '../../themes';
 
 // library imports
 import Animated, {EasingNode} from 'react-native-reanimated';
@@ -19,6 +21,8 @@ import Svg, {G, Circle} from 'react-native-svg';
 import Loader from '../Loader/Loader';
 import Style from './styles/MainScreenStyle';
 import Colors from '../theme';
+import Header from '../Components/Header';
+import Icon from 'react-native-vector-icons/Ionicons';
 
 // giving reference of the circulating circle or progress bar
 const AnimatedCircle = RnAnimated.createAnimatedComponent(Circle);
@@ -26,6 +30,8 @@ const AnimatedInput = RnAnimated.createAnimatedComponent(TextInput);
 
 // The Main Screen of app which launches first and of course you can also navigate to every screen of app
 const MainScreen = ({navigation}) => {
+  const {isDarkTheme, toggleTheme} = React.useContext(ThemeContext);
+  const theme = isDarkTheme ? darkTheme : lightTheme;
   // main state variables
   const [showLoader, setShowLoader] = useState(false);
   const fadeAnim = new Animated.Value(0);
@@ -100,73 +106,130 @@ const MainScreen = ({navigation}) => {
       setShowLoader(false);
     }, 3000);
   };
+
+  function renderHeader() {
+    return (
+      <Header
+        title={''}
+        containerStyle={{alignItems: 'center', padding: 10}}
+        leftComponent={
+          <Text
+            style={{
+              fontSize: 20,
+              color: theme.textColor,
+              fontFamily: 'Roboto-Medium',
+            }}>
+            Gradify GPA Calculator
+          </Text>
+        }
+        rightComponent={
+          <Icon
+            name={isDarkTheme ? 'sunny' : 'moon'}
+            size={28}
+            color={isDarkTheme ? '#FF6C44' : Colors.primary}
+            onPress={toggleTheme}
+            style={{right: 10}}
+          />
+        }
+      />
+    );
+  }
+
   return (
-    <SafeAreaView style={Style.container}>
+    <SafeAreaView
+      style={{...Style.container, backgroundColor: theme.backgroundColor}}>
       <StatusBar
         translucent
-        barStyle={'light-content'}
+        barStyle={theme.statusContent}
         backgroundColor={'transparent'}
       />
-      <View style={Style.titleView}>
-        <Text style={Style.title}>{welcomeMessage}</Text>
-        <Text style={{...Style.title, fontSize: 30, lineHeight: 60}}>
-          {ugmSystem}
-        </Text>
-      </View>
-      {/* <View style={{height: 100, marginTop: 20}}>
+      {renderHeader()}
+      <View
+        style={{
+          alignItems: 'center',
+          flex: 1,
+          justifyContent: 'space-evenly',
+          paddingHorizontal: 10,
+          width: '100%',
+        }}>
+        <View style={Style.titleView}>
+          <Text style={{...Style.title, color: theme.textColor}}>
+            {welcomeMessage}
+          </Text>
+          <Text
+            style={{
+              ...Style.title,
+              color: theme.textColor,
+              fontSize: 30,
+              lineHeight: 60,
+            }}>
+            {ugmSystem}
+          </Text>
+        </View>
+        {/* <View style={{height: 100, marginTop: 20}}>
         <PacmanIndicator size={100} color="#3664dc" />
       </View> */}
-      <View style={Style.graphView}>
-        <Svg
-          width={220} // Updated for a circle diameter of 220
-          height={220} // Updated for a circle diameter of 220
-          viewBox={`0 0 ${halfCircle * 2} ${halfCircle * 2}`}>
-          <G rotation={'-90'} origin={`${halfCircle}, ${halfCircle}`}>
-            {/* for starting circle from 90 and perform this in Group G tag*/}
-            <Circle
-              cx={'50%'}
-              cy={'50%'}
-              stroke={Colors.black}
-              strokeWidth={20} // Updated for a stroke width of 15
-              r={110} // Updated for a circle radius of 110
-              strokeOpacity={0.9}
-              fill={'transparent'}
-            />
+        <View style={Style.graphView}>
+          <Svg
+            width={220} // Updated for a circle diameter of 220
+            height={220} // Updated for a circle diameter of 220
+            viewBox={`0 0 ${halfCircle * 2} ${halfCircle * 2}`}>
+            <G rotation={'-90'} origin={`${halfCircle}, ${halfCircle}`}>
+              {/* for starting circle from 90 and perform this in Group G tag*/}
+              <Circle
+                cx={'50%'}
+                cy={'50%'}
+                stroke={theme.backgroundColor}
+                strokeWidth={20} // Updated for a stroke width of 15
+                r={110} // Updated for a circle radius of 110
+                strokeOpacity={0.9}
+                fill={'transparent'}
+              />
 
-            <AnimatedCircle
-              ref={circleRef}
-              cx={'50%'}
-              cy={'50%'}
-              stroke={Colors.primary}
-              strokeWidth={20} // Updated for a stroke width of 30
-              r={110} // Updated for a circle radius of 110
-              fill={'transparent'}
-              strokeDasharray={circleCircumference}
-              strokeDashoffset={circleCircumference}
-              strokeLinecap="round"
-            />
-          </G>
-        </Svg>
-        <TextInput
-          ref={inputRef}
-          underlineColorAndroid={'transparent'}
-          editable={false}
-          caretHidden={false}
-          defaultValue="0"
-          style={[StyleSheet.absoluteFillObject, Style.graphText]}
-        />
+              <AnimatedCircle
+                ref={circleRef}
+                cx={'50%'}
+                cy={'50%'}
+                stroke={Colors.primary}
+                strokeWidth={20} // Updated for a stroke width of 30
+                r={110} // Updated for a circle radius of 110
+                fill={'transparent'}
+                strokeDasharray={circleCircumference}
+                strokeDashoffset={circleCircumference}
+                strokeLinecap="round"
+              />
+            </G>
+          </Svg>
+          <TextInput
+            ref={inputRef}
+            underlineColorAndroid={'transparent'}
+            editable={false}
+            caretHidden={false}
+            defaultValue="0"
+            style={[
+              StyleSheet.absoluteFillObject,
+              Style.graphText,
+              {color: theme.textColor},
+            ]}
+          />
+        </View>
+
+        <Animated.View
+          style={{
+            opacity: fadeAnim,
+          }}>
+          <Text
+            style={[
+              Style.titleMsg,
+              Style.titleMsgView,
+              {color: theme.textColor},
+            ]}>
+            {successMessage}
+          </Text>
+        </Animated.View>
+
+        {showLoader && <Loader />}
       </View>
-
-      <Animated.View
-        style={{
-          opacity: fadeAnim,
-        }}>
-        <Text style={[Style.titleMsg, Style.titleMsgView]}>
-          {successMessage}
-        </Text>
-      </Animated.View>
-
-      {showLoader && <Loader />}
     </SafeAreaView>
   );
 };
