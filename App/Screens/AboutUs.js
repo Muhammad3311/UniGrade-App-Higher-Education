@@ -23,7 +23,7 @@ const AboutUs = () => {
   const paragraph = aboutParagraph;
   const number = '+92 303 5317873';
   const mail = 'mdcesar0824@gmail.com';
-  const businessLink = 'instagram link';
+  const businessLink = 'follow us on Instagram';
   const linkedin = 'muhammad-okz';
   const authorName = 'DeTech Digital Stdio';
   const authorDesignation =
@@ -94,7 +94,7 @@ const AboutUs = () => {
           <View style={Style.iconView}>
             <IonIcons name="logo-instagram" color={'#fff'} size={30} />
             <View>
-              <Text style={Style.iconText}>Instagram link</Text>
+              <Text style={Style.iconText}>Instagram </Text>
               <Text
                 style={{
                   ...Style.iconText,

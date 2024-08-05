@@ -8,6 +8,7 @@ import {
   StyleSheet,
   TouchableOpacity,
   StatusBar,
+  Switch,
 } from 'react-native';
 import Modal from 'react-native-modal';
 import Big from 'big.js';
@@ -27,6 +28,7 @@ const CumulativeScreen = ({navigation}) => {
   const [isCreditHoursModalVisible, setCreditHoursModalVisible] =
     useState(false);
   const [selectedEntryIndex, setSelectedEntryIndex] = useState(null);
+  const [showCreditHours, setShowCreditHours] = useState(true);
 
   const initializeEntries = numSemesters => {
     const initialEntries = Array.from({length: numSemesters}, (_, i) => ({
@@ -66,22 +68,54 @@ const CumulativeScreen = ({navigation}) => {
         backgroundColor={'transparent'}
         barStyle={theme.statusContent}
       /> */}
-      <TouchableOpacity
-        style={styles.pickerContainer}
-        onPress={() => setSemesterModalVisible(true)}>
-        <Text style={styles.pickerText}>Add Semesters</Text>
-        {/* <Text style={styles.pickerText}>
+      <View
+        style={{
+          alignItems: 'center',
+          flexDirection: 'row',
+          justifyContent: 'space-between',
+          marginBottom: 10,
+          width: '100%',
+        }}>
+        <TouchableOpacity
+          style={styles.pickerContainer}
+          activeOpacity={0.8}
+          onPress={() => setSemesterModalVisible(true)}>
+          <Text style={styles.pickerText}>Add Semesters</Text>
+          {/* <Text style={styles.pickerText}>
           {numberOfSemesters !== null
             ? `Semester ${numberOfSemesters}`
             : 'Add Semesters'}
         </Text> */}
-        <Icon
-          name="caret-down"
-          size={16}
-          color={Colors.white}
-          style={{left: 5}}
-        />
-      </TouchableOpacity>
+          <Icon
+            name="caret-down"
+            size={16}
+            color={Colors.white}
+            style={{left: 5}}
+          />
+        </TouchableOpacity>
+        <View
+          style={{
+            flexDirection: 'row',
+            alignItems: 'center',
+            borderWidth: 1,
+            borderRadius: 8,
+            borderColor: Colors.primary,
+            height: 50,
+            padding: 10,
+            paddingRight: 0,
+            // marginVertical: 20,
+          }}>
+          <Text style={{fontSize: 16, marginRight: 5, color: theme.textColor}}>
+            Show Cr Hrs
+          </Text>
+          <Switch
+            trackColor={{false: Colors.lightGray, true: Colors.primary}}
+            thumbColor={showCreditHours ? Colors.white : Colors.darkGray}
+            onValueChange={() => setShowCreditHours(prev => !prev)}
+            value={showCreditHours}
+          />
+        </View>
+      </View>
 
       <FlatList
         data={entries}
@@ -91,33 +125,43 @@ const CumulativeScreen = ({navigation}) => {
         renderItem={({item, index}) => (
           <View style={styles.entry}>
             <View style={styles.semesterContainer}>
-              <Text style={styles.semesterText}>Semester {item.semester}</Text>
-            </View>
-            <TextInput
-              style={styles.input}
-              placeholder="SGPA"
-              placeholderTextColor={'silver'}
-              keyboardType="numeric"
-              value={item.sgpa}
-              onChangeText={text => handleInputChange(index, 'sgpa', text)}
-              maxLength={5}
-            />
-            <TouchableOpacity
-              style={styles.creditHoursContainer}
-              onPress={() => {
-                setSelectedEntryIndex(index);
-                setCreditHoursModalVisible(true);
-              }}>
-              <Text style={styles.pickerText}>
-                {item.creditHours ? `${item.creditHours} Cr Hrs` : 'Cr Hrs'}
+              <Text style={[styles.semesterText, {color: theme.textColor}]}>
+                Semester {item.semester}
               </Text>
-              <Icon
-                name="caret-down"
-                size={16}
-                color={Colors.white}
-                style={{left: 5}}
+            </View>
+            <View style={{alignItems: 'center', alignSelf: 'center', flex: 1}}>
+              <TextInput
+                style={[styles.input, {color: theme.textColor}]}
+                cursorColor={Colors.primary}
+                placeholder="SGPA"
+                placeholderTextColor={theme.placeholderColor}
+                keyboardType="numeric"
+                value={item.sgpa}
+                onChangeText={text => handleInputChange(index, 'sgpa', text)}
+                maxLength={5}
               />
-            </TouchableOpacity>
+            </View>
+            {showCreditHours && (
+              <View style={{flex: 0.7, right: 5}}>
+                <TextInput
+                  style={[
+                    styles.input,
+                    {color: theme.textColor, textAlign: 'right'},
+                  ]}
+                  placeholder="Cr Hrs"
+                  placeholderTextColor={theme.placeholderColor}
+                  multiline={false}
+                  numberOfLines={1}
+                  scrollEnabled={false}
+                  keyboardType="numeric"
+                  value={item.creditHours}
+                  onChangeText={text =>
+                    handleInputChange(index, 'creditHours', text)
+                  }
+                  maxLength={3}
+                />
+              </View>
+            )}
           </View>
         )}
       />
@@ -128,15 +172,17 @@ const CumulativeScreen = ({navigation}) => {
       <Modal
         isVisible={isSemesterModalVisible}
         onBackdropPress={() => setSemesterModalVisible(false)}>
-        <View style={styles.modalContent}>
+        <View
+          style={[
+            styles.modalContent,
+            {backgroundColor: theme.backgroundColorHome},
+          ]}>
           <TouchableOpacity
             onPress={() => {
               setNumberOfSemesters(null);
               setEntries([]);
               setSemesterModalVisible(false);
-            }}>
-            <Text style={styles.modalItem}>No Semesters</Text>
-          </TouchableOpacity>
+            }}></TouchableOpacity>
           {Array.from({length: 10}, (_, i) => i + 1).map(num => (
             <TouchableOpacity
               key={num}
@@ -145,24 +191,9 @@ const CumulativeScreen = ({navigation}) => {
                 initializeEntries(num);
                 setSemesterModalVisible(false);
               }}>
-              <Text style={styles.modalItem}>Semester {num}</Text>
-            </TouchableOpacity>
-          ))}
-        </View>
-      </Modal>
-
-      <Modal
-        isVisible={isCreditHoursModalVisible}
-        onBackdropPress={() => setCreditHoursModalVisible(false)}>
-        <View style={styles.modalContent}>
-          {Array.from({length: 5}, (_, i) => i + 1).map(num => (
-            <TouchableOpacity
-              key={num}
-              onPress={() => {
-                handleInputChange(selectedEntryIndex, 'creditHours', num);
-                setCreditHoursModalVisible(false);
-              }}>
-              <Text style={styles.modalItem}>{num} Cr Hrs</Text>
+              <Text style={[styles.modalItem, {color: theme.textColor}]}>
+                Semester {num}
+              </Text>
             </TouchableOpacity>
           ))}
         </View>
@@ -183,7 +214,7 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     flexDirection: 'row',
     overflow: 'hidden',
-    marginBottom: 20,
+    // marginBottom: 20,
     alignSelf: 'flex-start',
     padding: 15,
   },
@@ -191,9 +222,10 @@ const styles = StyleSheet.create({
     color: '#fff',
   },
   input: {
-    color: '#fff',
-    borderRadius: 5,
-    // textAlign: 'center',
+    fontFamily: 'Roboto-Medium',
+    fontSize: 16,
+    margin: 0,
+    padding: 0,
   },
   entry: {
     borderWidth: 1,
@@ -202,17 +234,21 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-between',
     paddingHorizontal: 10,
+    paddingVertical: 10,
     marginTop: 10,
     borderRadius: 8,
     width: '100%',
   },
-  semesterContainer: {},
+  semesterContainer: {alignItems: 'flex-start', flex: 1},
   semesterText: {
     color: '#fff',
+    fontFamily: 'Roboto-Medium',
+    fontSize: 16,
   },
   creditHoursContainer: {
     alignItems: 'center',
     flexDirection: 'row',
+    flex: 1,
   },
   result: {
     color: '#fff',
@@ -221,7 +257,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
   modalContent: {
-    backgroundColor: '#fff',
+    // backgroundColor: '#fff',
     padding: 20,
     borderRadius: 10,
   },

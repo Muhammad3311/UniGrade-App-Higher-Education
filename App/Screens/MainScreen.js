@@ -126,7 +126,7 @@ const MainScreen = ({navigation}) => {
           <Icon
             name={isDarkTheme ? 'sunny' : 'moon'}
             size={28}
-            color={isDarkTheme ? '#FF6C44' : Colors.primary}
+            color={isDarkTheme ? Colors.white : Colors.primary}
             onPress={toggleTheme}
             style={{right: 10}}
           />
