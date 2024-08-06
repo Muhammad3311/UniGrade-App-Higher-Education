@@ -1,7 +1,6 @@
 // React Native Component imports
 import React from 'react';
 import {View, Text, TouchableOpacity} from 'react-native';
-
 // Custom Style imports
 import Style from './styles/HeaderStyle';
 

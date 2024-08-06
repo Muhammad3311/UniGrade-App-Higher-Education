@@ -2,6 +2,11 @@ import {StyleSheet} from 'react-native';
 import {Colors} from '../../constants';
 
 export default StyleSheet.create({
+  adContainer: {
+    alignItems: 'center',
+    // justifyContent: 'center',
+    width: '100%',
+  },
   container: {
     alignItems: 'center',
     flex: 1,
@@ -14,7 +19,7 @@ export default StyleSheet.create({
   },
   title: {
     fontFamily: 'Roboto-Regular',
-    fontSize: 38,
+    fontSize: 32,
     letterSpacing: 1,
   },
   titleMsg: {

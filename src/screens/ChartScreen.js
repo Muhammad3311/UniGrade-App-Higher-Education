@@ -23,6 +23,18 @@ import IonIcon from 'react-native-vector-icons/Ionicons';
 import Share from 'react-native-share';
 import {ThemeContext} from '../config';
 import {Colors, darkTheme, lightTheme} from '../constants';
+import {
+  InterstitialAd,
+  AdEventType,
+  TestIds,
+} from 'react-native-google-mobile-ads';
+const adUnitId = __DEV__
+  ? TestIds.INTERSTITIAL
+  : 'ca-app-pub-xxxxxxxxxxxxx/yyyyyyyyyyyyyy';
+
+const interstitial = InterstitialAd.createForAdRequest(adUnitId, {
+  keywords: ['fashion', 'clothing'],
+});
 
 const AnimatedCircle = Animated.createAnimatedComponent(Circle);
 
@@ -52,6 +64,31 @@ const ChartScreen = ({route, navigation}) => {
     {id: 3, type: 'Aim to Achieve ', value: `${remainingPercentage}%`},
   ];
   const ref = useRef();
+  const [loaded, setLoaded] = useState(false);
+
+  useEffect(() => {
+    const loadAd = () => {
+      interstitial.load();
+    };
+
+    const onAdLoaded = () => {
+      setLoaded(true);
+    };
+
+    const onAdClosed = () => {
+      setLoaded(false);
+      loadAd();
+    };
+
+    interstitial.addAdEventListener(AdEventType.LOADED, onAdLoaded);
+    interstitial.addAdEventListener(AdEventType.CLOSED, onAdClosed);
+
+    loadAd();
+
+    return () => {
+      interstitial.removeAllListeners();
+    };
+  }, []);
 
   // function which will capture screen and save the screenshot to gallery
   const takeScreenShot = async () => {
@@ -79,7 +116,7 @@ const ChartScreen = ({route, navigation}) => {
     } catch (error) {
       Toast.show({
         // type: 'fail',
-        text1: 'Image failed to save in gallery',
+        text1: 'Image failed to save',
         position: 'bottom',
         bottomOffset: 100,
       });
@@ -159,6 +196,13 @@ const ChartScreen = ({route, navigation}) => {
 
   // Function to share app name and results
   const shareResults = async () => {
+    if (loaded) {
+      interstitial.show();
+    } else {
+      // ad is not loaded yet
+      return;
+    }
+
     try {
       await Share.open({
         title: 'Share Results',

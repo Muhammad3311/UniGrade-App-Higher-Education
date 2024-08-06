@@ -11,26 +11,24 @@ import images from '../assets/images';
 import {Linking} from 'react-native';
 import {ThemeContext, aboutParagraph} from '../config';
 import {Colors, lightTheme, darkTheme} from '../constants';
+import {WEBSITE_URL, INSTAGRAM_URL, CONTACT_US_URL} from '../utils';
 
 // The screen contains the information about author and user or customer can update their queries, problems by contacting the author
 const AboutUs = () => {
   const {isDarkTheme} = React.useContext(ThemeContext);
   const theme = isDarkTheme ? darkTheme : lightTheme;
   const paragraph = aboutParagraph;
-  const mail = 'mdcesar0824@gmail.com';
   const businessLink = 'follow us on Instagram';
   const authorName = 'DeTech Digital Stdio';
 
   const handlePress = () => {
-    Linking.openURL('https://detech-online.vercel.app');
+    Linking.openURL(WEBSITE_URL);
   };
   const handleInstaPress = () => {
-    Linking.openURL(
-      'https://www.instagram.com/muhammad_27001?utm_source=qr&igsh=MWp3Y2lvaTY5dzFsNw==',
-    );
+    Linking.openURL(INSTAGRAM_URL);
   };
   const handleMailPress = () => {
-    Linking.openURL(`mailto:mdcesar0824@gmail.com`);
+    Linking.openURL(CONTACT_US_URL);
   };
 
   return (

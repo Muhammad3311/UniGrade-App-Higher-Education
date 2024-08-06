@@ -15,7 +15,6 @@ import Icon from 'react-native-vector-icons/Entypo';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 const _ = require('lodash');
 import Toast, {BaseToast} from 'react-native-toast-message';
-
 // cutom imports
 import Style from './styles/HomeScreenStyle';
 import {ThemeContext} from '../config';

@@ -5,7 +5,7 @@ import {Colors} from '../../constants';
 export default StyleSheet.create({
   animationHeaderIcon: {tintColor: Colors.black},
   animationHeaderIconView: {
-    borderColor: Colors.chartGradientTo,
+    borderColor: Colors.primary,
     borderRadius: 10,
     borderWidth: 2,
   },

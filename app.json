@@ -1,4 +1,7 @@
 {
   "name": "GradifyGPACalculator",
-  "displayName": "GradifyGPACalculator"
+  "displayName": "GradifyGPACalculator",
+  "react-native-google-mobile-ads": {
+    "android_app_id": "ca-app-pub-5104848143569703~8238524302"  
+}
 }

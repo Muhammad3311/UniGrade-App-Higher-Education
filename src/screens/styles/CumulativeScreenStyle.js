@@ -63,7 +63,26 @@ export default StyleSheet.create({
     borderRadius: 10,
   },
   modalItem: {
-    paddingVertical: 10,
+    fontFamily: 'Roboto-Regular',
     fontSize: 18,
+    // paddingVertical: 10,
+    // marginLeft: 20,
+    textAlign: 'justify',
+  },
+  modalTitle: {
+    alignItems: 'center',
+    alignSelf: 'center',
+    color: Colors.primary,
+    fontFamily: 'Roboto-Medium',
+    fontSize: 22,
+    marginBottom: 20,
+  },
+  modalButton: {
+    alignItems: 'center',
+    alignSelf: 'center',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    padding: 10,
+    width: '90%',
   },
 });

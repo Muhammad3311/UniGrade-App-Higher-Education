@@ -11,10 +11,6 @@ export const Colors = {
   placeholder: '#C1C6D7',
   redColor: '#ff0000',
   backGroundTransparency: 'rgba(0,0,0,0.3)', // used for background transparency
-  // chart colors
-  chartBackground: '#444B5F',
-  chartGradientFrom: '#5A6587',
-  chartGradientTo: '#181C25',
 };
 
 // app light theme
@@ -34,7 +30,6 @@ export const lightTheme = {
   iconColor: '#95A5A6',
   iconSelectedColor: '#ECF0F1',
   tabItemSelectedBackground: '#3664dc',
-  keyboardTheme: 'light',
 };
 
 // app dark theme
@@ -54,5 +49,4 @@ export const darkTheme = {
   iconColor: '#B1BDBE',
   iconSelectedColor: '#3664dc',
   tabItemSelectedBackground: '#FFFFFF',
-  keyboardTheme: 'dark',
 };

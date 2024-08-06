@@ -4,6 +4,7 @@ import Modal from 'react-native-modal';
 import Big from 'big.js';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import Icon from 'react-native-vector-icons/Ionicons';
+import AwesomeIcon from 'react-native-vector-icons/FontAwesome';
 import {ThemeContext} from '../config';
 import {Colors, lightTheme, darkTheme} from '../constants';
 import {Header, TextButton} from '../components';
@@ -250,23 +251,33 @@ const CumulativeScreen = ({navigation}) => {
               Style.modalContent,
               {backgroundColor: theme.backgroundColorHome},
             ]}>
-            <TouchableOpacity
-              onPress={() => {
-                setNumberOfSemesters(null);
-                setEntries([]);
-                setSemesterModalVisible(false);
-              }}></TouchableOpacity>
+            <Text style={Style.modalTitle}>Choose Semesters</Text>
             {Array.from({length: 10}, (_, i) => i + 1).map(num => (
               <TouchableOpacity
+                style={Style.modalButton}
                 key={num}
                 onPress={() => {
                   setNumberOfSemesters(num);
                   initializeEntries(num);
                   setSemesterModalVisible(false);
                 }}>
-                <Text style={[Style.modalItem, {color: theme.textColor}]}>
-                  Semester {num}
-                </Text>
+                <View style={{flex: 1}}>
+                  <AwesomeIcon
+                    name="graduation-cap"
+                    size={22}
+                    color={theme.textColor}
+                  />
+                </View>
+                <View style={{flex: 1, alignItems: 'center'}}>
+                  <Text style={[Style.modalItem, {color: theme.textColor}]}>
+                    Semester
+                  </Text>
+                </View>
+                <View style={{flex: 1, alignItems: 'flex-end'}}>
+                  <Text style={[Style.modalItem, {color: theme.textColor}]}>
+                    {num}
+                  </Text>
+                </View>
               </TouchableOpacity>
             ))}
           </View>

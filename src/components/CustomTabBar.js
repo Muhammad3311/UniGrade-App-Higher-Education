@@ -3,7 +3,6 @@ import React from 'react';
 import {View} from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import * as Animatable from 'react-native-animatable';
-
 // custom imports
 import Style from './styles/CustomTabBarStyle';
 // Theme imports
@@ -23,12 +22,10 @@ const CustomTabBar = ({state, descriptors, navigation}) => {
             type: 'tabPress',
             target: route.key,
           });
-
           if (!isFocused && !event.defaultPrevented) {
             navigation.navigate(route.name);
           }
         };
-
         const iconName = options.tabBarIcon({
           focused: isFocused,
           color: isFocused ? theme.iconSelectedColor : theme.iconColor,

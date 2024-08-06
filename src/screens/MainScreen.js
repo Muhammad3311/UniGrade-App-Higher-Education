@@ -5,6 +5,9 @@ import {SafeAreaView} from 'react-native-safe-area-context';
 import {ThemeContext} from '../config';
 import {Colors, darkTheme, lightTheme} from '../constants';
 
+// import banner ads
+import {BannerAd, BannerAdSize, TestIds} from 'react-native-google-mobile-ads';
+
 // library imports
 import Animated, {EasingNode} from 'react-native-reanimated';
 import {Animated as RnAnimated} from 'react-native';
@@ -38,6 +41,10 @@ const MainScreen = ({navigation}) => {
   const welcomeMessage = 'Welcome To The';
   const ugmSystem = 'Gradify GPA Calculator';
   const successMessage = " You're one step away to track your success record";
+
+  const adUnitId = __DEV__
+    ? TestIds.ADAPTIVE_BANNER
+    : 'ca-app-pub-xxxxxxxxxxxxx/yyyyyyyyyyyyyy';
 
   // animation function for circle
   const animation = toValue => {
@@ -124,11 +131,21 @@ const MainScreen = ({navigation}) => {
         backgroundColor={'transparent'}
       />
       {renderHeader()}
+      <View style={Style.adContainer}>
+        <BannerAd
+          unitId={adUnitId}
+          size={BannerAdSize.BANNER}
+          requestOptions={{
+            requestNonPersonalizedAdsOnly: true,
+          }}
+        />
+      </View>
       <View
         style={{
           alignItems: 'center',
           flex: 1,
           justifyContent: 'space-evenly',
+          paddingBottom: 10,
           paddingHorizontal: 10,
           width: '100%',
         }}>
@@ -140,7 +157,7 @@ const MainScreen = ({navigation}) => {
             style={{
               ...Style.title,
               color: theme.textColor,
-              fontSize: 30,
+              fontSize: 28,
               lineHeight: 60,
             }}>
             {ugmSystem}
