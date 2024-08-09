@@ -10,6 +10,10 @@ export const Colors = {
   textColor: '#5A6587',
   placeholder: '#C1C6D7',
   redColor: '#ff0000',
+  transparent: 'transparent',
+  transparentWhite1: 'rgba(255, 255, 255, 0.1)',
+  transparentBlack1: 'rgba(0, 0, 0, 0.1)',
+  transparentBlack7: 'rgba(0, 0, 0, 0.7)',
   backGroundTransparency: 'rgba(0,0,0,0.3)', // used for background transparency
 };
 

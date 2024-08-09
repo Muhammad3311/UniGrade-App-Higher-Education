@@ -6,7 +6,7 @@ import {ThemeContext} from '../config';
 import {Colors, darkTheme, lightTheme} from '../constants';
 
 // import banner ads
-import {BannerAd, BannerAdSize, TestIds} from 'react-native-google-mobile-ads';
+import {BannerAd, BannerAdSize} from 'react-native-google-mobile-ads';
 
 // library imports
 import Animated, {EasingNode} from 'react-native-reanimated';
@@ -17,6 +17,10 @@ import Svg, {G, Circle} from 'react-native-svg';
 import Style from './styles/MainScreenStyle';
 import {Header} from '../components';
 import Icon from 'react-native-vector-icons/Ionicons';
+import {
+  responsiveFontSize,
+  responsiveWidth,
+} from 'react-native-responsive-dimensions';
 
 // giving reference of the circulating circle or progress bar
 const AnimatedCircle = RnAnimated.createAnimatedComponent(Circle);
@@ -31,7 +35,8 @@ const MainScreen = ({navigation}) => {
   const circleRef = useRef();
   const inputRef = useRef();
   const halfCircle = 110 + 15;
-  const circleCircumference = 2 * Math.PI * 110;
+  const radius = responsiveWidth(27.5);
+  const circleCircumference = 2 * Math.PI * radius;
   const percentage = 100;
   const max = 100;
   const duration = 4000;
@@ -42,9 +47,7 @@ const MainScreen = ({navigation}) => {
   const ugmSystem = 'Gradify GPA Calculator';
   const successMessage = " You're one step away to track your success record";
 
-  const adUnitId = __DEV__
-    ? TestIds.ADAPTIVE_BANNER
-    : 'ca-app-pub-xxxxxxxxxxxxx/yyyyyyyyyyyyyy';
+  const adUnitId = 'ca-app-pub-5104848143569703/9884386694';
 
   // animation function for circle
   const animation = toValue => {
@@ -98,24 +101,19 @@ const MainScreen = ({navigation}) => {
     return (
       <Header
         title={''}
-        containerStyle={{alignItems: 'center', padding: 10}}
+        containerStyle={Style.containerStyle}
         leftComponent={
-          <Text
-            style={{
-              fontSize: 20,
-              color: theme.textColor,
-              fontFamily: 'Roboto-Medium',
-            }}>
+          <Text style={[Style.leftComponentStyle, {color: theme.textColor}]}>
             Gradify GPA Calculator
           </Text>
         }
         rightComponent={
           <Icon
             name={isDarkTheme ? 'sunny' : 'moon'}
-            size={28}
+            size={responsiveWidth(7)}
             color={isDarkTheme ? Colors.white : Colors.primary}
             onPress={toggleTheme}
-            style={{right: 10}}
+            style={Style.rightComponentStyle}
           />
         }
       />
@@ -140,45 +138,30 @@ const MainScreen = ({navigation}) => {
           }}
         />
       </View>
-      <View
-        style={{
-          alignItems: 'center',
-          flex: 1,
-          justifyContent: 'space-evenly',
-          paddingBottom: 10,
-          paddingHorizontal: 10,
-          width: '100%',
-        }}>
+      <View style={Style.mainView}>
         <View style={Style.titleView}>
           <Text style={{...Style.title, color: theme.textColor}}>
             {welcomeMessage}
           </Text>
-          <Text
-            style={{
-              ...Style.title,
-              color: theme.textColor,
-              fontSize: 28,
-              lineHeight: 60,
-            }}>
+          <Text style={[Style.subTitle, {color: theme.textColor}]}>
             {ugmSystem}
           </Text>
         </View>
         {/* <View style={{height: 100, marginTop: 20}}>
         <PacmanIndicator size={100} color="#3664dc" />
       </View> */}
-        <View style={Style.graphView}>
+        <View>
           <Svg
-            width={220} // Updated for a circle diameter of 220
-            height={220} // Updated for a circle diameter of 220
+            width={responsiveWidth(55)}
+            height={responsiveWidth(55)}
             viewBox={`0 0 ${halfCircle * 2} ${halfCircle * 2}`}>
             <G rotation={'-90'} origin={`${halfCircle}, ${halfCircle}`}>
-              {/* for starting circle from 90 and perform this in Group G tag*/}
               <Circle
                 cx={'50%'}
                 cy={'50%'}
                 stroke={theme.backgroundColor}
-                strokeWidth={20} // Updated for a stroke width of 15
-                r={110} // Updated for a circle radius of 110
+                strokeWidth={responsiveWidth(5)}
+                r={responsiveWidth(27.5)}
                 strokeOpacity={0.9}
                 fill={'transparent'}
               />
@@ -188,8 +171,8 @@ const MainScreen = ({navigation}) => {
                 cx={'50%'}
                 cy={'50%'}
                 stroke={Colors.primary}
-                strokeWidth={20} // Updated for a stroke width of 30
-                r={110} // Updated for a circle radius of 110
+                strokeWidth={responsiveWidth(5)}
+                r={responsiveWidth(27.5)}
                 fill={'transparent'}
                 strokeDasharray={circleCircumference}
                 strokeDashoffset={circleCircumference}
@@ -215,12 +198,7 @@ const MainScreen = ({navigation}) => {
           style={{
             opacity: fadeAnim,
           }}>
-          <Text
-            style={[
-              Style.titleMsg,
-              Style.titleMsgView,
-              {color: theme.textColor},
-            ]}>
+          <Text style={[Style.titleMsg, {color: theme.textColor}]}>
             {successMessage}
           </Text>
         </Animated.View>

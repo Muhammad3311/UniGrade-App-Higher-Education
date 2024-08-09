@@ -1,45 +1,53 @@
 import {StyleSheet} from 'react-native';
 import {Colors} from '../../constants';
+import {
+  responsiveFontSize,
+  responsiveHeight,
+  responsiveWidth,
+} from 'react-native-responsive-dimensions';
 
 export default StyleSheet.create({
   chartStyle: {
-    marginVertical: 8,
-    borderRadius: 16,
+    marginVertical: responsiveHeight(1),
+    borderRadius: responsiveWidth(3),
   },
   container: {
     backgroundColor: Colors.secondaryBlack,
     alignItems: 'center',
     flex: 1,
-    justifyContent: 'center',
-    paddingBottom: 80,
+    // justifyContent: 'center',
   },
-  flatListMainView: {flex: 1, width: '100%'},
+  flatListMainView: {
+    height: responsiveHeight(45),
+    width: responsiveWidth(100),
+  },
   flatListText: {
-    fontSize: 20,
-    fontFamily: 'Roboto-Light',
+    fontSize: responsiveFontSize(2.2),
+    fontFamily: 'Roboto-Regular',
     color: Colors.white,
     textAlign: 'justify',
   },
   flatListView: {
     alignItems: 'center',
-    flex: 1,
+    // flex: 1,
     flexDirection: 'row',
-    marginVertical: 5,
-    width: '100%',
+    // marginVertical: 5,
+    marginVertical: responsiveHeight(0.6),
+    width: responsiveWidth(100),
   },
   mainTitle: {
     color: Colors.white,
     fontFamily: 'Roboto-Medium',
-    fontSize: 20,
-    paddingVertical: 10,
+    fontSize: responsiveFontSize(3),
+    paddingVertical: responsiveHeight(1),
     textAlign: 'center',
   },
-  textView: {alignItems: 'center', flex: 0.5},
+  textView: {alignItems: 'center', width: responsiveWidth(25)},
   textStyle: {
     textAlign: 'center',
-    fontSize: 40,
+    fontSize: responsiveFontSize(4.5),
     color: Colors.textColor,
   },
-  topText: {alignItems: 'center', flex: 1},
-  topTextSecond: {alignItems: 'center', flex: 0.5},
+  topText: {alignItems: 'center', width: responsiveWidth(50)},
+  topTextSecond: {alignItems: 'center', width: responsiveWidth(25)},
 });

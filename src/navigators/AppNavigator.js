@@ -27,8 +27,8 @@ const Tab = createBottomTabNavigator();
 const MyTheme = {
   dark: true,
   colors: {
-    primary: Colors.secondary,
-    background: Colors.secondary,
+    primary: Colors.transparent,
+    background: Colors.transparent,
   },
 };
 

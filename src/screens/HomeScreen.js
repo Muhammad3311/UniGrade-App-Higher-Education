@@ -1,13 +1,6 @@
 // React Native Essential imports
 import React, {useState, useRef} from 'react';
-import {
-  View,
-  Text,
-  TextInput,
-  Dimensions,
-  TouchableOpacity,
-  StatusBar,
-} from 'react-native';
+import {View, Text, TextInput, TouchableOpacity, StatusBar} from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
 
 // library imports
@@ -20,8 +13,8 @@ import Style from './styles/HomeScreenStyle';
 import {ThemeContext} from '../config';
 import {Colors, darkTheme, lightTheme} from '../constants';
 import {TextButton} from '../components';
+import {responsiveWidth} from 'react-native-responsive-dimensions';
 
-const screenHeight = Dimensions.get('window').height;
 // This is the screen where user can get grades by adding marks & credit hrs and also view the progress
 const HomeScreen = ({navigation}) => {
   const {isDarkTheme} = React.useContext(ThemeContext);
@@ -294,14 +287,12 @@ const HomeScreen = ({navigation}) => {
         <View key={i} style={Style.row}>
           <View style={Style.inputContainer}>
             <TextInput
-              keyboardAppearance="dark"
               ref={firstInputRefs[i / 2]}
               style={[
                 Style.input,
                 {
                   color: theme.textColor,
                   borderColor: theme.textColor,
-                  marginBottom: i === 24 ? 20 : 0,
                 },
               ]} // inorder to align the last item above the keyboard
               value={marksCrHrsArray[i]}
@@ -326,7 +317,6 @@ const HomeScreen = ({navigation}) => {
                 {
                   color: theme.textColor,
                   borderColor: theme.textColor,
-                  marginBottom: i === 24 ? 20 : 0,
                 },
               ]} // inorder to align last item above the keyboard
               value={marksCrHrsArray[i + 1]}
@@ -416,7 +406,7 @@ const HomeScreen = ({navigation}) => {
                 {backgroundColor: theme.innerContainer},
               ]}
               // contentContainerStyle={{flexGrow: 1}}
-              extraScrollHeight={screenHeight / 8} // Adjust this value based on your UI needs
+              // extraScrollHeight={responsiveHeight(2)} // Adjust this value based on your UI needs
               enableOnAndroid={true}
               enableAutomaticScroll={true}>
               {renderGrid()}
@@ -431,9 +421,13 @@ const HomeScreen = ({navigation}) => {
             <View style={Style.buttonView}>
               <TextButton
                 label={'Reset'}
-                buttonContainerStyle={Style.buttonBlack}
+                buttonContainerStyle={{
+                  ...Style.button,
+                  backgroundColor: Colors.black,
+                  paddingHorizontal: responsiveWidth(7),
+                }}
                 onPress={handleReset}
-                labelStyle={Style.buttonTextWhite}
+                labelStyle={Style.buttonText}
               />
               <TextButton
                 label={'Calculate SGPA'}
@@ -442,12 +436,12 @@ const HomeScreen = ({navigation}) => {
                 labelStyle={Style.buttonText}
               />
             </View>
-            <View style={Style.flexStyleView}>
+            <View style={Style.cgpaButton}>
               <TextButton
                 label={'Calculate CGPA'}
                 buttonContainerStyle={Style.primaryButton}
                 onPress={() => navigation.navigate('CumulativeScreen')}
-                labelStyle={Style.buttonTextWhite}
+                labelStyle={Style.buttonText}
               />
             </View>
           </View>

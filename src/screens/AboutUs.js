@@ -12,6 +12,7 @@ import {Linking} from 'react-native';
 import {ThemeContext, aboutParagraph} from '../config';
 import {Colors, lightTheme, darkTheme} from '../constants';
 import {WEBSITE_URL, INSTAGRAM_URL, CONTACT_US_URL} from '../utils';
+import {responsiveWidth} from 'react-native-responsive-dimensions';
 
 // The screen contains the information about author and user or customer can update their queries, problems by contacting the author
 const AboutUs = () => {
@@ -61,7 +62,11 @@ const AboutUs = () => {
         </View>
         <View style={Style.iconTextView}>
           <View style={Style.iconView}>
-            <Entypo name="link" color={Colors.white} size={30} />
+            <Entypo
+              name="link"
+              color={Colors.white}
+              size={responsiveWidth(8)}
+            />
             <View>
               <Text style={Style.iconText}>DeTech Digital Stdio</Text>
               <Text style={Style.linkText} onPress={handlePress}>
@@ -71,7 +76,11 @@ const AboutUs = () => {
           </View>
 
           <View style={Style.iconView}>
-            <IonIcons name="mail-outline" color={Colors.white} size={30} />
+            <IonIcons
+              name="mail-outline"
+              color={Colors.white}
+              size={responsiveWidth(8)}
+            />
             <View>
               <Text style={Style.iconText}>Mail</Text>
               <Text style={Style.linkText} onPress={handleMailPress}>
@@ -81,9 +90,13 @@ const AboutUs = () => {
           </View>
 
           <View style={Style.iconView}>
-            <IonIcons name="logo-instagram" color={'#fff'} size={30} />
+            <IonIcons
+              name="logo-instagram"
+              color={Colors.white}
+              size={responsiveWidth(8)}
+            />
             <View>
-              <Text style={Style.iconText}>Instagram </Text>
+              <Text style={Style.iconText}>Instagram</Text>
               <Text
                 style={Style.linkText}
                 onPress={handleInstaPress}

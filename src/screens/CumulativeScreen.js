@@ -11,6 +11,7 @@ import {Header, TextButton} from '../components';
 import Toast, {BaseToast} from 'react-native-toast-message';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import Style from './styles/CumulativeScreenStyle';
+import {responsiveWidth} from 'react-native-responsive-dimensions';
 
 const CumulativeScreen = ({navigation}) => {
   const {isDarkTheme} = React.useContext(ThemeContext);
@@ -43,7 +44,7 @@ const CumulativeScreen = ({navigation}) => {
       if (!allSgpaEntered) {
         Toast.show({
           // type: 'fail',
-          text1: 'Please fill all the available semesters gpa!',
+          text1: `Please fill the below SGPA fields`,
           position: 'top',
           bottomOffset: 100,
         });
@@ -86,13 +87,8 @@ const CumulativeScreen = ({navigation}) => {
           backgroundColor: theme.backgroundColorHome,
           color: Colors.primary,
         }}
-        contentContainerStyle={{paddingHorizontal: 15}}
-        text1Style={{
-          fontFamily: 'Roboto-Light',
-          fontSize: 16,
-          color: Colors.white,
-          color: theme.textColor,
-        }}
+        contentContainerStyle={Style.contentContainerStyle}
+        text1Style={[Style.text1Style, {color: theme.textColor}]}
       />
     ),
   };
@@ -102,11 +98,7 @@ const CumulativeScreen = ({navigation}) => {
       <Header
         title={`Your Cumulative GPA Score`}
         noOfLines={1}
-        titleStyle={{
-          fontSize: 20,
-          fontFamily: 'Roboto-Regular',
-          color: theme.textColor,
-        }}
+        titleStyle={{...Style.titleStyle, color: theme.textColor}}
         containerStyle={{
           alignItems: 'center',
           alignSelf: 'center',
@@ -115,9 +107,9 @@ const CumulativeScreen = ({navigation}) => {
           <Icon
             name="arrow-back"
             onPress={() => navigation.goBack()}
-            size={28}
+            size={responsiveWidth(7.5)}
             color={theme.textColor}
-            style={{left: 10}}
+            style={Style.leftComponentStyle}
           />
         }
         rightComponent={null}
@@ -129,15 +121,8 @@ const CumulativeScreen = ({navigation}) => {
     <SafeAreaView
       style={[Style.container, {backgroundColor: theme.backgroundColorHome}]}>
       {renderHeader()}
-      <View style={{flex: 1, padding: 20}}>
-        <View
-          style={{
-            alignItems: 'center',
-            flexDirection: 'row',
-            justifyContent: 'space-between',
-            marginBottom: 10,
-            width: '100%',
-          }}>
+      <View style={Style.mainView}>
+        <View style={Style.headerView}>
           <TouchableOpacity
             style={Style.pickerContainer}
             activeOpacity={0.8}
@@ -145,24 +130,13 @@ const CumulativeScreen = ({navigation}) => {
             <Text style={Style.pickerText}>Add Semesters</Text>
             <Icon
               name="caret-down"
-              size={16}
+              size={responsiveWidth(3.5)}
               color={Colors.white}
               style={{left: 5}}
             />
           </TouchableOpacity>
-          <View
-            style={{
-              flexDirection: 'row',
-              alignItems: 'center',
-              borderWidth: 1,
-              borderRadius: 8,
-              borderColor: Colors.primary,
-              height: 50,
-              padding: 10,
-              paddingRight: 0,
-            }}>
-            <Text
-              style={{fontSize: 16, marginRight: 5, color: theme.textColor}}>
+          <View style={Style.switchViewStyle}>
+            <Text style={{...Style.switchText, color: theme.textColor}}>
               Show Cr Hrs
             </Text>
             <Switch
@@ -174,7 +148,7 @@ const CumulativeScreen = ({navigation}) => {
           </View>
         </View>
         <KeyboardAwareScrollView
-          contentContainerStyle={{flexGrow: 1}}
+          contentContainerStyle={Style.keyboardScrollViewStyle}
           showsVerticalScrollIndicator={false}
           extraHeight={100}
           enableOnAndroid={true}>
@@ -185,8 +159,7 @@ const CumulativeScreen = ({navigation}) => {
                   Semester {item.semester}
                 </Text>
               </View>
-              <View
-                style={{alignItems: 'center', alignSelf: 'center', flex: 1}}>
+              <View style={Style.textInputViewStyle}>
                 <TextInput
                   style={[Style.input, {color: theme.textColor}]}
                   cursorColor={Colors.primary}
@@ -199,7 +172,7 @@ const CumulativeScreen = ({navigation}) => {
                 />
               </View>
               {showCreditHours && (
-                <View style={{flex: 0.7, right: 5}}>
+                <View style={Style.crHrsViewStyle}>
                   <TextInput
                     style={[
                       Style.input,
@@ -226,22 +199,8 @@ const CumulativeScreen = ({navigation}) => {
         <TextButton
           label={'Calculate CGPA'}
           onPress={calculateCgpa}
-          labelStyle={{
-            color: Colors.white,
-            fontSize: 18,
-            fontFamily: 'Roboto-Medium',
-          }}
-          buttonContainerStyle={{
-            alignItems: 'center',
-            alignSelf: 'center',
-            backgroundColor: Colors.primary,
-            borderRadius: 10,
-            elevation: 5,
-            height: 45,
-            justifyContent: 'center',
-            marginTop: 30,
-            width: '60%',
-          }}
+          labelStyle={Style.labelStyle}
+          buttonContainerStyle={Style.buttonContainerStyle}
         />
         <Modal
           isVisible={isSemesterModalVisible}
@@ -261,19 +220,19 @@ const CumulativeScreen = ({navigation}) => {
                   initializeEntries(num);
                   setSemesterModalVisible(false);
                 }}>
-                <View style={{flex: 1}}>
+                <View style={Style.viewStyle}>
                   <AwesomeIcon
                     name="graduation-cap"
-                    size={22}
+                    size={responsiveWidth(5.5)}
                     color={theme.textColor}
                   />
                 </View>
-                <View style={{flex: 1, alignItems: 'center'}}>
+                <View style={Style.modalView}>
                   <Text style={[Style.modalItem, {color: theme.textColor}]}>
                     Semester
                   </Text>
                 </View>
-                <View style={{flex: 1, alignItems: 'flex-end'}}>
+                <View style={Style.numbersViewStyle}>
                   <Text style={[Style.modalItem, {color: theme.textColor}]}>
                     {num}
                   </Text>

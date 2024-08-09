@@ -8,12 +8,21 @@ import Style from './styles/CustomTabBarStyle';
 // Theme imports
 import {ThemeContext} from '../config';
 import {lightTheme, darkTheme} from '../constants';
+import {useSafeAreaInsets} from 'react-native-safe-area-context';
 
 const CustomTabBar = ({state, descriptors, navigation}) => {
+  const insets = useSafeAreaInsets();
   const {isDarkTheme} = React.useContext(ThemeContext);
   const theme = isDarkTheme ? darkTheme : lightTheme;
   return (
-    <View style={[Style.tabBar, {backgroundColor: theme.tabBarBackground}]}>
+    <View
+      style={[
+        Style.tabBar,
+        {
+          backgroundColor: theme.tabBarBackground,
+          bottom: insets.bottom + 10,
+        },
+      ]}>
       {state.routes.map((route, index) => {
         const {options} = descriptors[route.key];
         const isFocused = state.index === index;

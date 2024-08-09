@@ -2,11 +2,12 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#000e17">
+    android:background="#F1F3FFFF"
+    android:gravity="center">
 
     <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:orientation="vertical"
         android:gravity="center">
 
@@ -16,35 +17,39 @@
             android:layout_height="wrap_content"
             android:text="Welcome To Gradify"
             android:textAlignment="center"
-            android:textColor="#3cb3fb"
+            android:textColor="#3664dc"
             android:textSize="24sp"
             android:layout_marginBottom="40dp"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            android:gravity="center" />
 
         <ImageView
             android:id="@+id/imageView"
             android:layout_width="250dp"
             android:layout_height="250dp"
-            android:src="@mipmap/ic_launcher" />
+            android:src="@mipmap/ic_launcher"
+            android:layout_gravity="center" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Unblock your academic potential"
             android:textAlignment="center"
-            android:textColor="#3cb3fb"
+            android:textColor="#3664dc"
             android:textSize="22sp"
             android:layout_marginTop="40dp"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            android:gravity="center" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="with modern technology"
             android:textAlignment="center"
-            android:textColor="#fff"
+            android:textColor="#000"
             android:textSize="22sp"
             android:layout_marginTop="5dp"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            android:gravity="center" />
     </LinearLayout>
 </RelativeLayout>

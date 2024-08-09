@@ -1,6 +1,10 @@
 import {Dimensions, StyleSheet} from 'react-native';
 import {Colors} from '../../constants';
-const screenHeight = Dimensions.get('window').height;
+import {
+  responsiveFontSize,
+  responsiveHeight,
+  responsiveWidth,
+} from 'react-native-responsive-dimensions';
 
 export default StyleSheet.create({
   container: {
@@ -11,23 +15,31 @@ export default StyleSheet.create({
   contentContainer: {paddingHorizontal: 15},
   contentContainerText: {
     fontFamily: 'Roboto-Regular',
-    fontSize: 16,
+    fontSize: responsiveFontSize(2),
     color: Colors.white,
   },
+  containerStyle: {
+    alignItems: 'center',
+    // alignSelf: 'center',
+  },
   iconStyle: {transform: [{rotate: '90deg'}]},
-  flatlistText: {fontSize: 20, marginLeft: 10, color: '#fff'},
+  flatlistText: {
+    fontSize: responsiveFontSize(2.4),
+    marginLeft: responsiveWidth(2),
+    color: Colors.white,
+  },
   flatlistTextView: {
-    width: '90%',
+    width: responsiveWidth(82),
     flexDirection: 'row',
     justifyContent: 'space-between',
-    marginTop: 5,
+    marginTop: responsiveWidth(1),
   },
   flatlistView: {
     alignItems: 'center',
     flexDirection: 'row',
-    paddingHorizontal: 20,
-    marginVertical: 5,
-    marginTop: 30,
+    paddingHorizontal: responsiveWidth(5),
+    marginVertical: responsiveHeight(0.5),
+    marginTop: responsiveHeight(5),
   },
   mainPercentView: {
     backgroundColor: '#363c4c',
@@ -35,31 +47,31 @@ export default StyleSheet.create({
     flex: 1,
     flexDirection: 'row',
     justifyContent: 'space-between',
-    paddingHorizontal: 20,
-    // width: '90%',
-    borderBottomLeftRadius: 20,
-    borderBottomRightRadius: 20,
+    paddingHorizontal: responsiveWidth(8),
+    width: responsiveWidth(100),
+    borderBottomLeftRadius: responsiveWidth(6),
+    borderBottomRightRadius: responsiveWidth(6),
   },
-  marginView: {marginTop: 10},
+  // marginView: {marginTop: 10},
   middleView: {
     alignSelf: 'flex-start',
-    height: screenHeight / 1.75,
+    height: responsiveHeight(55),
     backgroundColor: Colors.secondary,
-    borderBottomLeftRadius: 30,
-    borderBottomRightRadius: 30,
-    width: '100%',
+    borderBottomLeftRadius: responsiveWidth(6),
+    borderBottomRightRadius: responsiveWidth(6),
+    width: responsiveWidth(100),
     // elevation: 5,
   },
   percentage: {
     color: Colors.white,
-    fontSize: 36,
+    fontSize: responsiveFontSize(3.5),
     fontFamily: 'Roboto-Bold',
     // marginTop: 10,
     textAlign: 'center',
   },
   percentageText: {
     color: Colors.primary,
-    fontSize: 36,
+    fontSize: responsiveFontSize(3.5),
     fontFamily: 'Roboto-Bold',
     // marginTop: 10,
     textAlign: 'center',
@@ -68,30 +80,34 @@ export default StyleSheet.create({
     alignItems: 'center',
     flex: 1,
     flexDirection: 'row',
-    width: '100%',
-    marginTop: -20,
+    width: responsiveWidth(100),
+    marginTop: responsiveHeight(-3),
     backgroundColor: '#444B5F',
     justifyContent: 'space-between',
-    paddingHorizontal: 20,
-    paddingTop: 10,
+    paddingHorizontal: responsiveWidth(5),
+    paddingTop: responsiveHeight(2),
     zIndex: -1,
   },
   progressText: {
-    fontSize: 48, // Updated for a circle diameter of 220
+    fontSize: responsiveFontSize(6), // Updated for a circle diameter of 220
     color: Colors.white,
     textAlign: 'center',
     fontFamily: 'Roboto-Medium',
   },
   renderText: {
     textAlign: 'center',
-    fontSize: 40,
+    fontSize: responsiveFontSize(4),
   },
   saveText: {
-    color: '#fff',
-    fontSize: 22,
+    color: Colors.white,
+    fontSize: responsiveFontSize(2.8),
     fontFamily: 'Roboto-Medium',
     // marginTop: 10,
     textAlign: 'center',
+  },
+  titleStyle: {
+    fontSize: responsiveFontSize(2.2),
+    fontFamily: 'Roboto-Medium',
   },
   viewShot: {position: 'absolute'},
 });

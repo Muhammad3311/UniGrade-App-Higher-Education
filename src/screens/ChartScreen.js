@@ -23,17 +23,14 @@ import IonIcon from 'react-native-vector-icons/Ionicons';
 import Share from 'react-native-share';
 import {ThemeContext} from '../config';
 import {Colors, darkTheme, lightTheme} from '../constants';
-import {
-  InterstitialAd,
-  AdEventType,
-  TestIds,
-} from 'react-native-google-mobile-ads';
-const adUnitId = __DEV__
-  ? TestIds.INTERSTITIAL
-  : 'ca-app-pub-xxxxxxxxxxxxx/yyyyyyyyyyyyyy';
+import {InterstitialAd, AdEventType} from 'react-native-google-mobile-ads';
+import {responsiveWidth} from 'react-native-responsive-dimensions';
+
+const adUnitId = 'ca-app-pub-5104848143569703/9692815003';
 
 const interstitial = InterstitialAd.createForAdRequest(adUnitId, {
-  keywords: ['fashion', 'clothing'],
+  keywords: ['education', 'books', 'learning', 'productivity', 'study'],
+  requestNonPersonalizedAdsOnly: true,
 });
 
 const AnimatedCircle = Animated.createAnimatedComponent(Circle);
@@ -65,6 +62,7 @@ const ChartScreen = ({route, navigation}) => {
   ];
   const ref = useRef();
   const [loaded, setLoaded] = useState(false);
+  const [shareClickCounter, setShareClickCounter] = useState(0);
 
   useEffect(() => {
     const loadAd = () => {
@@ -115,7 +113,7 @@ const ChartScreen = ({route, navigation}) => {
       });
     } catch (error) {
       Toast.show({
-        // type: 'fail',
+        type: 'error',
         text1: 'Image failed to save',
         position: 'bottom',
         bottomOffset: 100,
@@ -196,11 +194,10 @@ const ChartScreen = ({route, navigation}) => {
 
   // Function to share app name and results
   const shareResults = async () => {
-    if (loaded) {
+    setShareClickCounter(shareClickCounter + 1);
+
+    if (shareClickCounter % 2 === 1 && loaded) {
       interstitial.show();
-    } else {
-      // ad is not loaded yet
-      return;
     }
 
     try {
@@ -252,31 +249,24 @@ const ChartScreen = ({route, navigation}) => {
       <Header
         title={`Your ${gpaType} GPA Score`}
         noOfLines={1}
-        titleStyle={{
-          fontSize: 20,
-          fontFamily: 'Roboto-Regular',
-          color: theme.textColor,
-        }}
-        containerStyle={{
-          alignItems: 'center',
-          alignSelf: 'center',
-        }}
+        titleStyle={{...Style.titleStyle, color: theme.textColor}}
+        containerStyle={Style.containerStyle}
         leftComponent={
           <IonIcon
             name="arrow-back"
             onPress={() => navigation.goBack()}
-            size={28}
+            size={responsiveWidth(7)}
             color={theme.textColor}
-            style={{left: 10}}
+            style={{left: 15}}
           />
         }
         rightComponent={
           <IonIcon
             name="share-social-outline"
             onPress={shareResults}
-            size={28}
+            size={responsiveWidth(7)}
             color={theme.textColor}
-            style={{right: 10}}
+            style={{right: 15}}
           />
         }
       />
@@ -289,8 +279,8 @@ const ChartScreen = ({route, navigation}) => {
       {renderHeader()}
       <View style={Style.marginView}>
         <Svg
-          width={220} // Updated for a circle diameter of 220
-          height={220} // Updated for a circle diameter of 220
+          width={responsiveWidth(55)} // Updated for a circle diameter of 220
+          height={responsiveWidth(55)} // Updated for a circle diameter of 220
           viewBox={`0 0 ${halfCircle * 2} ${halfCircle * 2}`}>
           <G rotation={'-90'} origin={`${halfCircle}, ${halfCircle}`}>
             {/* for starting circle from 90 and perform this in Group G tag*/}
@@ -298,7 +288,7 @@ const ChartScreen = ({route, navigation}) => {
               cx={'50%'}
               cy={'50%'}
               stroke={Colors.black}
-              strokeWidth={30} // Updated for a stroke width of 30
+              strokeWidth={responsiveWidth(7)} // Updated for a stroke width of 30
               r={110} // Updated for a circle radius of 110
               strokeOpacity={0.9}
               fill={'transparent'}
@@ -364,8 +354,8 @@ const ChartScreen = ({route, navigation}) => {
           <Icon
             style={Style.iconStyle}
             name="login"
-            size={50}
-            color={Colors.black}
+            size={responsiveWidth(10)}
+            color={theme.textColor}
           />
         </TouchableOpacity>
       </View>

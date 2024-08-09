@@ -1,5 +1,9 @@
 import {StyleSheet} from 'react-native';
 import {Colors} from '../../constants';
+import {
+  responsiveHeight,
+  responsiveWidth,
+} from 'react-native-responsive-dimensions';
 
 export default StyleSheet.create({
   iconContainer: {
@@ -15,13 +19,13 @@ export default StyleSheet.create({
     // backgroundColor: '#2C3E50',
     backgroundColor: '#1C1C1BFF',
     borderRadius: 30,
-    bottom: 20,
     elevation: 5,
     flexDirection: 'row',
-    height: 60,
+    height: responsiveHeight(7),
     justifyContent: 'space-around',
+    // marginBottom: 10,
     position: 'absolute',
-    width: '80%',
+    width: responsiveWidth(75),
   },
   tabItem: {
     alignItems: 'center',

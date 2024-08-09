@@ -10,10 +10,18 @@ import {data} from '../config';
 import Style from './styles/PerformanceScreenStyle';
 import {ThemeContext} from '../config';
 import {Colors, darkTheme, lightTheme} from '../constants';
-const screenWidth = Dimensions.get('window').width;
+import {responsiveWidth} from 'react-native-responsive-dimensions';
+import {RewardedAd, RewardedAdEventType} from 'react-native-google-mobile-ads';
+
+const adUnitIdRewarded = 'ca-app-pub-5104848143569703/1431181608';
+
+const rewarded = RewardedAd.createForAdRequest(adUnitIdRewarded, {
+  keywords: ['education', 'books', 'learning', 'productivity', 'study'],
+  requestNonPersonalizedAdsOnly: true,
+});
 
 const PerformaceScreen = () => {
-  const {isDarkTheme, toggleTheme} = React.useContext(ThemeContext);
+  const {isDarkTheme} = React.useContext(ThemeContext);
   const theme = isDarkTheme ? darkTheme : lightTheme;
   const [chartdata, setChartData] = useState([]);
   const chartConfig = {
@@ -37,6 +45,30 @@ const PerformaceScreen = () => {
       stroke: Colors.primary,
     },
   };
+
+  const [adLoaded, setAdLoaded] = useState(false);
+
+  // preparing and loading ads
+  React.useEffect(() => {
+    const unsubscribeLoaded = rewarded.addAdEventListener(
+      RewardedAdEventType.LOADED,
+      () => {
+        setAdLoaded(true);
+        rewarded.show();
+      },
+    );
+    const unsubscribeEarned = rewarded.addAdEventListener(
+      RewardedAdEventType.EARNED_REWARD,
+      reward => {
+        //console.log('User earned reward of ', reward);
+      },
+    );
+    rewarded.load();
+    return () => {
+      unsubscribeLoaded();
+      unsubscribeEarned();
+    };
+  }, []);
 
   useEffect(() => {
     setChartData(data);
@@ -100,7 +132,7 @@ const PerformaceScreen = () => {
               },
             ],
           }}
-          width={screenWidth - 20} // from react-native
+          width={responsiveWidth(100) - 20} // from react-native
           height={250}
           // yAxisLabel="$"
           // yAxisSuffix="k"
