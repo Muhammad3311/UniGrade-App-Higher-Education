@@ -16,7 +16,9 @@ const TextButton = ({
       style={{...Style.buttonContainer, ...buttonContainerStyle}}
       disabled={disabled}
       onPress={onPress}>
-      <Text style={{...Style.label, ...labelStyle}}>{label}</Text>
+      <Text allowFontScaling={false} style={{...Style.label, ...labelStyle}}>
+        {label}
+      </Text>
     </TouchableOpacity>
   );
 };

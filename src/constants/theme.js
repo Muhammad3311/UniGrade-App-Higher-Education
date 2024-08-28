@@ -1,6 +1,7 @@
 // theme of the project consists of project colors which are defined and can be used explicitly
 export const Colors = {
   primary: '#3664dc', // primary color of project
+  primaryTransparent: 'rgba(54,100,220,0.5)',
   secondary: '#363c4c',
   white: '#ffffff',
   black: '#000000',
@@ -9,7 +10,7 @@ export const Colors = {
   iconColor: '#1C9C4B',
   textColor: '#5A6587',
   placeholder: '#C1C6D7',
-  redColor: '#ff0000',
+  redColor: '#e53935',
   transparent: 'transparent',
   transparentWhite1: 'rgba(255, 255, 255, 0.1)',
   transparentBlack1: 'rgba(0, 0, 0, 0.1)',
@@ -29,11 +30,14 @@ export const lightTheme = {
   backgroundColorHome: '#F1F3FFFF',
   innerContainer: '#D1D6E3',
   placeholderColor: '#868683',
+  placeholderTextColor: '#9E9E9E',
   // tab bar
   tabBarBackground: '#1C1C1BFF',
   iconColor: '#95A5A6',
   iconSelectedColor: '#ECF0F1',
   tabItemSelectedBackground: '#3664dc',
+  lightTextColor: '#5A6587',
+  cardColor: '#FAFBFD',
 };
 
 // app dark theme
@@ -48,9 +52,12 @@ export const darkTheme = {
   backgroundColorHome: '#363c4c',
   innerContainer: '#444B5F',
   placeholderColor: '#C1C6D7',
+  placeholderTextColor: '#757575',
   // tab bar
   tabBarBackground: '#3664dc',
   iconColor: '#B1BDBE',
   iconSelectedColor: '#3664dc',
   tabItemSelectedBackground: '#FFFFFF',
+  lightTextColor: '#C1C6D7',
+  cardColor: '#2B2F3A',
 };

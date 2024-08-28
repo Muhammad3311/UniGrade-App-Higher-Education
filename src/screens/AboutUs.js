@@ -40,14 +40,21 @@ const AboutUs = () => {
 
       <View style={Style.contactView}>
         <View>
-          <Text style={Style.title}>{authorName}</Text>
+          <Text allowFontScaling={false} style={Style.title}>
+            {authorName}
+          </Text>
         </View>
         <View style={Style.marginTopView}>
-          <Text style={{...Style.text, marginLeft: 0}}>We</Text>
-          <Text style={{...Style.text, textDecorationLine: 'line-through'}}>
+          <Text allowFontScaling={false} style={{...Style.text, marginLeft: 0}}>
+            We
+          </Text>
+          <Text
+            allowFontScaling={false}
+            style={{...Style.text, textDecorationLine: 'line-through'}}>
             Develop
           </Text>
           <Text
+            allowFontScaling={false}
             style={{
               ...Style.text,
               color: Colors.primary,
@@ -55,10 +62,14 @@ const AboutUs = () => {
             }}>
             Cook
           </Text>
-          <Text style={Style.text}>Ideas</Text>
+          <Text allowFontScaling={false} style={Style.text}>
+            Ideas
+          </Text>
         </View>
         <View style={Style.paragraphMainView}>
-          <Text style={Style.paragraphText}>{paragraph}</Text>
+          <Text allowFontScaling={false} style={Style.paragraphText}>
+            {paragraph}
+          </Text>
         </View>
         <View style={Style.iconTextView}>
           <View style={Style.iconView}>
@@ -66,10 +77,16 @@ const AboutUs = () => {
               name="link"
               color={Colors.white}
               size={responsiveWidth(8)}
+              allowFontScaling={false}
             />
             <View>
-              <Text style={Style.iconText}>DeTech Digital Stdio</Text>
-              <Text style={Style.linkText} onPress={handlePress}>
+              <Text allowFontScaling={false} style={Style.iconText}>
+                DeTech Digital Stdio
+              </Text>
+              <Text
+                allowFontScaling={false}
+                style={Style.linkText}
+                onPress={handlePress}>
                 DeTech digital stdio link
               </Text>
             </View>
@@ -80,10 +97,16 @@ const AboutUs = () => {
               name="mail-outline"
               color={Colors.white}
               size={responsiveWidth(8)}
+              allowFontScaling={false}
             />
             <View>
-              <Text style={Style.iconText}>Mail</Text>
-              <Text style={Style.linkText} onPress={handleMailPress}>
+              <Text allowFontScaling={false} style={Style.iconText}>
+                Mail
+              </Text>
+              <Text
+                allowFontScaling={false}
+                style={Style.linkText}
+                onPress={handleMailPress}>
                 developer support
               </Text>
             </View>
@@ -94,10 +117,14 @@ const AboutUs = () => {
               name="logo-instagram"
               color={Colors.white}
               size={responsiveWidth(8)}
+              allowFontScaling={false}
             />
             <View>
-              <Text style={Style.iconText}>Instagram</Text>
+              <Text allowFontScaling={false} style={Style.iconText}>
+                Instagram
+              </Text>
               <Text
+                allowFontScaling={false}
                 style={Style.linkText}
                 onPress={handleInstaPress}
                 ellipsizeMode="tail"

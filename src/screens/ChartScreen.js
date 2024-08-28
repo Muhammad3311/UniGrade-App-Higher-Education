@@ -49,7 +49,21 @@ const ChartScreen = ({route, navigation}) => {
   const inputRef = React.useRef();
   const halfCircle = 110 + 15;
   const circleCircumference = 2 * Math.PI * 110;
-  const percentage = (totalSum / 4) * 100;
+  // Determine the maximum GPA scale dynamically
+  const getMaxGPA = gpa => {
+    const gpaValue = parseFloat(gpa);
+    if (source === 'CumulativeScreen') {
+      // Use data.gpaScale for the Cumulative screen
+      return data.gpaScale;
+    } else {
+      // For SGPA screen or others, apply the original logic
+      if (gpaValue <= 4.0) return 4;
+      if (gpaValue <= 5.0) return 5;
+      return 4; // Default to 4 if not within the expected range
+    }
+  };
+  const maxGPA = getMaxGPA(totalSum.toString());
+  const percentage = (totalSum / maxGPA) * 100;
   const remainingPercentage = (100 - percentage).toFixed(2);
   const max = 100;
   const duration = 1000;
@@ -219,6 +233,7 @@ const ChartScreen = ({route, navigation}) => {
     return (
       <View key={index} style={Style.flatlistView}>
         <Text
+          allowFontScaling={false}
           style={[
             Style.renderText,
             {
@@ -233,10 +248,14 @@ const ChartScreen = ({route, navigation}) => {
           ●
         </Text>
         <View style={Style.flatlistTextView}>
-          <Text style={[Style.flatlistText, {color: theme.textColor}]}>
+          <Text
+            allowFontScaling={false}
+            style={[Style.flatlistText, {color: theme.textColor}]}>
             {item.type}
           </Text>
-          <Text style={[Style.flatlistText, {color: theme.textColor}]}>
+          <Text
+            allowFontScaling={false}
+            style={[Style.flatlistText, {color: theme.textColor}]}>
             {item.value}
           </Text>
         </View>
@@ -258,6 +277,7 @@ const ChartScreen = ({route, navigation}) => {
             size={responsiveWidth(7)}
             color={theme.textColor}
             style={{left: 15}}
+            allowFontScaling={false}
           />
         }
         rightComponent={
@@ -267,6 +287,7 @@ const ChartScreen = ({route, navigation}) => {
             size={responsiveWidth(7)}
             color={theme.textColor}
             style={{right: 15}}
+            allowFontScaling={false}
           />
         }
       />
@@ -314,6 +335,7 @@ const ChartScreen = ({route, navigation}) => {
           underlineColorAndroid={'transparent'}
           editable={false}
           defaultValue="0"
+          allowFontScaling={false}
           style={[
             StyleSheet.absoluteFillObject,
             Style.progressText,
@@ -339,15 +361,21 @@ const ChartScreen = ({route, navigation}) => {
             Style.mainPercentView,
             {backgroundColor: theme.backgroundColorHome},
           ]}>
-          <Text style={Style.percentageText}>Percentage</Text>
-          <Text style={[Style.percentage, {color: theme.textColor}]}>
+          <Text allowFontScaling={false} style={Style.percentageText}>
+            Percentage
+          </Text>
+          <Text
+            allowFontScaling={false}
+            style={[Style.percentage, {color: theme.textColor}]}>
             {percentage.toFixed(2)}%
           </Text>
         </View>
       </View>
       <View
         style={[Style.percentView, {backgroundColor: theme.innerContainer}]}>
-        <Text style={[Style.saveText, {color: theme.textColor}]}>
+        <Text
+          allowFontScaling={false}
+          style={[Style.saveText, {color: theme.textColor}]}>
           Save Your Result
         </Text>
         <TouchableOpacity onPress={takeScreenShot}>
@@ -356,6 +384,7 @@ const ChartScreen = ({route, navigation}) => {
             name="login"
             size={responsiveWidth(10)}
             color={theme.textColor}
+            allowFontScaling={false}
           />
         </TouchableOpacity>
       </View>

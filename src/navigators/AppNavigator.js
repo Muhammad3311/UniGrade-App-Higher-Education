@@ -3,6 +3,7 @@ import React, {useEffect} from 'react';
 import {createStackNavigator} from '@react-navigation/stack';
 import {NavigationContainer} from '@react-navigation/native';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
+import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs';
 
 import SplashScreen from 'react-native-splash-screen';
 // import screens
@@ -13,24 +14,21 @@ import {
   HomeScreen,
   MainScreen,
   PerformaceScreen,
+  CreateCustomScale,
+  SemesterGpa,
 } from '../screens';
 
 import {CustomTabBar} from '../components';
-import {Colors} from '../constants';
+import {Colors, darkTheme, lightTheme} from '../constants';
 import Icon from 'react-native-vector-icons/Ionicons';
+import {ThemeContext} from '../config';
+import {StatusBar} from 'react-native';
+import {SafeAreaView} from 'react-native-safe-area-context';
 
 const Stack = createStackNavigator();
 // assigning stack properties
 const Tab = createBottomTabNavigator();
-
-// default theme of app
-const MyTheme = {
-  dark: true,
-  colors: {
-    primary: Colors.transparent,
-    background: Colors.transparent,
-  },
-};
+const TopTab = createMaterialTopTabNavigator();
 
 function BottomTabs() {
   return (
@@ -61,15 +59,59 @@ function BottomTabs() {
         tabBarShowLabel: false,
       })}>
       <Tab.Screen name="MainScreen" component={MainScreen} />
-      <Tab.Screen name="HomeScreen" component={HomeScreen} />
+      <Tab.Screen name="HomeScreen" component={TopTabs} />
       <Stack.Screen name="PerformanceScreen" component={PerformaceScreen} />
       <Tab.Screen name="AboutUs" component={AboutUs} />
     </Tab.Navigator>
   );
 }
 
+function TopTabs() {
+  const {isDarkTheme} = React.useContext(ThemeContext);
+  const theme = isDarkTheme ? darkTheme : lightTheme;
+  return (
+    // <SafeAreaView
+    //   style={{
+    //     flex: 1,
+    //     backgroundColor: theme.backgroundColorHome,
+    //   }}>
+    <TopTab.Navigator
+      initialRouteName="SGPA"
+      screenOptions={{
+        tabBarIndicatorStyle: {backgroundColor: Colors.primary},
+        tabBarLabelStyle: {
+          fontFamily: 'Roboto-Medium',
+          fontSize: 18,
+          color: Colors.primary,
+        },
+        tabBarStyle: {
+          backgroundColor: theme.backgroundColor,
+          paddingTop: StatusBar.currentHeight,
+          elevation: 0,
+        },
+        tabBarPressOpacity: 1,
+        tabBarPressColor: Colors.transparent,
+      }}>
+      <TopTab.Screen name="SGPA" component={SemesterGpa} />
+      <TopTab.Screen name="CGPA" component={CumulativeScreen} />
+    </TopTab.Navigator>
+    // </SafeAreaView>
+  );
+}
+
 // Home stack is the stack navigator which stacks all the screens of app
 function HomeStack() {
+  const {isDarkTheme} = React.useContext(ThemeContext);
+  const theme = isDarkTheme ? darkTheme : lightTheme;
+  // default theme of app
+  const MyTheme = {
+    dark: true,
+    colors: {
+      primary: theme.backgroundColorHome,
+      background: theme.backgroundColorHome,
+    },
+  };
+
   useEffect(() => {
     SplashScreen.hide(); //hides the splash screen on app load.
   }, []);
@@ -79,7 +121,7 @@ function HomeStack() {
         {/* Main Screen of app or starting screen */}
         <Stack.Screen name="Main" component={BottomTabs} />
         <Stack.Screen name="ChartScreen" component={ChartScreen} />
-        <Tab.Screen name="CumulativeScreen" component={CumulativeScreen} />
+        <Stack.Screen name="CreateCustomScale" component={CreateCustomScale} />
       </Stack.Navigator>
     </NavigationContainer>
   );

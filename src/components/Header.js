@@ -17,6 +17,7 @@ const Header = ({
       <TouchableOpacity style={Style.leftView} activeOpacity={1}>
         <Text
           numberOfLines={1}
+          allowFontScaling={false}
           ellipsizeMode="tail"
           style={{...Style.label, ...titleStyle}}>
           {title}

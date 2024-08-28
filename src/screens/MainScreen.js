@@ -47,7 +47,8 @@ const MainScreen = ({navigation}) => {
   const ugmSystem = 'Gradify GPA Calculator';
   const successMessage = " You're one step away to track your success record";
 
-  const adUnitId = 'ca-app-pub-5104848143569703/9884386694';
+  // const adUnitId = 'ca-app-pub-5104848143569703/9884386694'; // real id
+  const adUnitId = 'ca-app-pub-3940256099942544/9214589741'; // test id
 
   // animation function for circle
   const animation = toValue => {
@@ -103,7 +104,9 @@ const MainScreen = ({navigation}) => {
         title={''}
         containerStyle={Style.containerStyle}
         leftComponent={
-          <Text style={[Style.leftComponentStyle, {color: theme.textColor}]}>
+          <Text
+            allowFontScaling={false}
+            style={[Style.leftComponentStyle, {color: theme.textColor}]}>
             Gradify GPA Calculator
           </Text>
         }
@@ -114,6 +117,7 @@ const MainScreen = ({navigation}) => {
             color={isDarkTheme ? Colors.white : Colors.primary}
             onPress={toggleTheme}
             style={Style.rightComponentStyle}
+            allowFontScaling={false}
           />
         }
       />
@@ -132,7 +136,7 @@ const MainScreen = ({navigation}) => {
       <View style={Style.adContainer}>
         <BannerAd
           unitId={adUnitId}
-          size={BannerAdSize.BANNER}
+          size={BannerAdSize.ANCHORED_ADAPTIVE_BANNER}
           requestOptions={{
             requestNonPersonalizedAdsOnly: true,
           }}
@@ -140,10 +144,14 @@ const MainScreen = ({navigation}) => {
       </View>
       <View style={Style.mainView}>
         <View style={Style.titleView}>
-          <Text style={{...Style.title, color: theme.textColor}}>
+          <Text
+            allowFontScaling={false}
+            style={{...Style.title, color: theme.textColor}}>
             {welcomeMessage}
           </Text>
-          <Text style={[Style.subTitle, {color: theme.textColor}]}>
+          <Text
+            allowFontScaling={false}
+            style={[Style.subTitle, {color: theme.textColor}]}>
             {ugmSystem}
           </Text>
         </View>
@@ -186,6 +194,7 @@ const MainScreen = ({navigation}) => {
             editable={false}
             caretHidden={false}
             defaultValue="0"
+            allowFontScaling={false}
             style={[
               StyleSheet.absoluteFillObject,
               Style.graphText,
@@ -198,7 +207,9 @@ const MainScreen = ({navigation}) => {
           style={{
             opacity: fadeAnim,
           }}>
-          <Text style={[Style.titleMsg, {color: theme.textColor}]}>
+          <Text
+            allowFontScaling={false}
+            style={[Style.titleMsg, {color: theme.textColor}]}>
             {successMessage}
           </Text>
         </Animated.View>

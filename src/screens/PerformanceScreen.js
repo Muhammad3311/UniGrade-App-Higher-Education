@@ -1,7 +1,7 @@
 // React Native Essential imports
 import React, {useEffect, useState} from 'react';
 import {View, Text, Dimensions, FlatList, StatusBar} from 'react-native';
-import {SafeAreaView} from 'react-native-safe-area-context';
+import {SafeAreaView, useSafeAreaInsets} from 'react-native-safe-area-context';
 
 // library imports
 import {LineChart} from 'react-native-chart-kit';
@@ -10,10 +10,14 @@ import {data} from '../config';
 import Style from './styles/PerformanceScreenStyle';
 import {ThemeContext} from '../config';
 import {Colors, darkTheme, lightTheme} from '../constants';
-import {responsiveWidth} from 'react-native-responsive-dimensions';
+import {
+  responsiveHeight,
+  responsiveWidth,
+} from 'react-native-responsive-dimensions';
 import {RewardedAd, RewardedAdEventType} from 'react-native-google-mobile-ads';
 
-const adUnitIdRewarded = 'ca-app-pub-5104848143569703/1431181608';
+// const adUnitIdRewarded = 'ca-app-pub-5104848143569703/1431181608';
+const adUnitIdRewarded = '	ca-app-pub-3940256099942544/5224354917';
 
 const rewarded = RewardedAd.createForAdRequest(adUnitIdRewarded, {
   keywords: ['education', 'books', 'learning', 'productivity', 'study'],
@@ -21,6 +25,7 @@ const rewarded = RewardedAd.createForAdRequest(adUnitIdRewarded, {
 });
 
 const PerformaceScreen = () => {
+  const insets = useSafeAreaInsets();
   const {isDarkTheme} = React.useContext(ThemeContext);
   const theme = isDarkTheme ? darkTheme : lightTheme;
   const [chartdata, setChartData] = useState([]);
@@ -79,6 +84,7 @@ const PerformaceScreen = () => {
       <View key={index} style={Style.flatListView}>
         <View style={Style.textView}>
           <Text
+            allowFontScaling={false}
             style={[
               Style.textStyle,
               {color: item.per == '86-100' ? Colors.primary : Colors.textColor},
@@ -87,12 +93,16 @@ const PerformaceScreen = () => {
           </Text>
         </View>
         <View style={Style.topText}>
-          <Text style={[Style.flatListText, {color: theme.textColor}]}>
+          <Text
+            allowFontScaling={false}
+            style={[Style.flatListText, {color: theme.textColor}]}>
             {item.per}
           </Text>
         </View>
         <View style={Style.topTextSecond}>
-          <Text style={[Style.flatListText, {color: theme.textColor}]}>
+          <Text
+            allowFontScaling={false}
+            style={[Style.flatListText, {color: theme.textColor}]}>
             {item.grade}
           </Text>
         </View>
@@ -101,13 +111,20 @@ const PerformaceScreen = () => {
   };
   return (
     <SafeAreaView
-      style={[Style.container, {backgroundColor: theme.backgroundColor}]}>
+      style={[
+        Style.container,
+        {
+          backgroundColor: theme.backgroundColor,
+        },
+      ]}>
       <StatusBar
         barStyle={theme.statusContent}
         backgroundColor={'transparent'}
       />
       <View>
-        <Text style={[Style.mainTitle, {color: theme.textColor}]}>
+        <Text
+          allowFontScaling={false}
+          style={[Style.mainTitle, {color: theme.textColor}]}>
           Grade Point Average Chart
         </Text>
         <LineChart
@@ -143,13 +160,14 @@ const PerformaceScreen = () => {
           style={Style.chartStyle}
         />
       </View>
-      <View style={Style.flatListMainView}>
-        <FlatList
-          data={chartdata}
-          keyExtractor={(item, index) => index.toString()}
-          renderItem={renderItem}
-        />
-      </View>
+      {/* <View style={Style.flatListMainView}> */}
+      <FlatList
+        data={chartdata}
+        keyExtractor={(item, index) => index.toString()}
+        renderItem={renderItem}
+        style={{flexGrow: 0.8}}
+      />
+      {/* </View> */}
     </SafeAreaView>
   );
 };

@@ -18,7 +18,7 @@ export default StyleSheet.create({
     // justifyContent: 'center',
   },
   flatListMainView: {
-    height: responsiveHeight(45),
+    height: responsiveHeight(100),
     width: responsiveWidth(100),
   },
   flatListText: {

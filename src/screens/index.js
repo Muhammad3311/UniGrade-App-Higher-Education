@@ -4,6 +4,8 @@ import CumulativeScreen from './CumulativeScreen';
 import HomeScreen from './HomeScreen';
 import MainScreen from './MainScreen';
 import PerformaceScreen from './PerformanceScreen';
+import CreateCustomScale from './CreateCustomScale';
+import SemesterGpa from './SemesterGpa';
 
 export {
   AboutUs,
@@ -12,4 +14,6 @@ export {
   HomeScreen,
   MainScreen,
   PerformaceScreen,
+  CreateCustomScale,
+  SemesterGpa,
 };
