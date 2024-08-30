@@ -1,32 +1,29 @@
 // React Native Essential imports
-import React, {useEffect} from 'react';
+import React from 'react';
 import {createStackNavigator} from '@react-navigation/stack';
 import {NavigationContainer} from '@react-navigation/native';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs';
 
-import SplashScreen from 'react-native-splash-screen';
 // import screens
 import {
   AboutUs,
   ChartScreen,
   CumulativeScreen,
-  HomeScreen,
   MainScreen,
   PerformaceScreen,
   CreateCustomScale,
   SemesterGpa,
 } from '../screens';
 
+import Icon from 'react-native-vector-icons/Ionicons';
 import {CustomTabBar} from '../components';
 import {Colors, darkTheme, lightTheme} from '../constants';
-import Icon from 'react-native-vector-icons/Ionicons';
 import {ThemeContext} from '../config';
 import {StatusBar} from 'react-native';
-import {SafeAreaView} from 'react-native-safe-area-context';
 
+// Assigning Stack & Tab properties
 const Stack = createStackNavigator();
-// assigning stack properties
 const Tab = createBottomTabNavigator();
 const TopTab = createMaterialTopTabNavigator();
 
@@ -38,7 +35,6 @@ function BottomTabs() {
         headerShown: false,
         tabBarIcon: ({focused, color, size}) => {
           let iconName;
-
           switch (route.name) {
             case 'MainScreen':
               iconName = focused ? 'home' : 'home-outline';
@@ -70,11 +66,6 @@ function TopTabs() {
   const {isDarkTheme} = React.useContext(ThemeContext);
   const theme = isDarkTheme ? darkTheme : lightTheme;
   return (
-    // <SafeAreaView
-    //   style={{
-    //     flex: 1,
-    //     backgroundColor: theme.backgroundColorHome,
-    //   }}>
     <TopTab.Navigator
       initialRouteName="SGPA"
       screenOptions={{
@@ -95,7 +86,6 @@ function TopTabs() {
       <TopTab.Screen name="SGPA" component={SemesterGpa} />
       <TopTab.Screen name="CGPA" component={CumulativeScreen} />
     </TopTab.Navigator>
-    // </SafeAreaView>
   );
 }
 
@@ -107,14 +97,11 @@ function HomeStack() {
   const MyTheme = {
     dark: true,
     colors: {
-      primary: theme.backgroundColorHome,
-      background: theme.backgroundColorHome,
+      primary: theme.backgroundColor,
+      background: theme.backgroundColor,
     },
   };
 
-  useEffect(() => {
-    SplashScreen.hide(); //hides the splash screen on app load.
-  }, []);
   return (
     <NavigationContainer theme={MyTheme}>
       <Stack.Navigator screenOptions={{headerShown: false}}>

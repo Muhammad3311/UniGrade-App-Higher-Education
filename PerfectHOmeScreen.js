@@ -14,7 +14,7 @@ import {
   commonGPAConfigScale4,
   commonGPAConfigScale5,
   kustGPAConfig,
-} from '../constants';
+} from './src/constants';
 import Entypo from 'react-native-vector-icons/Entypo';
 import {SafeAreaView} from 'react-native-safe-area-context';
 

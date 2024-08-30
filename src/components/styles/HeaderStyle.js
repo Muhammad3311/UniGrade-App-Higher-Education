@@ -1,10 +1,11 @@
 // React Native Style sheet of Header Detail
 import {StyleSheet} from 'react-native';
+import {responsiveHeight} from 'react-native-responsive-dimensions';
 
 export default StyleSheet.create({
   container: {
     flexDirection: 'row',
-    height: 60,
+    height: responsiveHeight(7),
   },
   leftView: {
     alignItems: 'center',

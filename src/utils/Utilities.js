@@ -1,4 +1,3 @@
-export const ANDROID_PACKAGE_NAME = 'com.gradify_gpa_calculator';
 export const GRADIFY_APP_LINK = 'not available yet';
 export const WEBSITE_URL = 'https://detech-online.vercel.app';
 export const INSTAGRAM_URL =

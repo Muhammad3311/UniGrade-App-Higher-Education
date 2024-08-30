@@ -15,10 +15,10 @@ import {
   commonGPAConfigScale4,
   commonGPAConfigScale5,
   kustGPAConfig,
-} from '../constants';
+} from './src/constants';
 import Entypo from 'react-native-vector-icons/Entypo';
 import {SafeAreaView} from 'react-native-safe-area-context';
-import CumulativeScreen from './CumulativeScreen';
+import CumulativeScreen from './src/screens/CumulativeScreen';
 
 const GPAApp = ({navigation}) => {
   const [gpaConfig, setGpaConfig] = useState(commonGPAConfigScale4);
@@ -175,7 +175,7 @@ const GPAApp = ({navigation}) => {
   const renderContent = () => {
     if (selectedTab === 'SGPA') {
       return (
-        <ScrollView style={styles.scrollView}>
+        <ScrollView style={{flex: 1, backgroundColor: '#0f0f0f'}}>
           {subjects.map((subject, index) => (
             <View key={index} style={styles.subjectContainer}>
               <Picker

@@ -32,6 +32,12 @@ import {
 import {TextButton} from '../components';
 import Style from './styles/SemesterGpaStyle';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
+import {useFocusEffect} from '@react-navigation/native';
+import {
+  AndroidSoftInputModes,
+  KeyboardController,
+  useKeyboardContext,
+} from 'react-native-keyboard-controller';
 
 const SemesterGpa = ({navigation}) => {
   const insets = useSafeAreaInsets();
@@ -46,6 +52,16 @@ const SemesterGpa = ({navigation}) => {
   const [subjectCount, setSubjectCount] = useState(5);
   const [selectedTab, setSelectedTab] = useState('SGPA');
   const [selectedIndex, setSelectedIndex] = useState(null);
+
+  useFocusEffect(
+    React.useCallback(() => {
+      KeyboardController.setInputMode(
+        AndroidSoftInputModes.SOFT_INPUT_ADJUST_RESIZE,
+      );
+
+      return () => KeyboardController.setDefaultMode();
+    }, []),
+  );
 
   const handleOptionSelect = (index, value) => {
     handleCreditHourChange(index, value);
@@ -228,7 +244,7 @@ const SemesterGpa = ({navigation}) => {
             selectedValue={selectedConfig}
             onFocus={loadConfigs}
             dropdownIconColor={Colors.primary}
-            dropdownIconRippleColor={Colors.primary}
+            dropdownIconRippleColor={Colors.transparent}
             selectionColor={Colors.primary}
             mode="dropdown"
             onValueChange={handleConfigChange}
@@ -327,7 +343,7 @@ const SemesterGpa = ({navigation}) => {
             selectedValue={subjectCount}
             mode="dropdown"
             dropdownIconColor={Colors.primary}
-            dropdownIconRippleColor={Colors.primary}
+            dropdownIconRippleColor={Colors.transparent}
             selectionColor={Colors.primary}
             onValueChange={setSubjectCount}
             style={styles.picker}>
@@ -357,7 +373,7 @@ const SemesterGpa = ({navigation}) => {
         style={{
           ...styles.scrollView,
           flexGrow: 0.8,
-          backgroundColor: theme.backgroundColor,
+          backgroundColor: Colors.transparent,
           borderWidth: 1,
           borderColor: Colors.primary,
         }}
@@ -369,7 +385,7 @@ const SemesterGpa = ({navigation}) => {
         }}
         enableOnAndroid={true}
         showsVerticalScrollIndicator={false}
-        extraScrollHeight={200}
+        extraScrollHeight={150}
         bounces={false}
         keyboardOpeningTime={0}>
         {subjects.map((subject, index) => (
@@ -424,49 +440,48 @@ const SemesterGpa = ({navigation}) => {
                 onValueChange={value => handleCreditHourChange(index, value)} // Update the subject's credit hours
                 style={{
                   height: 20,
-                  flex: 0.8,
-                  // backgroundColor: Colors.placeholder,
-                  // overflow: 'hidden',
-                  color: Colors.primary,
+                  flex: 1,
+                  backgroundColor: Colors.transparent,
+                  color: theme.textColor,
                 }}>
                 <Picker.Item
                   label="1"
                   value={1}
                   style={{
-                    backgroundColor: theme.backgroundColor,
-                    color: theme.textColor,
+                    backgroundColor: Colors.transparent,
+                    color: Colors.primary,
                   }}
                 />
                 <Picker.Item
                   label="2"
                   value={2}
                   style={{
-                    backgroundColor: theme.backgroundColor,
-                    color: theme.textColor,
+                    backgroundColor: Colors.transparent,
+                    color: Colors.primary,
                   }}
                 />
                 <Picker.Item
                   label="3"
                   value={3}
                   style={{
-                    backgroundColor: theme.backgroundColor,
-                    color: theme.textColor,
+                    backgroundColor: Colors.transparent,
+                    color: Colors.primary,
                   }}
                 />
                 <Picker.Item
                   label="4"
                   value={4}
                   style={{
-                    backgroundColor: theme.backgroundColor,
-                    color: theme.textColor,
+                    backgroundColor: Colors.transparent,
+                    color: Colors.primary,
                   }}
                 />
                 <Picker.Item
                   label="5"
                   value={5}
                   style={{
-                    backgroundColor: theme.backgroundColor,
-                    color: theme.textColor,
+                    backgroundColor: Colors.transparent,
+                    color: Colors.primary,
                   }}
                 />
               </Picker>
@@ -478,7 +493,7 @@ const SemesterGpa = ({navigation}) => {
         label={'Calculate GPA'}
         onPress={handleCalculate}
         labelStyle={Style.labelStyle}
-        buttonContainerStyle={{...Style.buttonContainerStyle, marginTop: 5}}
+        buttonContainerStyle={{...Style.buttonContainerStyle, marginTop: 10}}
       />
     </View>
   );
@@ -501,9 +516,6 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     // paddingHorizontal: 8,
     // flex: 1,
-    // padding: 0,
-    // margin: 0,
-    // textAlign: 'center',
   },
   result: {
     fontSize: 18,

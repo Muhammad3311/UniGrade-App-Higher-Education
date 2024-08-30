@@ -16,6 +16,12 @@ import {
   responsiveWidth,
 } from 'react-native-responsive-dimensions';
 import {SafeAreaView, useSafeAreaInsets} from 'react-native-safe-area-context';
+import {useFocusEffect} from '@react-navigation/native';
+import {
+  AndroidSoftInputModes,
+  KeyboardController,
+  useKeyboardContext,
+} from 'react-native-keyboard-controller';
 
 const CumulativeScreen = ({navigation}) => {
   const insets = useSafeAreaInsets();
@@ -27,6 +33,16 @@ const CumulativeScreen = ({navigation}) => {
   const [isSemesterModalVisible, setSemesterModalVisible] = useState(false);
   const [showCreditHours, setShowCreditHours] = useState(true);
   const [gpaScale, setGpaScale] = useState(4); // Default to 4
+
+  useFocusEffect(
+    React.useCallback(() => {
+      KeyboardController.setInputMode(
+        AndroidSoftInputModes.SOFT_INPUT_ADJUST_RESIZE,
+      );
+
+      return () => KeyboardController.setDefaultMode();
+    }, []),
+  );
 
   const initializeEntries = numSemesters => {
     const initialEntries = Array.from({length: numSemesters}, (_, i) => ({

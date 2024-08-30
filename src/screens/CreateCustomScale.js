@@ -1,3 +1,4 @@
+// React Native essential imports
 import React, {useEffect, useState} from 'react';
 import {
   View,
@@ -7,23 +8,30 @@ import {
   Switch,
   TouchableOpacity,
   Alert,
-  Dimensions,
 } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {Picker} from '@react-native-picker/picker';
-import {Colors, kustGPAConfig, lightTheme, darkTheme} from '../constants';
-import Style from './styles/CreateCustomScaleStyle';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
-import Entypo from 'react-native-vector-icons/Entypo';
 import {
+  responsiveFontSize,
   responsiveHeight,
   responsiveWidth,
 } from 'react-native-responsive-dimensions';
-import {ThemeContext} from '../config';
-import {Header, TextButton} from '../components';
+import Entypo from 'react-native-vector-icons/Entypo';
 import IonIcon from 'react-native-vector-icons/Ionicons';
 import Modal from 'react-native-modal';
+import {useFocusEffect} from '@react-navigation/native';
+import {
+  AndroidSoftInputModes,
+  KeyboardController,
+} from 'react-native-keyboard-controller';
+
+// custom imports
+import Style from './styles/CreateCustomScaleStyle';
+import {Colors, kustGPAConfig, lightTheme, darkTheme} from '../constants';
+import {ThemeContext} from '../config';
+import {Header, TextButton} from '../components';
 
 const CreateCustomScale = ({navigation}) => {
   const {isDarkTheme} = React.useContext(ThemeContext);
@@ -38,110 +46,30 @@ const CreateCustomScale = ({navigation}) => {
   const [customConfigs, setCustomConfigs] = useState([]);
   const [selectedConfig, setSelectedConfig] = useState(null);
   const [isModalVisible, setIsModalVisible] = useState(false);
+  const letterGrades = [
+    'A',
+    'A-',
+    'B+',
+    'B',
+    'B-',
+    'C+',
+    'C',
+    'C-',
+    'D+',
+    'D',
+    'D-',
+    'F',
+  ];
 
-  const ConfigModal = ({visible, config, onClose}) => {
-    return (
-      config && (
-        <Modal
-          backdropColor={theme.backgroundColor}
-          coverScreen={true}
-          animationIn="slideInUp"
-          animationOut="slideOutDown"
-          animationInTiming={500}
-          animationOutTiming={900}
-          isVisible={visible}
-          onBackdropPress={onClose}
-          style={{flex: 1}}
-          onBackButtonPress={onClose}>
-          <View
-            style={[
-              Style.modalContent,
-              {backgroundColor: theme.backgroundColorHome},
-            ]}>
-            <ScrollView
-              showsVerticalScrollIndicator={false}
-              contentContainerStyle={Style.scrollViewContent}>
-              <Text allowFontScaling={false} style={Style.modalHeader}>
-                {config?.name}
-              </Text>
-              {config?.gpaConfig.map((item, index) => (
-                <View key={index} style={Style.modalRow}>
-                  <View
-                    style={{
-                      flexDirection: 'row',
-                      alignItems: 'center',
-                      flex: 1,
-                      marginVertical: 5,
-                    }}>
-                    <Text
-                      allowFontScaling={false}
-                      style={{...Style.modalTitle, color: theme.textColor}}>
-                      Grade:
-                    </Text>
-                    <Text
-                      allowFontScaling={false}
-                      style={{...Style.modalText, color: theme.lightTextColor}}>
-                      {item.letterGrade}
-                    </Text>
-                  </View>
-                  <View
-                    style={{
-                      flexDirection: 'row',
-                      alignItems: 'center',
-                      flex: 1,
-                      marginVertical: 5,
-                    }}>
-                    <Text
-                      allowFontScaling={false}
-                      style={{...Style.modalTitle, color: theme.textColor}}>
-                      Marks Range:
-                    </Text>
-                    <Text
-                      allowFontScaling={false}
-                      style={{...Style.modalText, color: theme.lightTextColor}}>
-                      {item.marksRange}
-                    </Text>
-                  </View>
-                  <View
-                    style={{
-                      flexDirection: 'row',
-                      alignItems: 'center',
-                      flex: 1,
-                      marginVertical: 5,
-                    }}>
-                    <Text
-                      allowFontScaling={false}
-                      style={{...Style.modalTitle, color: Colors.primary}}>
-                      GPA:
-                    </Text>
-                    <Text
-                      allowFontScaling={false}
-                      style={{...Style.modalText, color: theme.lightTextColor}}>
-                      {item.gpa}
-                    </Text>
-                  </View>
-                </View>
-              ))}
-            </ScrollView>
-            <TextButton
-              label={'Close'}
-              onPress={onClose}
-              labelStyle={Style.labelStyle}
-              buttonContainerStyle={{
-                ...Style.buttonContainerStyle,
-                marginTop: 20,
-              }}
-            />
-          </View>
-        </Modal>
-      )
-    );
-  };
+  useFocusEffect(
+    React.useCallback(() => {
+      KeyboardController.setInputMode(
+        AndroidSoftInputModes.SOFT_INPUT_ADJUST_RESIZE,
+      );
 
-  const handleViewConfig = config => {
-    setSelectedConfig(config);
-    setIsModalVisible(true);
-  };
+      return () => KeyboardController.setDefaultMode();
+    }, []),
+  );
 
   useEffect(() => {
     if (showConfigs) {
@@ -163,12 +91,16 @@ const CreateCustomScale = ({navigation}) => {
     }
   }, [message]);
 
+  const handleViewConfig = config => {
+    setSelectedConfig(config);
+    setIsModalVisible(true);
+  };
+
   const handleSaveChanges = async () => {
     if (!configName) {
       setMessage('Please enter a configuration name.');
       return;
     }
-
     const nameExists = customConfigs.some(config => config.name === configName);
     if (nameExists) {
       setMessage(
@@ -186,7 +118,6 @@ const CreateCustomScale = ({navigation}) => {
     const updatedConfigs = [...customConfigs, newConfig];
     setCustomConfigs(updatedConfigs);
     await AsyncStorage.setItem('customConfigs', JSON.stringify(updatedConfigs));
-
     setMessage('Configuration saved successfully.');
     setConfigName('');
     setShowConfigs(true);
@@ -223,10 +154,6 @@ const CreateCustomScale = ({navigation}) => {
         newText = newText.replace(/-+$/, '');
       }
     } else if (type === 'gpa') {
-      // newText = text.replace(/[^0-9.]/g, '');
-      // if (newText.split('.').length > 2) {
-      //   newText = newText.replace(/\.+$/, '');
-      // }
       newText = text.replace(/[^0-9.-]/g, '');
     }
 
@@ -241,20 +168,86 @@ const CreateCustomScale = ({navigation}) => {
     setLocalGpaConfig(newConfig);
   };
 
-  const letterGrades = [
-    'A',
-    'A-',
-    'B+',
-    'B',
-    'B-',
-    'C+',
-    'C',
-    'C-',
-    'D+',
-    'D',
-    'D-',
-    'F',
-  ];
+  const ConfigModal = ({visible, config, onClose}) => {
+    return (
+      config && (
+        <Modal
+          backdropColor={theme.backgroundColor}
+          coverScreen={true}
+          animationIn="slideInUp"
+          animationOut="slideOutDown"
+          animationInTiming={500}
+          animationOutTiming={900}
+          isVisible={visible}
+          onBackdropPress={onClose}
+          style={Style.flexStyle}
+          onBackButtonPress={onClose}>
+          <View
+            style={[
+              Style.modalContent,
+              {backgroundColor: theme.backgroundColorHome},
+            ]}>
+            <ScrollView
+              showsVerticalScrollIndicator={false}
+              contentContainerStyle={Style.scrollViewContent}>
+              <Text allowFontScaling={false} style={Style.modalHeader}>
+                {config?.name}
+              </Text>
+              {config?.gpaConfig.map((item, index) => (
+                <View key={index} style={Style.modalRow}>
+                  <View style={Style.horizontalText}>
+                    <Text
+                      allowFontScaling={false}
+                      style={{...Style.modalTitle, color: theme.textColor}}>
+                      Grade:
+                    </Text>
+                    <Text
+                      allowFontScaling={false}
+                      style={{...Style.modalText, color: theme.lightTextColor}}>
+                      {item.letterGrade}
+                    </Text>
+                  </View>
+                  <View style={Style.horizontalText}>
+                    <Text
+                      allowFontScaling={false}
+                      style={{...Style.modalTitle, color: theme.textColor}}>
+                      Marks Range:
+                    </Text>
+                    <Text
+                      allowFontScaling={false}
+                      style={{...Style.modalText, color: theme.lightTextColor}}>
+                      {item.marksRange}
+                    </Text>
+                  </View>
+                  <View style={Style.horizontalText}>
+                    <Text
+                      allowFontScaling={false}
+                      style={{...Style.modalTitle, color: Colors.primary}}>
+                      GPA:
+                    </Text>
+                    <Text
+                      allowFontScaling={false}
+                      style={{...Style.modalText, color: theme.lightTextColor}}>
+                      {item.gpa}
+                    </Text>
+                  </View>
+                </View>
+              ))}
+            </ScrollView>
+            <TextButton
+              label={'Close'}
+              onPress={onClose}
+              labelStyle={Style.labelStyle}
+              buttonContainerStyle={{
+                ...Style.buttonContainerStyle,
+                marginTop: 20,
+              }}
+            />
+          </View>
+        </Modal>
+      )
+    );
+  };
 
   function renderHeader() {
     return (
@@ -264,35 +257,26 @@ const CreateCustomScale = ({navigation}) => {
         titleStyle={{...Style.titleStyle, color: theme.textColor}}
         containerStyle={Style.containerStyle}
         leftComponent={
-          <TouchableOpacity
-            style={{marginLeft: 10}}
-            onPress={() => navigation.goBack()}>
+          <TouchableOpacity onPress={() => navigation.goBack()}>
             <IonIcon
               name="arrow-back"
               size={30}
               color={theme.textColor}
-              // style={{left: 15}}
               allowFontScaling={false}
             />
           </TouchableOpacity>
         }
-        rightComponent={
-          <IonIcon
-            name="share-social-outline"
-            // onPress={shareResults}
-            size={responsiveWidth(7)}
-            color={theme.textColor}
-            style={{right: 15}}
-            allowFontScaling={false}
-          />
-        }
+        rightComponent={null}
       />
     );
   }
 
   return (
     <SafeAreaView
-      style={{...Style.container, backgroundColor: theme.backgroundColor}}>
+      style={{
+        ...Style.container,
+        backgroundColor: theme.backgroundColor,
+      }}>
       {renderHeader()}
       <ConfigModal
         visible={isModalVisible}
@@ -300,19 +284,8 @@ const CreateCustomScale = ({navigation}) => {
         onClose={() => setIsModalVisible(false)}
       />
       <KeyboardAwareScrollView
-        style={{
-          backgroundColor: Colors.transparent,
-          borderTopLeftRadius: 10,
-          borderTopRightRadius: 10,
-          borderBottomLeftRadius: 10,
-          borderBottomRightRadius: 10,
-          flexGrow: 0.9,
-        }}
-        contentContainerStyle={{
-          backgroundColor: Colors.transparent,
-          // borderRadius: 20,
-          overflow: 'hidden',
-        }}
+        style={{...Style.scrollViewStyle, flexGrow: 0.8}}
+        contentContainerStyle={Style.scrollViewContentContainer}
         enableOnAndroid={true}
         showsVerticalScrollIndicator={false}
         extraScrollHeight={200}
@@ -325,7 +298,6 @@ const CreateCustomScale = ({navigation}) => {
           placeholderTextColor={theme.placeholderTextColor}
           allowFontScaling={false}
         />
-
         {message ? (
           <Text allowFontScaling={false} style={Style.message}>
             {message}
@@ -366,18 +338,16 @@ const CreateCustomScale = ({navigation}) => {
                 backgroundColor: theme.cardColor,
               }}>
               <View style={Style.configRow}>
-                <View
-                  style={{
-                    flexDirection: 'row',
-                    alignItems: 'center',
-                    flex: 1,
-                  }}>
+                <View style={Style.configInnerContainer}>
                   <Text
                     allowFontScaling={false}
-                    style={{...Style.configName, color: theme.lightTextColor}}>
+                    style={{
+                      ...Style.configName,
+                      color: theme.lightTextColor,
+                    }}>
                     Config Name:
                   </Text>
-                  <View style={{marginHorizontal: 10, flex: 1}}>
+                  <View style={Style.configHeader}>
                     <Text
                       allowFontScaling={false}
                       ellipsizeMode="tail"
@@ -395,15 +365,8 @@ const CreateCustomScale = ({navigation}) => {
                   <Entypo name="trash" color={Colors.redColor} size={20} />
                 </TouchableOpacity>
               </View>
-              <View
-                style={{
-                  flexDirection: 'row',
-                  alignItems: 'center',
-                  justifyContent: 'space-between',
-                  overflow: 'hidden',
-                  width: '100%',
-                }}>
-                <View style={{flex: 1, flexDirection: 'row'}}>
+              <View style={Style.configContent}>
+                <View style={Style.dateStyle}>
                   <Text
                     allowFontScaling={false}
                     ellipsizeMode="tail"
@@ -432,6 +395,7 @@ const CreateCustomScale = ({navigation}) => {
                   labelStyle={{
                     ...Style.labelStyle,
                     color: Colors.primary,
+                    fontSize: responsiveFontSize(2),
                     textDecorationLine: 'underline',
                   }}
                   buttonContainerStyle={{
@@ -473,23 +437,24 @@ const CreateCustomScale = ({navigation}) => {
             <View key={index} style={Style.inputContainer}>
               <View
                 style={{
+                  ...Style.pickerStyle,
                   backgroundColor: theme.backgroundColor,
-                  height: 50,
-                  justifyContent: 'center',
-                  borderRadius: 10, // Round borders
-                  borderColor: Colors.primary, // Border color
-                  borderWidth: 1, // Border width
-                  width: '30%',
-                  overflow: 'hidden', // Ensures the picker respects the rounded border
                 }}>
                 <Picker
                   selectedValue={item.letterGrade}
                   onValueChange={value =>
                     handleInputChange(value, index, 'letterGrade')
                   }
+                  mode="dropdown"
+                  dropdownIconColor={Colors.primary}
                   style={{...Style.picker, color: theme.textColor}}>
                   {letterGrades.map((grade, gradeIndex) => (
-                    <Picker.Item key={gradeIndex} label={grade} value={grade} />
+                    <Picker.Item
+                      key={gradeIndex}
+                      label={grade}
+                      value={grade}
+                      color={theme.textColor}
+                    />
                   ))}
                 </Picker>
               </View>
@@ -516,11 +481,7 @@ const CreateCustomScale = ({navigation}) => {
                 color={Colors.redColor}
                 size={18}
                 onPress={() => handleParticularDeleteConfig(index)}
-                style={{
-                  overflow: 'hidden',
-                  flex: 0.3,
-                  marginLeft: 10,
-                }}
+                style={Style.trashIconStyle}
               />
             </View>
           ))}
