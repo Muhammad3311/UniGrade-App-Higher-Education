@@ -8,20 +8,22 @@ import Entypo from 'react-native-vector-icons/Entypo';
 
 // custom imports
 import Style from './styles/AboutUsStyle';
-import {ThemeContext, aboutParagraph} from '../config';
-import {Colors, lightTheme, darkTheme} from '../constants';
-import {WEBSITE_URL, INSTAGRAM_URL, CONTACT_US_URL} from '../utils';
+import {ThemeContext} from '../config';
+import {Colors, lightTheme, darkTheme, AboutParagraph} from '../constants';
+import {GRADIFY_APP_LINK, INSTAGRAM_URL, CONTACT_US_URL} from '../utils';
 
 // The screen contains the information about author and user or customer can update their queries, problems by contacting the author
 const AboutUs = () => {
   const {isDarkTheme} = React.useContext(ThemeContext);
   const theme = isDarkTheme ? darkTheme : lightTheme;
-  const paragraph = aboutParagraph;
+  const paragraph = AboutParagraph;
   const businessLink = 'follow us on Instagram';
   const authorName = 'DeTech Digital Studio';
+  // const rateApp = 'Rate Gradify on playstore';
+  const rateApp = 'DeTech Digital Studio';
 
   const handlePress = () => {
-    Linking.openURL(WEBSITE_URL);
+    Linking.openURL(GRADIFY_APP_LINK);
   };
   const handleInstaPress = () => {
     Linking.openURL(INSTAGRAM_URL);
@@ -100,13 +102,19 @@ const AboutUs = () => {
               <Text
                 allowFontScaling={false}
                 style={{...Style.iconText, color: theme.lightTextColor}}>
-                {authorName}
+                {rateApp}
               </Text>
+              {/* <Text
+                allowFontScaling={false}
+                style={Style.linkText}
+                onPress={handlePress}>
+                gradify playstore link
+              </Text> */}
               <Text
                 allowFontScaling={false}
                 style={Style.linkText}
                 onPress={handlePress}>
-                DeTech digital studio link
+                detech digital studio link
               </Text>
             </View>
           </View>

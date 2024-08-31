@@ -6,7 +6,7 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import AwesomeIcon from 'react-native-vector-icons/FontAwesome';
 import {ThemeContext} from '../config';
 import {Colors, lightTheme, darkTheme} from '../constants';
-import {Header, TextButton} from '../components';
+import {TextButton} from '../components';
 import Toast, {BaseToast} from 'react-native-toast-message';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import Style from './styles/CumulativeScreenStyle';
@@ -15,16 +15,13 @@ import {
   responsiveHeight,
   responsiveWidth,
 } from 'react-native-responsive-dimensions';
-import {SafeAreaView, useSafeAreaInsets} from 'react-native-safe-area-context';
 import {useFocusEffect} from '@react-navigation/native';
 import {
   AndroidSoftInputModes,
   KeyboardController,
-  useKeyboardContext,
 } from 'react-native-keyboard-controller';
 
 const CumulativeScreen = ({navigation}) => {
-  const insets = useSafeAreaInsets();
   const {isDarkTheme} = React.useContext(ThemeContext);
   const theme = isDarkTheme ? darkTheme : lightTheme;
   const [numberOfSemesters, setNumberOfSemesters] = useState(null);
@@ -82,15 +79,16 @@ const CumulativeScreen = ({navigation}) => {
       const adjustedSgpa = totalSgpa.div(totalSemesters).times(4).div(gpaScale);
 
       setCgpa(adjustedSgpa.toFixed(2));
-      // const totalCreditHours = entries.reduce(
-      //   (acc, entry) => acc.plus(new Big(entry.creditHours || 0)),
-      //   new Big(0),
-      // );
+      const totalCreditHours = entries.reduce(
+        (acc, entry) => acc.plus(new Big(entry.creditHours || 0)),
+        new Big(0),
+      );
+
       let data = {
         totalSum: adjustedSgpa.toFixed(2),
+        newChPoints: totalCreditHours.toString(),
         gpaScale: gpaScale,
       };
-      console.log('cgpa: ', data);
       navigationData(data);
     }
   };
@@ -98,7 +96,7 @@ const CumulativeScreen = ({navigation}) => {
   const navigationData = data => {
     navigation.navigate('ChartScreen', {
       data: data,
-      source: 'CumulativeScreen',
+      source: 'CGPA',
     });
   };
 
@@ -121,17 +119,12 @@ const CumulativeScreen = ({navigation}) => {
     setGpaScale(prev => (prev === 4 ? 5 : 4));
   };
 
-  const onChangeTextInput = React.useCallback(text => {
-    setPostText(text);
-  }, []);
-
   return (
     <View
       style={[
         Style.container,
         {
           backgroundColor: theme.backgroundColor,
-          // paddingBottom: insets.bottom + responsiveHeight(10),
           height: responsiveHeight(100),
         },
       ]}>
@@ -144,16 +137,6 @@ const CumulativeScreen = ({navigation}) => {
           width: responsiveWidth(90),
           paddingVertical: 10,
         }}>
-        {/* <Text
-          allowFontScaling={false}
-          style={{
-            color: theme.textColor,
-            fontFamily: 'Roboto-Regular',
-            fontSize: responsiveFontSize(2.5),
-            // letterSpacing: 1,
-          }}>
-          {`Selected GPA Scale: ${gpaScale}`}
-        </Text> */}
         <View style={{flexDirection: 'row', alignItems: 'center'}}>
           <Text
             allowFontScaling={false}

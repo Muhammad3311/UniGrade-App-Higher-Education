@@ -13,11 +13,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import {Picker} from '@react-native-picker/picker';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
-import {
-  responsiveFontSize,
-  responsiveHeight,
-  responsiveWidth,
-} from 'react-native-responsive-dimensions';
+import {responsiveFontSize} from 'react-native-responsive-dimensions';
 import Entypo from 'react-native-vector-icons/Entypo';
 import IonIcon from 'react-native-vector-icons/Ionicons';
 import Modal from 'react-native-modal';
@@ -47,6 +43,7 @@ const CreateCustomScale = ({navigation}) => {
   const [selectedConfig, setSelectedConfig] = useState(null);
   const [isModalVisible, setIsModalVisible] = useState(false);
   const letterGrades = [
+    'A+',
     'A',
     'A-',
     'B+',
@@ -61,15 +58,24 @@ const CreateCustomScale = ({navigation}) => {
     'F',
   ];
 
-  useFocusEffect(
-    React.useCallback(() => {
-      KeyboardController.setInputMode(
-        AndroidSoftInputModes.SOFT_INPUT_ADJUST_RESIZE,
-      );
+  useKeyboardAdjustment();
 
-      return () => KeyboardController.setDefaultMode();
-    }, []),
-  );
+  function useKeyboardAdjustment() {
+    useFocusEffect(
+      React.useCallback(() => {
+        const timeoutId = setTimeout(() => {
+          KeyboardController.setInputMode(
+            AndroidSoftInputModes.SOFT_INPUT_ADJUST_RESIZE,
+          );
+        }, 100);
+
+        return () => {
+          clearTimeout(timeoutId);
+          KeyboardController.setDefaultMode();
+        };
+      }, []),
+    );
+  }
 
   useEffect(() => {
     if (showConfigs) {
@@ -284,11 +290,11 @@ const CreateCustomScale = ({navigation}) => {
         onClose={() => setIsModalVisible(false)}
       />
       <KeyboardAwareScrollView
-        style={{...Style.scrollViewStyle, flexGrow: 0.8}}
+        style={{...Style.scrollViewStyle, flexGrow: 0.9}}
         contentContainerStyle={Style.scrollViewContentContainer}
         enableOnAndroid={true}
         showsVerticalScrollIndicator={false}
-        extraScrollHeight={200}
+        extraScrollHeight={300}
         keyboardOpeningTime={0}>
         <TextInput
           style={{...Style.nameInput, color: theme.textColor}}
@@ -329,25 +335,60 @@ const CreateCustomScale = ({navigation}) => {
             onValueChange={setShowConfigs}
           />
         </View>
-        {showConfigs &&
-          customConfigs.map((config, index) => (
-            <View
-              key={index}
-              style={{
-                ...Style.configContainer,
-                backgroundColor: theme.cardColor,
-              }}>
-              <View style={Style.configRow}>
-                <View style={Style.configInnerContainer}>
-                  <Text
-                    allowFontScaling={false}
-                    style={{
-                      ...Style.configName,
-                      color: theme.lightTextColor,
-                    }}>
-                    Config Name:
-                  </Text>
-                  <View style={Style.configHeader}>
+        {showConfigs ? (
+          customConfigs.length > 0 ? (
+            customConfigs.map((config, index) => (
+              <View
+                key={index}
+                style={{
+                  ...Style.configContainer,
+                  backgroundColor: theme.cardColor,
+                }}>
+                <View style={Style.configRow}>
+                  <View style={Style.configInnerContainer}>
+                    <Text
+                      allowFontScaling={false}
+                      style={{
+                        ...Style.configName,
+                        color: theme.lightTextColor,
+                      }}>
+                      Config Name:
+                    </Text>
+                    <View style={Style.configHeader}>
+                      <Text
+                        allowFontScaling={false}
+                        ellipsizeMode="tail"
+                        numberOfLines={1}
+                        style={{
+                          ...Style.configName,
+                          color: Colors.primary,
+                          fontFamily: 'Roboto-Medium',
+                        }}>
+                        {config.name}
+                      </Text>
+                    </View>
+                  </View>
+                  <TouchableOpacity onPress={() => handleDeleteConfig(index)}>
+                    <Entypo
+                      name="trash"
+                      color={Colors.redColor}
+                      size={20}
+                      allowFontScaling={false}
+                    />
+                  </TouchableOpacity>
+                </View>
+                <View style={Style.configContent}>
+                  <View style={Style.dateStyle}>
+                    <Text
+                      allowFontScaling={false}
+                      ellipsizeMode="tail"
+                      numberOfLines={1}
+                      style={{
+                        ...Style.configName,
+                        color: theme.lightTextColor,
+                      }}>
+                      Created At:
+                    </Text>
                     <Text
                       allowFontScaling={false}
                       ellipsizeMode="tail"
@@ -355,65 +396,48 @@ const CreateCustomScale = ({navigation}) => {
                       style={{
                         ...Style.configName,
                         color: Colors.primary,
-                        fontFamily: 'Roboto-Medium',
+                        marginLeft: 5,
                       }}>
-                      {config.name}
+                      {config.dateSaved}
                     </Text>
                   </View>
-                </View>
-                <TouchableOpacity onPress={() => handleDeleteConfig(index)}>
-                  <Entypo name="trash" color={Colors.redColor} size={20} />
-                </TouchableOpacity>
-              </View>
-              <View style={Style.configContent}>
-                <View style={Style.dateStyle}>
-                  <Text
-                    allowFontScaling={false}
-                    ellipsizeMode="tail"
-                    numberOfLines={1}
-                    style={{
-                      ...Style.configName,
-                      color: theme.lightTextColor,
-                    }}>
-                    Created At:
-                  </Text>
-                  <Text
-                    allowFontScaling={false}
-                    ellipsizeMode="tail"
-                    numberOfLines={1}
-                    style={{
-                      ...Style.configName,
+                  <TextButton
+                    label={'Config Details'}
+                    onPress={() => handleViewConfig(config)}
+                    labelStyle={{
+                      ...Style.labelStyle,
                       color: Colors.primary,
-                      marginLeft: 5,
-                    }}>
-                    {config.dateSaved}
-                  </Text>
+                      fontSize: responsiveFontSize(2),
+                      textDecorationLine: 'underline',
+                    }}
+                    buttonContainerStyle={{
+                      ...Style.buttonContainerStyle,
+                      alignSelf: 'flex-end',
+                      alignItems: 'flex-end',
+                      justifyContent: 'center',
+                      backgroundColor: null,
+                      elevation: 0,
+                      padding: 0,
+                      margin: 0,
+                    }}
+                  />
                 </View>
-                <TextButton
-                  label={'Config Details'}
-                  onPress={() => handleViewConfig(config)}
-                  labelStyle={{
-                    ...Style.labelStyle,
-                    color: Colors.primary,
-                    fontSize: responsiveFontSize(2),
-                    textDecorationLine: 'underline',
-                  }}
-                  buttonContainerStyle={{
-                    ...Style.buttonContainerStyle,
-                    alignSelf: 'flex-end',
-                    alignItems: 'flex-end',
-                    justifyContent: 'center',
-                    backgroundColor: null,
-                    elevation: 0,
-                    padding: 0,
-                    margin: 0,
-                    // width: '50%',
-                    textAlign: 'left',
-                  }}
-                />
               </View>
+            ))
+          ) : (
+            <View style={Style.configMessage}>
+              <Text
+                allowFontScaling={false}
+                style={{
+                  ...Style.message,
+                  fontSize: responsiveFontSize(2.5),
+                  marginVertical: 0,
+                }}>
+                No configurations created yet!
+              </Text>
             </View>
-          ))}
+          )
+        ) : null}
 
         <View style={Style.sectionHeader}>
           <Text
@@ -447,13 +471,17 @@ const CreateCustomScale = ({navigation}) => {
                   }
                   mode="dropdown"
                   dropdownIconColor={Colors.primary}
-                  style={{...Style.picker, color: theme.textColor}}>
+                  style={{
+                    ...Style.picker,
+                    color: theme.textColor,
+                  }}>
                   {letterGrades.map((grade, gradeIndex) => (
                     <Picker.Item
                       key={gradeIndex}
                       label={grade}
                       value={grade}
                       color={theme.textColor}
+                      style={{backgroundColor: theme.backgroundColor}}
                     />
                   ))}
                 </Picker>

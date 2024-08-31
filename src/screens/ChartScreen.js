@@ -25,8 +25,10 @@ import {ThemeContext} from '../config';
 import {Colors, darkTheme, lightTheme} from '../constants';
 import {InterstitialAd, AdEventType} from 'react-native-google-mobile-ads';
 import {responsiveWidth} from 'react-native-responsive-dimensions';
+import {GRADIFY_APP_LINK} from '../utils';
 
-const adUnitId = 'ca-app-pub-5104848143569703/9692815003';
+// const adUnitId = 'ca-app-pub-5104848143569703/9692815003';
+const adUnitId = '	ca-app-pub-3940256099942544/1033173712';
 
 const interstitial = InterstitialAd.createForAdRequest(adUnitId, {
   keywords: ['education', 'books', 'learning', 'productivity', 'study'],
@@ -52,7 +54,7 @@ const ChartScreen = ({route, navigation}) => {
   // Determine the maximum GPA scale dynamically
   const getMaxGPA = gpa => {
     const gpaValue = parseFloat(gpa);
-    if (source === 'CumulativeScreen') {
+    if (source === 'CGPA') {
       // Use data.gpaScale for the Cumulative screen
       return data.gpaScale;
     } else {
@@ -177,9 +179,9 @@ const ChartScreen = ({route, navigation}) => {
   };
 
   useEffect(() => {
-    if (source == 'HomeScreen') {
+    if (source == 'SGPA') {
       setGpaType('Semester');
-    } else if (source == 'CumulativeScreen') {
+    } else if (source == 'CGPA') {
       setGpaType('Cumulative');
     }
   }, [source]);
@@ -217,7 +219,7 @@ const ChartScreen = ({route, navigation}) => {
     try {
       await Share.open({
         title: 'Share Results',
-        message: `Check out my results on MyApp!\nYour Score: ${totalSum}\nSgp Points: ${totalChPoints}\nAim to Achieve: ${remainingPercentage}%`,
+        message: `Check out my results on MyApp! ${GRADIFY_APP_LINK}\nYour Score: ${totalSum}\nSgp Points: ${totalChPoints}\nAim to Achieve: ${remainingPercentage}%`,
       });
     } catch (error) {
       Toast.show({
@@ -239,9 +241,9 @@ const ChartScreen = ({route, navigation}) => {
             {
               color:
                 item.value === `${remainingPercentage}%`
-                  ? Colors.black
+                  ? Colors.primaryTransparent
                   : Colors.primary && item.value === totalChPoints
-                  ? Colors.white
+                  ? theme.lightTextColor
                   : Colors.primary,
             },
           ]}>
@@ -296,7 +298,7 @@ const ChartScreen = ({route, navigation}) => {
 
   return (
     <SafeAreaView
-      style={[Style.container, {backgroundColor: theme.backgroundColorHome}]}>
+      style={[Style.container, {backgroundColor: theme.backgroundColor}]}>
       {renderHeader()}
       <View style={Style.marginView}>
         <Svg
@@ -308,7 +310,7 @@ const ChartScreen = ({route, navigation}) => {
             <Circle
               cx={'50%'}
               cy={'50%'}
-              stroke={Colors.black}
+              stroke={theme.chartBackground}
               strokeWidth={responsiveWidth(7)} // Updated for a stroke width of 30
               r={110} // Updated for a circle radius of 110
               strokeOpacity={0.9}
@@ -344,10 +346,7 @@ const ChartScreen = ({route, navigation}) => {
         />
       </View>
       <View
-        style={[
-          Style.middleView,
-          {backgroundColor: theme.backgroundColorHome},
-        ]}>
+        style={[Style.middleView, {backgroundColor: theme.backgroundColor}]}>
         <View>
           <FlatList
             data={chartArray}
@@ -359,20 +358,20 @@ const ChartScreen = ({route, navigation}) => {
         <View
           style={[
             Style.mainPercentView,
-            {backgroundColor: theme.backgroundColorHome},
+            {backgroundColor: theme.backgroundColor},
           ]}>
           <Text allowFontScaling={false} style={Style.percentageText}>
             Percentage
           </Text>
           <Text
             allowFontScaling={false}
-            style={[Style.percentage, {color: theme.textColor}]}>
+            style={[Style.percentageText, {color: theme.lightTextColor}]}>
             {percentage.toFixed(2)}%
           </Text>
         </View>
       </View>
       <View
-        style={[Style.percentView, {backgroundColor: theme.innerContainer}]}>
+        style={[Style.percentView, {backgroundColor: theme.chartGradientTo}]}>
         <Text
           allowFontScaling={false}
           style={[Style.saveText, {color: theme.textColor}]}>
@@ -388,7 +387,9 @@ const ChartScreen = ({route, navigation}) => {
           />
         </TouchableOpacity>
       </View>
-      <Toast config={toastConfig} />
+      <View>
+        <Toast config={toastConfig} />
+      </View>
       <ViewShot
         style={Style.viewShot}
         onCapture={captureScreen}

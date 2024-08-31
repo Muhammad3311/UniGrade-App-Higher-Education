@@ -63,6 +63,7 @@ const CustomTabBar = ({state, descriptors, navigation}) => {
               color={isFocused ? theme.iconSelectedColor : theme.iconColor}
               onPress={onPress}
               style={isFocused ? Style.iconSelected : null}
+              allowFontScaling={false}
             />
           </Animatable.View>
         );

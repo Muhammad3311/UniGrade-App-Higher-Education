@@ -18,7 +18,7 @@ export const ThemeProvider = ({children}) => {
         }
         // If savedTheme is null, it will remain false (light theme)
       } catch (error) {
-        console.log('Failed to load theme:', error);
+        //console.log('Failed to load theme:', error);
         // In case of error, it will remain false (light theme)
       } finally {
         setIsLoading(false); // Set loading to false after attempting to load the theme
@@ -33,7 +33,7 @@ export const ThemeProvider = ({children}) => {
       setIsDarkTheme(newTheme);
       await AsyncStorage.setItem('theme', newTheme ? 'dark' : 'light');
     } catch (error) {
-      console.log('Failed to save theme:', error);
+      //console.log('Failed to save theme:', error);
     }
   };
 

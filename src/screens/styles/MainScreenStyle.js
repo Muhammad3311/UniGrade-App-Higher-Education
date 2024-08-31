@@ -9,7 +9,6 @@ import {
 export default StyleSheet.create({
   adContainer: {
     alignItems: 'center',
-    // justifyContent: 'center',
     width: responsiveWidth(100),
   },
   container: {
@@ -18,10 +17,10 @@ export default StyleSheet.create({
   },
   containerStyle: {alignItems: 'center', padding: 10},
   graphText: {
-    fontSize: responsiveFontSize(5.5), // Updated for a circle diameter of 220
     color: Colors.white,
-    textAlign: 'center',
     fontFamily: 'Roboto-Medium',
+    fontSize: responsiveFontSize(5.5), // Updated for a circle diameter of 220
+    textAlign: 'center',
   },
   leftComponentStyle: {
     fontFamily: 'Roboto-Medium',
@@ -29,25 +28,24 @@ export default StyleSheet.create({
   },
   mainView: {
     alignItems: 'center',
-    // flex: 1,
+    flex: 1,
     justifyContent: 'space-around',
-    height: responsiveHeight(80),
     width: responsiveWidth(100),
   },
   rightComponentStyle: {right: 10},
   subTitle: {
-    fontFamily: 'Roboto-Regular',
-    fontSize: responsiveFontSize(3.5),
+    fontFamily: 'Roboto-Medium',
+    fontSize: responsiveFontSize(3),
     letterSpacing: 1,
     lineHeight: 50,
   },
   title: {
-    fontFamily: 'Roboto-Regular',
-    fontSize: responsiveFontSize(4),
+    fontFamily: 'Roboto-Medium',
+    fontSize: responsiveFontSize(3.5),
     letterSpacing: 1,
   },
   titleMsg: {
-    color: Colors.white, //'#3664dc',
+    color: Colors.white,
     fontFamily: 'Roboto-Regular',
     fontSize: responsiveFontSize(2.8),
     marginBottom: responsiveHeight(2.5),

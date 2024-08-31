@@ -8,30 +8,26 @@ import {
 
 export default StyleSheet.create({
   chartStyle: {
-    marginVertical: responsiveHeight(1),
     borderRadius: responsiveWidth(3),
+    marginVertical: responsiveHeight(1),
   },
   container: {
-    backgroundColor: Colors.secondaryBlack,
     alignItems: 'center',
     flex: 1,
-    // justifyContent: 'center',
   },
   flatListMainView: {
     height: responsiveHeight(100),
     width: responsiveWidth(100),
   },
   flatListText: {
-    fontSize: responsiveFontSize(2.2),
-    fontFamily: 'Roboto-Regular',
     color: Colors.white,
+    fontFamily: 'Roboto-Regular',
+    fontSize: responsiveFontSize(2.2),
     textAlign: 'justify',
   },
   flatListView: {
     alignItems: 'center',
-    // flex: 1,
     flexDirection: 'row',
-    // marginVertical: 5,
     marginVertical: responsiveHeight(0.6),
     width: responsiveWidth(100),
   },
@@ -44,9 +40,9 @@ export default StyleSheet.create({
   },
   textView: {alignItems: 'center', width: responsiveWidth(25)},
   textStyle: {
-    textAlign: 'center',
-    fontSize: responsiveFontSize(4.5),
     color: Colors.textColor,
+    fontSize: responsiveFontSize(4.5),
+    textAlign: 'center',
   },
   topText: {alignItems: 'center', width: responsiveWidth(50)},
   topTextSecond: {alignItems: 'center', width: responsiveWidth(25)},

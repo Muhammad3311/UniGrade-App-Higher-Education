@@ -13,9 +13,9 @@ export default StyleSheet.create({
     backgroundColor: Colors.primary,
     borderRadius: responsiveWidth(2),
     elevation: 5,
+    height: responsiveHeight(5.5),
     justifyContent: 'center',
     width: responsiveWidth(40),
-    height: responsiveHeight(5.5),
   },
   configContainer: {
     borderRadius: 10,
@@ -36,10 +36,15 @@ export default StyleSheet.create({
     flex: 1,
     flexDirection: 'row',
   },
+  configMessage: {
+    alignItems: 'center',
+    justifyContent: 'flex-start',
+    paddingBottom: 10,
+  },
   configName: {
     color: Colors.textColor,
     fontFamily: 'Roboto-Regular',
-    fontSize: 18,
+    fontSize: responsiveFontSize(2.1),
   },
   configRow: {
     alignItems: 'center',
@@ -57,7 +62,7 @@ export default StyleSheet.create({
   flexStyle: {flex: 1},
   header: {
     fontFamily: 'Roboto-Medium',
-    fontSize: 20,
+    fontSize: responsiveFontSize(2.4),
   },
   horizontalText: {
     alignItems: 'center',
@@ -69,7 +74,7 @@ export default StyleSheet.create({
     borderColor: Colors.primary,
     borderRadius: 10,
     borderWidth: 1,
-    fontSize: 16,
+    fontSize: responsiveFontSize(2),
     height: 50,
     paddingHorizontal: 12,
     width: '25%',
@@ -90,7 +95,7 @@ export default StyleSheet.create({
   message: {
     color: Colors.primary,
     fontFamily: 'Roboto-Medium',
-    fontSize: 16,
+    fontSize: responsiveFontSize(2.2),
     marginVertical: 5,
     textAlign: 'center',
   },
@@ -104,8 +109,7 @@ export default StyleSheet.create({
   modalHeader: {
     color: Colors.primary,
     fontFamily: 'Roboto-Medium',
-    fontSize: 20,
-    fontWeight: '600',
+    fontSize: responsiveFontSize(2.4),
     marginBottom: 15,
     textAlign: 'center',
   },
@@ -117,20 +121,20 @@ export default StyleSheet.create({
   modalText: {
     color: Colors.textColor,
     fontFamily: 'Roboto-Regular',
-    fontSize: 18,
+    fontSize: responsiveFontSize(2),
     marginLeft: 10,
   },
   modalTitle: {
     color: Colors.black,
     fontFamily: 'Roboto-Medium',
-    fontSize: 18,
+    fontSize: responsiveFontSize(2),
   },
   nameInput: {
     borderColor: Colors.primary,
     borderRadius: 10,
     borderWidth: 1,
     fontFamily: 'Roboto-Regular',
-    fontSize: 18,
+    fontSize: responsiveFontSize(2),
     height: 50,
     marginBottom: 20,
     paddingHorizontal: 12,
@@ -152,6 +156,7 @@ export default StyleSheet.create({
     overflow: 'hidden',
     // marginBottom: responsiveHeight(12),
     paddingVertical: 5,
+    paddingBottom: 10,
   },
   scrollViewStyle: {
     backgroundColor: Colors.transparent,

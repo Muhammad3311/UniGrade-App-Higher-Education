@@ -4,6 +4,7 @@ import {
   commonGPAConfigScale5,
   kustGPAConfig,
 } from './defaultGradeScales';
+import AboutParagraph from './AboutParagraph';
 
 export {
   Colors,
@@ -12,4 +13,5 @@ export {
   commonGPAConfigScale4,
   commonGPAConfigScale5,
   kustGPAConfig,
+  AboutParagraph,
 };

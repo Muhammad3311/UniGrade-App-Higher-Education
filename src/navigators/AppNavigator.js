@@ -21,6 +21,7 @@ import {CustomTabBar} from '../components';
 import {Colors, darkTheme, lightTheme} from '../constants';
 import {ThemeContext} from '../config';
 import {StatusBar} from 'react-native';
+import {responsiveFontSize} from 'react-native-responsive-dimensions';
 
 // Assigning Stack & Tab properties
 const Stack = createStackNavigator();
@@ -50,7 +51,14 @@ function BottomTabs() {
               break;
           }
 
-          return <Icon name={iconName} size={size} color={color} />;
+          return (
+            <Icon
+              name={iconName}
+              size={size}
+              color={color}
+              allowFontScaling={false}
+            />
+          );
         },
         tabBarShowLabel: false,
       })}>
@@ -71,14 +79,14 @@ function TopTabs() {
       screenOptions={{
         tabBarIndicatorStyle: {backgroundColor: Colors.primary},
         tabBarLabelStyle: {
-          fontFamily: 'Roboto-Medium',
-          fontSize: 18,
           color: Colors.primary,
+          fontFamily: 'Roboto-Medium',
+          fontSize: responsiveFontSize(2.2),
         },
         tabBarStyle: {
           backgroundColor: theme.backgroundColor,
-          paddingTop: StatusBar.currentHeight,
           elevation: 0,
+          paddingTop: StatusBar.currentHeight,
         },
         tabBarPressOpacity: 1,
         tabBarPressColor: Colors.transparent,

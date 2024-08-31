@@ -1,10 +1,9 @@
 // React Native Essential imports
 import React, {useEffect, useRef} from 'react';
 import {View, Text, StyleSheet, TextInput, StatusBar} from 'react-native';
-import {SafeAreaView} from 'react-native-safe-area-context';
+import {SafeAreaView, useSafeAreaInsets} from 'react-native-safe-area-context';
 import {ThemeContext} from '../config';
 import {Colors, darkTheme, lightTheme} from '../constants';
-
 // import banner ads
 import {BannerAd, BannerAdSize} from 'react-native-google-mobile-ads';
 
@@ -18,7 +17,7 @@ import Style from './styles/MainScreenStyle';
 import {Header} from '../components';
 import Icon from 'react-native-vector-icons/Ionicons';
 import {
-  responsiveFontSize,
+  responsiveHeight,
   responsiveWidth,
 } from 'react-native-responsive-dimensions';
 
@@ -26,7 +25,8 @@ import {
 const AnimatedCircle = RnAnimated.createAnimatedComponent(Circle);
 
 // The Main Screen of app which launches first and of course you can also navigate to every screen of app
-const MainScreen = ({navigation}) => {
+const MainScreen = () => {
+  const insets = useSafeAreaInsets();
   const {isDarkTheme, toggleTheme} = React.useContext(ThemeContext);
   const theme = isDarkTheme ? darkTheme : lightTheme;
   // main state variables
@@ -126,7 +126,10 @@ const MainScreen = ({navigation}) => {
 
   return (
     <SafeAreaView
-      style={{...Style.container, backgroundColor: theme.backgroundColor}}>
+      style={{
+        ...Style.container,
+        backgroundColor: theme.backgroundColor,
+      }}>
       <StatusBar
         translucent
         barStyle={theme.statusContent}
@@ -142,7 +145,11 @@ const MainScreen = ({navigation}) => {
           }}
         />
       </View>
-      <View style={Style.mainView}>
+      <View
+        style={{
+          ...Style.mainView,
+          paddingBottom: insets.bottom + responsiveHeight(5),
+        }}>
         <View style={Style.titleView}>
           <Text
             allowFontScaling={false}
@@ -155,9 +162,6 @@ const MainScreen = ({navigation}) => {
             {ugmSystem}
           </Text>
         </View>
-        {/* <View style={{height: 100, marginTop: 20}}>
-        <PacmanIndicator size={100} color="#3664dc" />
-      </View> */}
         <View>
           <Svg
             width={responsiveWidth(55)}
@@ -167,7 +171,7 @@ const MainScreen = ({navigation}) => {
               <Circle
                 cx={'50%'}
                 cy={'50%'}
-                stroke={theme.backgroundColor}
+                stroke={theme.chartBackground}
                 strokeWidth={responsiveWidth(5)}
                 r={responsiveWidth(27.5)}
                 strokeOpacity={0.9}

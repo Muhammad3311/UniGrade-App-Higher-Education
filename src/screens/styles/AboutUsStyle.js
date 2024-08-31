@@ -43,13 +43,9 @@ export default StyleSheet.create({
     width: responsiveWidth(25),
     zIndex: 1,
   },
-  imageView: {
-    borderRadius: 100,
-    zIndex: 1,
-  },
   linkText: {
     fontFamily: 'Roboto-Medium',
-    fontSize: responsiveFontSize(1.5),
+    fontSize: responsiveFontSize(1.8),
     paddingLeft: 10,
     textAlign: 'left',
     color: '#1E90FF',
@@ -60,7 +56,6 @@ export default StyleSheet.create({
     flexDirection: 'row',
     marginTop: 5,
   },
-  marginView: {paddingTop: 20},
   paragraphMainView: {
     alignItems: 'center',
     alignSelf: 'center',
