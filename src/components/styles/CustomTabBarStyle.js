@@ -19,7 +19,7 @@ export default StyleSheet.create({
     borderRadius: 30,
     elevation: 5,
     flexDirection: 'row',
-    height: responsiveHeight(7),
+    height: responsiveHeight(100) / 14,
     justifyContent: 'space-around',
     position: 'absolute',
     width: responsiveWidth(75),
@@ -33,6 +33,6 @@ export default StyleSheet.create({
     backgroundColor: Colors.primary,
     borderRadius: 100,
     bottom: 20,
-    padding: 10,
+    padding: responsiveWidth(2.5),
   },
 });

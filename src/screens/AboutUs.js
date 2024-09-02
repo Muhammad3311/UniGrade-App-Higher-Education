@@ -34,7 +34,12 @@ const AboutUs = () => {
 
   return (
     <SafeAreaView
-      style={[Style.safeAreaView, {backgroundColor: theme.backgroundColor}]}>
+      style={[
+        Style.safeAreaView,
+        {
+          backgroundColor: theme.backgroundColor,
+        },
+      ]}>
       <StatusBar barStyle={theme.statusContent} />
       <Image
         source={require('../assets/images/DETECH.webp')}

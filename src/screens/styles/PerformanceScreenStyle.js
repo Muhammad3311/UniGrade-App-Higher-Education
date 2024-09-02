@@ -40,7 +40,6 @@ export default StyleSheet.create({
   },
   textView: {alignItems: 'center', width: responsiveWidth(25)},
   textStyle: {
-    color: Colors.textColor,
     fontSize: responsiveFontSize(4.5),
     textAlign: 'center',
   },

@@ -8,7 +8,4 @@ export default StyleSheet.create({
     backgroundColor: Colors.primary,
     justifyContent: 'center',
   },
-  label: {
-    color: Colors.white,
-  },
 });

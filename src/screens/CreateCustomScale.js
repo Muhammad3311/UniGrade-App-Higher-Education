@@ -11,9 +11,13 @@ import {
 } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {Picker} from '@react-native-picker/picker';
-import {SafeAreaView} from 'react-native-safe-area-context';
+import {SafeAreaView, useSafeAreaInsets} from 'react-native-safe-area-context';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
-import {responsiveFontSize} from 'react-native-responsive-dimensions';
+import {
+  responsiveFontSize,
+  responsiveHeight,
+  responsiveWidth,
+} from 'react-native-responsive-dimensions';
 import Entypo from 'react-native-vector-icons/Entypo';
 import IonIcon from 'react-native-vector-icons/Ionicons';
 import Modal from 'react-native-modal';
@@ -30,6 +34,7 @@ import {ThemeContext} from '../config';
 import {Header, TextButton} from '../components';
 
 const CreateCustomScale = ({navigation}) => {
+  const insets = useSafeAreaInsets();
   const {isDarkTheme} = React.useContext(ThemeContext);
   const theme = isDarkTheme ? darkTheme : lightTheme;
   const [localGpaConfig, setLocalGpaConfig] = useState(() =>
@@ -191,7 +196,7 @@ const CreateCustomScale = ({navigation}) => {
           <View
             style={[
               Style.modalContent,
-              {backgroundColor: theme.backgroundColorHome},
+              {backgroundColor: theme.backgroundColor},
             ]}>
             <ScrollView
               showsVerticalScrollIndicator={false}
@@ -282,6 +287,10 @@ const CreateCustomScale = ({navigation}) => {
       style={{
         ...Style.container,
         backgroundColor: theme.backgroundColor,
+        paddingBottom:
+          insets.bottom == 0
+            ? insets.bottom + responsiveHeight(8)
+            : insets.bottom + responsiveHeight(1),
       }}>
       {renderHeader()}
       <ConfigModal
@@ -290,11 +299,11 @@ const CreateCustomScale = ({navigation}) => {
         onClose={() => setIsModalVisible(false)}
       />
       <KeyboardAwareScrollView
-        style={{...Style.scrollViewStyle, flexGrow: 0.9}}
+        style={{...Style.scrollViewStyle, flexGrow: 1}}
         contentContainerStyle={Style.scrollViewContentContainer}
         enableOnAndroid={true}
         showsVerticalScrollIndicator={false}
-        extraScrollHeight={300}
+        extraScrollHeight={responsiveHeight(35)}
         keyboardOpeningTime={0}>
         <TextInput
           style={{...Style.nameInput, color: theme.textColor}}
@@ -472,8 +481,9 @@ const CreateCustomScale = ({navigation}) => {
                   mode="dropdown"
                   dropdownIconColor={Colors.primary}
                   style={{
-                    ...Style.picker,
+                    ...Style.pickerStyle,
                     color: theme.textColor,
+                    width: responsiveWidth(31),
                   }}>
                   {letterGrades.map((grade, gradeIndex) => (
                     <Picker.Item

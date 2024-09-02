@@ -21,7 +21,7 @@ export default StyleSheet.create({
     overflow: 'hidden',
     alignSelf: 'center',
     justifyContent: 'center',
-    height: responsiveHeight(5.5),
+    height: 50,
     width: responsiveWidth(40),
   },
   pickerText: {
@@ -125,7 +125,7 @@ export default StyleSheet.create({
     elevation: 5,
     justifyContent: 'center',
     width: responsiveWidth(40),
-    height: responsiveHeight(5.5),
+    height: 50,
   },
   modalView: {alignItems: 'center'},
   numbersViewStyle: {flex: 1, alignItems: 'flex-end'},

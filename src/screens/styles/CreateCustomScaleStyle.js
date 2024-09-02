@@ -2,7 +2,6 @@ import {StyleSheet} from 'react-native';
 import {Colors} from '../../constants';
 import {
   responsiveFontSize,
-  responsiveHeight,
   responsiveWidth,
 } from 'react-native-responsive-dimensions';
 
@@ -13,7 +12,7 @@ export default StyleSheet.create({
     backgroundColor: Colors.primary,
     borderRadius: responsiveWidth(2),
     elevation: 5,
-    height: responsiveHeight(5.5),
+    height: 50,
     justifyContent: 'center',
     width: responsiveWidth(40),
   },
@@ -42,7 +41,6 @@ export default StyleSheet.create({
     paddingBottom: 10,
   },
   configName: {
-    color: Colors.textColor,
     fontFamily: 'Roboto-Regular',
     fontSize: responsiveFontSize(2.1),
   },
@@ -119,13 +117,11 @@ export default StyleSheet.create({
     marginBottom: 10,
   },
   modalText: {
-    color: Colors.textColor,
     fontFamily: 'Roboto-Regular',
     fontSize: responsiveFontSize(2),
     marginLeft: 10,
   },
   modalTitle: {
-    color: Colors.black,
     fontFamily: 'Roboto-Medium',
     fontSize: responsiveFontSize(2),
   },
@@ -145,7 +141,6 @@ export default StyleSheet.create({
     borderRadius: 10,
     borderColor: Colors.primary,
     borderWidth: 1,
-    width: '30%',
     overflow: 'hidden',
   },
   scrollViewContent: {
@@ -168,7 +163,7 @@ export default StyleSheet.create({
     marginBottom: 20,
   },
   titleStyle: {
-    fontSize: responsiveFontSize(2.5),
+    fontSize: responsiveFontSize(3),
     fontFamily: 'Roboto-Medium',
   },
   trashIconStyle: {

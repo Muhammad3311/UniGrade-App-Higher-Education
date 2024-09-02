@@ -69,15 +69,8 @@ export default StyleSheet.create({
     marginTop: responsiveHeight(1),
     textAlign: 'justify',
   },
-  roundView: {
-    alignItems: 'center',
-    backgroundColor: Colors.secondary,
-    justifyContent: 'center',
-    width: responsiveWidth(100),
-  },
   safeAreaView: {
     alignItems: 'center',
-    backgroundColor: Colors.secondaryBlack,
     flex: 1,
   },
   text: {

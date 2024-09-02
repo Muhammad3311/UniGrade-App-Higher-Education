@@ -15,7 +15,7 @@ export default StyleSheet.create({
     alignItems: 'center',
     flex: 1,
   },
-  containerStyle: {alignItems: 'center', padding: 10},
+  containerStyle: {alignItems: 'center', paddingHorizontal: 10},
   graphText: {
     color: Colors.white,
     fontFamily: 'Roboto-Medium',
@@ -24,7 +24,7 @@ export default StyleSheet.create({
   },
   leftComponentStyle: {
     fontFamily: 'Roboto-Medium',
-    fontSize: responsiveFontSize(2.7),
+    fontSize: responsiveFontSize(2.8),
   },
   mainView: {
     alignItems: 'center',

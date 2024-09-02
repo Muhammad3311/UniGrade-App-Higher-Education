@@ -19,6 +19,7 @@ export default StyleSheet.create({
   },
   containerStyle: {
     alignItems: 'center',
+    paddingHorizontal: 15,
   },
   flatlistText: {
     color: Colors.white,
@@ -51,10 +52,9 @@ export default StyleSheet.create({
   },
   middleView: {
     alignSelf: 'flex-start',
-    backgroundColor: Colors.secondary,
     borderBottomLeftRadius: responsiveWidth(6),
     borderBottomRightRadius: responsiveWidth(6),
-    height: responsiveHeight(55),
+    flex: 1,
     width: responsiveWidth(100),
   },
   percentageText: {
@@ -65,7 +65,7 @@ export default StyleSheet.create({
   },
   percentView: {
     alignItems: 'center',
-    flex: 1,
+    flex: 0.2,
     flexDirection: 'row',
     justifyContent: 'space-between',
     marginTop: responsiveHeight(-3),
@@ -92,7 +92,7 @@ export default StyleSheet.create({
   },
   titleStyle: {
     fontFamily: 'Roboto-Medium',
-    fontSize: responsiveFontSize(2.2),
+    fontSize: responsiveFontSize(2.7),
   },
   viewShot: {position: 'absolute'},
 });

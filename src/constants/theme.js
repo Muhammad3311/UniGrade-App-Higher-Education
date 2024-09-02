@@ -2,20 +2,10 @@
 export const Colors = {
   primary: '#3664dc', // primary color of project
   primaryTransparent: 'rgba(54,100,220,0.5)',
-  secondary: '#363c4c',
   white: '#ffffff',
-  black: '#000000',
-  secondaryBlack: '#101319',
-  secondaryLight: '#444B5F',
-  iconColor: '#1C9C4B',
-  textColor: '#5A6587',
   placeholder: '#C1C6D7',
   redColor: '#e53935',
   transparent: 'transparent',
-  transparentWhite1: 'rgba(255, 255, 255, 0.1)',
-  transparentBlack1: 'rgba(0, 0, 0, 0.1)',
-  transparentBlack7: 'rgba(0, 0, 0, 0.7)',
-  backGroundTransparency: 'rgba(0,0,0,0.3)', // used for background transparency
 };
 
 // app light theme
@@ -26,12 +16,7 @@ export const lightTheme = {
   chartBackground: '#D1D6E3',
   chartGradientFrom: '#D1D6E3',
   chartGradientTo: '#D1D6E3',
-  // home screen
-  backgroundColorHome: '#F1F3FFFF',
-  innerContainer: '#D1D6E3',
-  placeholderColor: '#868683',
   placeholderTextColor: '#9E9E9E',
-  // tab bar
   tabBarBackground: '#1C1C1BFF',
   iconColor: '#95A5A6',
   iconSelectedColor: '#ECF0F1',
@@ -48,12 +33,7 @@ export const darkTheme = {
   chartBackground: '#444B5F',
   chartGradientFrom: '#5A6587',
   chartGradientTo: '#181C25',
-  // home screen
-  backgroundColorHome: '#363c4c',
-  innerContainer: '#444B5F',
-  placeholderColor: '#C1C6D7',
   placeholderTextColor: '#757575',
-  // tab bar
   tabBarBackground: '#3664dc',
   iconColor: '#B1BDBE',
   iconSelectedColor: '#3664dc',

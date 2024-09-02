@@ -2,24 +2,22 @@
 import React, {useEffect, useRef} from 'react';
 import {View, Text, StyleSheet, TextInput, StatusBar} from 'react-native';
 import {SafeAreaView, useSafeAreaInsets} from 'react-native-safe-area-context';
-import {ThemeContext} from '../config';
-import {Colors, darkTheme, lightTheme} from '../constants';
-// import banner ads
-import {BannerAd, BannerAdSize} from 'react-native-google-mobile-ads';
-
-// library imports
 import Animated, {EasingNode} from 'react-native-reanimated';
 import {Animated as RnAnimated} from 'react-native';
 import Svg, {G, Circle} from 'react-native-svg';
+import {
+  responsiveHeight,
+  responsiveWidth,
+} from 'react-native-responsive-dimensions';
+// import banner ads
+import {BannerAd, BannerAdSize} from 'react-native-google-mobile-ads';
 
 // custom imports
 import Style from './styles/MainScreenStyle';
 import {Header} from '../components';
 import Icon from 'react-native-vector-icons/Ionicons';
-import {
-  responsiveHeight,
-  responsiveWidth,
-} from 'react-native-responsive-dimensions';
+import {ThemeContext} from '../config';
+import {Colors, darkTheme, lightTheme} from '../constants';
 
 // giving reference of the circulating circle or progress bar
 const AnimatedCircle = RnAnimated.createAnimatedComponent(Circle);
@@ -129,11 +127,14 @@ const MainScreen = () => {
       style={{
         ...Style.container,
         backgroundColor: theme.backgroundColor,
+        paddingBottom:
+          insets.bottom == 0
+            ? insets.bottom + responsiveHeight(10)
+            : insets.bottom,
       }}>
       <StatusBar
-        translucent
         barStyle={theme.statusContent}
-        backgroundColor={'transparent'}
+        backgroundColor={theme.backgroundColor}
       />
       {renderHeader()}
       <View style={Style.adContainer}>
@@ -145,11 +146,7 @@ const MainScreen = () => {
           }}
         />
       </View>
-      <View
-        style={{
-          ...Style.mainView,
-          paddingBottom: insets.bottom + responsiveHeight(5),
-        }}>
+      <View style={Style.mainView}>
         <View style={Style.titleView}>
           <Text
             allowFontScaling={false}
@@ -172,7 +169,7 @@ const MainScreen = () => {
                 cx={'50%'}
                 cy={'50%'}
                 stroke={theme.chartBackground}
-                strokeWidth={responsiveWidth(5)}
+                strokeWidth={'8%'}
                 r={responsiveWidth(27.5)}
                 strokeOpacity={0.9}
                 fill={'transparent'}
@@ -183,7 +180,7 @@ const MainScreen = () => {
                 cx={'50%'}
                 cy={'50%'}
                 stroke={Colors.primary}
-                strokeWidth={responsiveWidth(5)}
+                strokeWidth={'8%'}
                 r={responsiveWidth(27.5)}
                 fill={'transparent'}
                 strokeDasharray={circleCircumference}

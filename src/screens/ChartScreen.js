@@ -8,7 +8,7 @@ import {
   StyleSheet,
   TouchableOpacity,
 } from 'react-native';
-import {SafeAreaView} from 'react-native-safe-area-context';
+import {SafeAreaView, useSafeAreaInsets} from 'react-native-safe-area-context';
 // library imports
 import {FlatList} from 'react-native-gesture-handler';
 import Svg, {G, Circle} from 'react-native-svg';
@@ -24,7 +24,10 @@ import Share from 'react-native-share';
 import {ThemeContext} from '../config';
 import {Colors, darkTheme, lightTheme} from '../constants';
 import {InterstitialAd, AdEventType} from 'react-native-google-mobile-ads';
-import {responsiveWidth} from 'react-native-responsive-dimensions';
+import {
+  responsiveHeight,
+  responsiveWidth,
+} from 'react-native-responsive-dimensions';
 import {GRADIFY_APP_LINK} from '../utils';
 
 // const adUnitId = 'ca-app-pub-5104848143569703/9692815003';
@@ -38,6 +41,7 @@ const interstitial = InterstitialAd.createForAdRequest(adUnitId, {
 const AnimatedCircle = Animated.createAnimatedComponent(Circle);
 
 const ChartScreen = ({route, navigation}) => {
+  const insets = useSafeAreaInsets();
   const {isDarkTheme} = React.useContext(ThemeContext);
   const theme = isDarkTheme ? darkTheme : lightTheme;
   const [image, setImage] = useState('');
@@ -124,15 +128,12 @@ const ChartScreen = ({route, navigation}) => {
         type: 'success',
         text1: 'Image saved to gallery',
         position: 'bottom',
-        bottomOffset: 100,
-        // And I can pass any custom props I want
       });
     } catch (error) {
       Toast.show({
         type: 'error',
         text1: 'Image failed to save',
         position: 'bottom',
-        bottomOffset: 100,
       });
     }
   };
@@ -145,8 +146,9 @@ const ChartScreen = ({route, navigation}) => {
             props.text1 === 'Image saved to gallery'
               ? Colors.primary
               : Colors.redColor,
-          backgroundColor: theme.backgroundColorHome,
+          backgroundColor: theme.backgroundColor,
           color: Colors.primary,
+          width: responsiveWidth(80),
         }}
         contentContainerStyle={Style.contentContainer}
         text1Style={[Style.contentContainerText, {color: theme.textColor}]}
@@ -160,8 +162,9 @@ const ChartScreen = ({route, navigation}) => {
             props.text1 === 'Image saved to gallery'
               ? Colors.primary
               : Colors.redColor,
-          backgroundColor: theme.backgroundColorHome,
+          backgroundColor: theme.backgroundColor,
           color: Colors.primary,
+          width: responsiveWidth(80),
         }}
         contentContainerStyle={Style.contentContainer}
         text1Style={[Style.contentContainerText, {color: theme.textColor}]}
@@ -210,13 +213,11 @@ const ChartScreen = ({route, navigation}) => {
 
   // Function to share app name and results
   const shareResults = async () => {
-    setShareClickCounter(shareClickCounter + 1);
-
-    if (shareClickCounter % 2 === 1 && loaded) {
-      interstitial.show();
-    }
-
     try {
+      setShareClickCounter(shareClickCounter + 1);
+      if (shareClickCounter % 2 === 1 && loaded) {
+        interstitial.show();
+      }
       await Share.open({
         title: 'Share Results',
         message: `Check out my results on MyApp! ${GRADIFY_APP_LINK}\nYour Score: ${totalSum}\nSgp Points: ${totalChPoints}\nAim to Achieve: ${remainingPercentage}%`,
@@ -226,7 +227,6 @@ const ChartScreen = ({route, navigation}) => {
         type: 'error',
         text1: 'Failed to share',
         position: 'bottom',
-        bottomOffset: 100,
       });
     }
   };
@@ -278,7 +278,7 @@ const ChartScreen = ({route, navigation}) => {
             onPress={() => navigation.goBack()}
             size={responsiveWidth(7)}
             color={theme.textColor}
-            style={{left: 15}}
+            // style={{left: 15}}
             allowFontScaling={false}
           />
         }
@@ -288,7 +288,7 @@ const ChartScreen = ({route, navigation}) => {
             onPress={shareResults}
             size={responsiveWidth(7)}
             color={theme.textColor}
-            style={{right: 15}}
+            // style={{right: 15}}
             allowFontScaling={false}
           />
         }
@@ -311,7 +311,7 @@ const ChartScreen = ({route, navigation}) => {
               cx={'50%'}
               cy={'50%'}
               stroke={theme.chartBackground}
-              strokeWidth={responsiveWidth(7)} // Updated for a stroke width of 30
+              strokeWidth={'12%'} // Updated for a stroke width of 30
               r={110} // Updated for a circle radius of 110
               strokeOpacity={0.9}
               fill={'transparent'}
@@ -387,13 +387,13 @@ const ChartScreen = ({route, navigation}) => {
           />
         </TouchableOpacity>
       </View>
-      <View>
-        <Toast config={toastConfig} />
-      </View>
       <ViewShot
         style={Style.viewShot}
         onCapture={captureScreen}
         ref={ref}></ViewShot>
+      <View style={{bottom: insets.bottom - responsiveHeight(10)}}>
+        <Toast bottomOffset={200} config={toastConfig} />
+      </View>
     </SafeAreaView>
   );
 };

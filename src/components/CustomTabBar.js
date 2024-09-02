@@ -9,6 +9,7 @@ import Style from './styles/CustomTabBarStyle';
 import {ThemeContext} from '../config';
 import {lightTheme, darkTheme} from '../constants';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
+import {responsiveWidth} from 'react-native-responsive-dimensions';
 
 const CustomTabBar = ({state, descriptors, navigation}) => {
   const insets = useSafeAreaInsets();
@@ -39,7 +40,6 @@ const CustomTabBar = ({state, descriptors, navigation}) => {
         const iconName = options.tabBarIcon({
           focused: isFocused,
           color: isFocused ? theme.iconSelectedColor : theme.iconColor,
-          size: 24,
         }).props.name;
 
         return (
@@ -59,7 +59,7 @@ const CustomTabBar = ({state, descriptors, navigation}) => {
             easing="ease-out">
             <Icon
               name={iconName}
-              size={isFocused ? 26 : 24}
+              size={responsiveWidth(7)}
               color={isFocused ? theme.iconSelectedColor : theme.iconColor}
               onPress={onPress}
               style={isFocused ? Style.iconSelected : null}

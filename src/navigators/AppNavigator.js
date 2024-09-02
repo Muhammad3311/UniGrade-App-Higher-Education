@@ -4,6 +4,8 @@ import {createStackNavigator} from '@react-navigation/stack';
 import {NavigationContainer} from '@react-navigation/native';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs';
+import {StatusBar} from 'react-native';
+import {responsiveFontSize} from 'react-native-responsive-dimensions';
 
 // import screens
 import {
@@ -20,8 +22,6 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import {CustomTabBar} from '../components';
 import {Colors, darkTheme, lightTheme} from '../constants';
 import {ThemeContext} from '../config';
-import {StatusBar} from 'react-native';
-import {responsiveFontSize} from 'react-native-responsive-dimensions';
 
 // Assigning Stack & Tab properties
 const Stack = createStackNavigator();

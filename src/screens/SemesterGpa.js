@@ -9,7 +9,6 @@ import {
   KeyboardController,
 } from 'react-native-keyboard-controller';
 import {
-  responsiveFontSize,
   responsiveHeight,
   responsiveWidth,
 } from 'react-native-responsive-dimensions';
@@ -192,8 +191,10 @@ const SemesterGpa = ({navigation}) => {
         Style.container,
         {
           backgroundColor: theme.backgroundColor,
-          height: responsiveHeight(100),
-          paddingBottom: insets.bottom + 20,
+          paddingBottom:
+            insets.bottom == 0
+              ? insets.bottom + responsiveHeight(12)
+              : insets.bottom + responsiveHeight(10),
         },
       ]}>
       <View style={Style.mainContainer}>
@@ -232,9 +233,8 @@ const SemesterGpa = ({navigation}) => {
               label="─── Custom Scales ───"
               enabled={false}
               style={{
-                ...Style.pickerItem,
+                ...Style.pickerItemPrimary,
                 backgroundColor: theme.backgroundColor,
-                color: Colors.primary,
               }}
             />
             <Picker.Item
@@ -310,7 +310,7 @@ const SemesterGpa = ({navigation}) => {
         contentContainerStyle={Style.contentContainerStyle}
         enableOnAndroid={true}
         showsVerticalScrollIndicator={false}
-        extraScrollHeight={150}
+        extraScrollHeight={100}
         bounces={false}
         keyboardOpeningTime={0}>
         {subjects.map((subject, index) => (
@@ -348,7 +348,7 @@ const SemesterGpa = ({navigation}) => {
                   backgroundColor: Colors.transparent,
                   color: theme.textColor,
                   height: 20,
-                  flex: 1,
+                  width: responsiveWidth(28),
                 }}>
                 <Picker.Item
                   label="1"
@@ -399,7 +399,10 @@ const SemesterGpa = ({navigation}) => {
         label={'Calculate GPA'}
         onPress={handleCalculate}
         labelStyle={Style.labelStyle}
-        buttonContainerStyle={{...Style.buttonContainerStyle, marginTop: 10}}
+        buttonContainerStyle={{
+          ...Style.buttonContainerStyle,
+          marginVertical: 10,
+        }}
       />
     </View>
   );

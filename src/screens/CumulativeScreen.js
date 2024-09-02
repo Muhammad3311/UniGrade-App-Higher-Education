@@ -4,12 +4,8 @@ import Modal from 'react-native-modal';
 import Big from 'big.js';
 import Icon from 'react-native-vector-icons/Ionicons';
 import AwesomeIcon from 'react-native-vector-icons/FontAwesome';
-import {ThemeContext} from '../config';
-import {Colors, lightTheme, darkTheme} from '../constants';
-import {TextButton} from '../components';
 import Toast, {BaseToast} from 'react-native-toast-message';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
-import Style from './styles/CumulativeScreenStyle';
 import {
   responsiveFontSize,
   responsiveHeight,
@@ -20,8 +16,16 @@ import {
   AndroidSoftInputModes,
   KeyboardController,
 } from 'react-native-keyboard-controller';
+import {useSafeAreaInsets} from 'react-native-safe-area-context';
+
+// custom imports
+import Style from './styles/CumulativeScreenStyle';
+import {ThemeContext} from '../config';
+import {Colors, lightTheme, darkTheme} from '../constants';
+import {TextButton} from '../components';
 
 const CumulativeScreen = ({navigation}) => {
+  const insets = useSafeAreaInsets();
   const {isDarkTheme} = React.useContext(ThemeContext);
   const theme = isDarkTheme ? darkTheme : lightTheme;
   const [numberOfSemesters, setNumberOfSemesters] = useState(null);
@@ -106,8 +110,9 @@ const CumulativeScreen = ({navigation}) => {
         text1={props.text1}
         style={{
           borderLeftColor: Colors.redColor,
-          backgroundColor: theme.backgroundColorHome,
+          backgroundColor: theme.backgroundColor,
           color: Colors.primary,
+          width: responsiveWidth(80),
         }}
         contentContainerStyle={Style.contentContainerStyle}
         text1Style={[Style.text1Style, {color: theme.textColor}]}
@@ -125,9 +130,70 @@ const CumulativeScreen = ({navigation}) => {
         Style.container,
         {
           backgroundColor: theme.backgroundColor,
-          height: responsiveHeight(100),
+          flex: 1,
+          paddingBottom:
+            insets.bottom == 0
+              ? insets.bottom + responsiveHeight(9)
+              : insets.bottom + responsiveHeight(7),
         },
       ]}>
+      <Modal
+        isVisible={isSemesterModalVisible}
+        backdropColor={theme.backgroundColor}
+        onBackButtonPress={() => setSemesterModalVisible(false)}
+        coverScreen={false}
+        animationIn="slideInUp"
+        animationOut="slideOutDown"
+        animationInTiming={500}
+        animationOutTiming={900}
+        style={{
+          marginBottom: responsiveHeight(10),
+          backgroundColor: theme.backgroundColor,
+        }}
+        onBackdropPress={() => setSemesterModalVisible(false)}>
+        <View
+          style={[
+            Style.modalContent,
+            {backgroundColor: theme.backgroundColor},
+          ]}>
+          <Text allowFontScaling={false} style={Style.modalTitle}>
+            Choose Semesters
+          </Text>
+          {Array.from({length: 10}, (_, i) => i + 1).map(num => (
+            <TouchableOpacity
+              style={Style.modalButton}
+              key={num}
+              onPress={() => {
+                setNumberOfSemesters(num);
+                initializeEntries(num);
+                setSemesterModalVisible(false);
+              }}>
+              <View style={Style.viewStyle}>
+                <AwesomeIcon
+                  name="graduation-cap"
+                  size={responsiveWidth(5.5)}
+                  color={theme.textColor}
+                  allowFontScaling={false}
+                />
+              </View>
+              <View style={Style.modalView}>
+                <Text
+                  allowFontScaling={false}
+                  style={[Style.modalItem, {color: theme.textColor}]}>
+                  Semester
+                </Text>
+              </View>
+              <View style={Style.numbersViewStyle}>
+                <Text
+                  allowFontScaling={false}
+                  style={[Style.modalItem, {color: theme.textColor}]}>
+                  {num}
+                </Text>
+              </View>
+            </TouchableOpacity>
+          ))}
+        </View>
+      </Modal>
       <View
         style={{
           alignItems: 'center',
@@ -201,9 +267,9 @@ const CumulativeScreen = ({navigation}) => {
         </View>
         <KeyboardAwareScrollView
           // contentContainerStyle={Style.keyboardScrollViewStyle}
-          style={{flexGrow: 0.8}}
+          style={{flexGrow: 1}}
           showsVerticalScrollIndicator={false}
-          extraScrollHeight={200}
+          extraScrollHeight={100}
           enableOnAndroid={true}>
           {entries.map((item, index) => (
             <View key={index} style={Style.entry}>
@@ -255,65 +321,17 @@ const CumulativeScreen = ({navigation}) => {
           ))}
         </KeyboardAwareScrollView>
 
-        <Modal
-          isVisible={isSemesterModalVisible}
-          backdropColor={theme.backgroundColor}
-          onBackButtonPress={() => setSemesterModalVisible(false)}
-          coverScreen={false}
-          animationIn="slideInUp"
-          animationOut="slideOutDown"
-          animationInTiming={500}
-          animationOutTiming={900}
-          onBackdropPress={() => setSemesterModalVisible(false)}>
-          <View
-            style={[
-              Style.modalContent,
-              {backgroundColor: theme.backgroundColor},
-            ]}>
-            <Text allowFontScaling={false} style={Style.modalTitle}>
-              Choose Semesters
-            </Text>
-            {Array.from({length: 10}, (_, i) => i + 1).map(num => (
-              <TouchableOpacity
-                style={Style.modalButton}
-                key={num}
-                onPress={() => {
-                  setNumberOfSemesters(num);
-                  initializeEntries(num);
-                  setSemesterModalVisible(false);
-                }}>
-                <View style={Style.viewStyle}>
-                  <AwesomeIcon
-                    name="graduation-cap"
-                    size={responsiveWidth(5.5)}
-                    color={theme.textColor}
-                    allowFontScaling={false}
-                  />
-                </View>
-                <View style={Style.modalView}>
-                  <Text
-                    allowFontScaling={false}
-                    style={[Style.modalItem, {color: theme.textColor}]}>
-                    Semester
-                  </Text>
-                </View>
-                <View style={Style.numbersViewStyle}>
-                  <Text
-                    allowFontScaling={false}
-                    style={[Style.modalItem, {color: theme.textColor}]}>
-                    {num}
-                  </Text>
-                </View>
-              </TouchableOpacity>
-            ))}
-          </View>
-        </Modal>
-        <TextButton
-          label={'Calculate CGPA'}
-          onPress={calculateCgpa}
-          labelStyle={Style.labelStyle}
-          buttonContainerStyle={{...Style.buttonContainerStyle, marginTop: 10}}
-        />
+        {numberOfSemesters && (
+          <TextButton
+            label={'Calculate CGPA'}
+            onPress={calculateCgpa}
+            labelStyle={Style.labelStyle}
+            buttonContainerStyle={{
+              ...Style.buttonContainerStyle,
+              marginVertical: 10,
+            }}
+          />
+        )}
 
         <Toast config={toastConfig} />
       </View>

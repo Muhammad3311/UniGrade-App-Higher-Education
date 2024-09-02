@@ -19,7 +19,7 @@ const Header = ({
           numberOfLines={1}
           allowFontScaling={false}
           ellipsizeMode="tail"
-          style={{...Style.label, ...titleStyle}}>
+          style={titleStyle}>
           {title}
         </Text>
       </TouchableOpacity>
