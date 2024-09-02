@@ -28,30 +28,7 @@ const PerformaceScreen = () => {
   const {isDarkTheme} = React.useContext(ThemeContext);
   const theme = isDarkTheme ? darkTheme : lightTheme;
   const [chartdata, setChartData] = useState([]);
-  const chartConfig = {
-    backgroundColor: theme.chartBackground,
-    backgroundGradientFrom: theme.chartGradientFrom,
-    backgroundGradientTo: theme.chartGradientTo,
-    color: (opacity = 1) =>
-      isDarkTheme
-        ? `rgba(255, 255, 255, ${opacity})`
-        : `rgba(0, 0, 0, ${opacity})`,
-    labelColor: (opacity = 1) =>
-      isDarkTheme
-        ? `rgba(255, 255, 255, ${opacity})`
-        : `rgba(0, 0, 0, ${opacity})`,
-    style: {
-      borderRadius: 15,
-    },
-    propsForDots: {
-      r: '6',
-      strokeWidth: '3',
-      stroke: Colors.primary,
-    },
-  };
-
   const [adLoaded, setAdLoaded] = useState(false);
-
   // preparing and loading ads
   React.useEffect(() => {
     const unsubscribeLoaded = rewarded.addAdEventListener(
@@ -76,43 +53,72 @@ const PerformaceScreen = () => {
 
   useEffect(() => {
     setChartData(kustGPAConfig);
-  });
+  }, []);
 
-  const renderItem = ({item, index}) => {
-    return (
-      <View key={index} style={Style.flatListView}>
-        <View style={Style.textView}>
-          <Text
-            allowFontScaling={false}
-            style={[
-              Style.textStyle,
-              {
-                color:
-                  item.marksRange == '86-100'
-                    ? Colors.primary
-                    : theme.lightTextColor,
-              },
-            ]}>
-            ●
-          </Text>
+  const chartConfig = React.useMemo(
+    () => ({
+      backgroundColor: theme.chartBackground,
+      backgroundGradientFrom: theme.chartGradientFrom,
+      backgroundGradientTo: theme.chartGradientTo,
+      color: (opacity = 1) =>
+        isDarkTheme
+          ? `rgba(255, 255, 255, ${opacity})`
+          : `rgba(0, 0, 0, ${opacity})`,
+      labelColor: (opacity = 1) =>
+        isDarkTheme
+          ? `rgba(255, 255, 255, ${opacity})`
+          : `rgba(0, 0, 0, ${opacity})`,
+      style: {
+        borderRadius: 15,
+      },
+      propsForDots: {
+        r: '6',
+        strokeWidth: '3',
+        stroke: Colors.primary,
+      },
+    }),
+    [isDarkTheme, theme],
+  );
+
+  const renderItem = React.useCallback(
+    ({item, index}) => {
+      return (
+        <View key={index} style={Style.flatListView}>
+          <View style={Style.textView}>
+            <Text
+              allowFontScaling={false}
+              style={[
+                Style.textStyle,
+                {
+                  color:
+                    item.marksRange == '86-100'
+                      ? Colors.primary
+                      : theme.lightTextColor,
+                },
+              ]}>
+              ●
+            </Text>
+          </View>
+          <View style={Style.topText}>
+            <Text
+              allowFontScaling={false}
+              style={[Style.flatListText, {color: theme.textColor}]}>
+              {item.marksRange}
+            </Text>
+          </View>
+          <View style={Style.topTextSecond}>
+            <Text
+              allowFontScaling={false}
+              style={[Style.flatListText, {color: theme.textColor}]}>
+              {item.letterGrade}
+            </Text>
+          </View>
         </View>
-        <View style={Style.topText}>
-          <Text
-            allowFontScaling={false}
-            style={[Style.flatListText, {color: theme.textColor}]}>
-            {item.marksRange}
-          </Text>
-        </View>
-        <View style={Style.topTextSecond}>
-          <Text
-            allowFontScaling={false}
-            style={[Style.flatListText, {color: theme.textColor}]}>
-            {item.letterGrade}
-          </Text>
-        </View>
-      </View>
-    );
-  };
+      );
+    },
+    [theme],
+  );
+
   return (
     <SafeAreaView
       style={[

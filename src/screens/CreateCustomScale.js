@@ -194,10 +194,7 @@ const CreateCustomScale = ({navigation}) => {
           style={Style.flexStyle}
           onBackButtonPress={onClose}>
           <View
-            style={[
-              Style.modalContent,
-              {backgroundColor: theme.backgroundColor},
-            ]}>
+            style={[Style.modalContent, {backgroundColor: theme.cardColor}]}>
             <ScrollView
               showsVerticalScrollIndicator={false}
               contentContainerStyle={Style.scrollViewContent}>

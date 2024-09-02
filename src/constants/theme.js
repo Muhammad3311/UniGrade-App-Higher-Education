@@ -22,7 +22,7 @@ export const lightTheme = {
   iconSelectedColor: '#ECF0F1',
   tabItemSelectedBackground: '#3664dc',
   lightTextColor: '#5A6587',
-  cardColor: '#FAFBFD',
+  cardColor: '#F8F8FF', // Ghost White - A very pale blueish white.
 };
 
 // app dark theme
