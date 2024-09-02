@@ -50,26 +50,27 @@ const ChartScreen = ({route, navigation}) => {
   const [gpaType, setGpaType] = useState('___');
   const totalSum = data.totalSum;
   const totalChPoints = data.newChPoints;
+  const gpaScale = data.gpaScale;
   const animatedValue = React.useRef(new Animated.Value(0)).current;
   const circleRef = React.useRef();
   const inputRef = React.useRef();
   const halfCircle = 110 + 15;
   const circleCircumference = 2 * Math.PI * 110;
   // Determine the maximum GPA scale dynamically
-  const getMaxGPA = gpa => {
-    const gpaValue = parseFloat(gpa);
-    if (source === 'CGPA') {
-      // Use data.gpaScale for the Cumulative screen
-      return data.gpaScale;
-    } else {
-      // For SGPA screen or others, apply the original logic
-      if (gpaValue <= 4.0) return 4;
-      if (gpaValue <= 5.0) return 5;
-      return 4; // Default to 4 if not within the expected range
-    }
-  };
-  const maxGPA = getMaxGPA(totalSum.toString());
-  const percentage = (totalSum / maxGPA) * 100;
+  // const getMaxGPA = gpa => {
+  //   const gpaValue = parseFloat(gpa);
+  //   if (source === 'CGPA') {
+  //     // Use data.gpaScale for the Cumulative screen
+  //     return data.gpaScale;
+  //   } else {
+  //     // For SGPA screen or others, apply the original logic
+  //     if (gpaValue <= 4.0) return 4;
+  //     if (gpaValue <= 5.0) return 5;
+  //     return 4; // Default to 4 if not within the expected range
+  //   }
+  // };
+  // const maxGPA = data.gpaScale(totalSum.toString());
+  const percentage = (totalSum / gpaScale) * 100;
   const remainingPercentage = (100 - percentage).toFixed(2);
   const max = 100;
   const duration = 1000;

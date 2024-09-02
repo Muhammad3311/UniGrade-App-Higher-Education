@@ -146,6 +146,10 @@ const SemesterGpa = ({navigation}) => {
     return 0.0; // Default GPA if not found
   };
 
+  const getFirstGPAValue = config => {
+    return config[0].gpa;
+  };
+
   const handleCalculate = () => {
     let configToUse =
       selectedConfig === 'Default' ? commonGPAConfigScale4 : gpaConfig;
@@ -167,9 +171,11 @@ const SemesterGpa = ({navigation}) => {
 
     const calculatedGpa = count > 0 ? (totalGpa / count).toFixed(2) : 0;
     setGpa(calculatedGpa);
+    const gpaScale = getFirstGPAValue(configToUse);
     const data = {
       totalSum: calculatedGpa,
       newChPoints: totalCreditHours,
+      gpaScale: parseInt(gpaScale),
     };
     navigation.navigate('ChartScreen', {data: data, source: 'SGPA'});
   };

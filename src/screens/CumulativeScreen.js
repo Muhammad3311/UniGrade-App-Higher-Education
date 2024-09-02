@@ -79,15 +79,18 @@ const CumulativeScreen = ({navigation}) => {
         (acc, entry) => acc.plus(new Big(entry.sgpa || 0)),
         new Big(0),
       );
-      // Adjust the GPA calculation based on selected scale
-      const adjustedSgpa = totalSgpa.div(totalSemesters).times(4).div(gpaScale);
 
-      setCgpa(adjustedSgpa.toFixed(2));
       const totalCreditHours = entries.reduce(
         (acc, entry) => acc.plus(new Big(entry.creditHours || 0)),
         new Big(0),
       );
 
+      // Adjust the GPA calculation based on selected scale
+      let adjustedSgpa = totalSgpa.div(totalSemesters);
+      if (gpaScale === 5) {
+        adjustedSgpa = adjustedSgpa.times(5).div(5);
+      }
+      setCgpa(adjustedSgpa.toFixed(2));
       let data = {
         totalSum: adjustedSgpa.toFixed(2),
         newChPoints: totalCreditHours.toString(),
