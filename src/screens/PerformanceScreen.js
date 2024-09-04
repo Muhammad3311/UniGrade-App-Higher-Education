@@ -16,7 +16,7 @@ import {ThemeContext} from '../config';
 import {Colors, darkTheme, lightTheme} from '../constants';
 
 // const adUnitIdRewarded = 'ca-app-pub-5104848143569703/1431181608';
-const adUnitIdRewarded = '	ca-app-pub-3940256099942544/5224354917';
+const adUnitIdRewarded = 'ca-app-pub-3940256099942544/5224354917';
 
 const rewarded = RewardedAd.createForAdRequest(adUnitIdRewarded, {
   keywords: ['education', 'books', 'learning', 'productivity', 'study'],

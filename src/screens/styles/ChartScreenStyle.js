@@ -11,12 +11,6 @@ export default StyleSheet.create({
     alignItems: 'center',
     flex: 1,
   },
-  contentContainer: {paddingHorizontal: 15},
-  contentContainerText: {
-    color: Colors.white,
-    fontFamily: 'Roboto-Regular',
-    fontSize: responsiveFontSize(2),
-  },
   containerStyle: {
     alignItems: 'center',
     paddingHorizontal: 15,

@@ -4,7 +4,6 @@ import Modal from 'react-native-modal';
 import Big from 'big.js';
 import Icon from 'react-native-vector-icons/Ionicons';
 import AwesomeIcon from 'react-native-vector-icons/FontAwesome';
-import Toast, {BaseToast} from 'react-native-toast-message';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import {
   responsiveFontSize,
@@ -20,14 +19,21 @@ import {useSafeAreaInsets} from 'react-native-safe-area-context';
 
 // custom imports
 import Style from './styles/CumulativeScreenStyle';
-import {ThemeContext} from '../config';
-import {Colors, lightTheme, darkTheme} from '../constants';
+import {ThemeContext, useToast} from '../config';
+import {
+  Colors,
+  lightTheme,
+  darkTheme,
+  commonGPAConfigScale5,
+  commonGPAConfigScale4,
+} from '../constants';
 import {TextButton} from '../components';
 
 const CumulativeScreen = ({navigation}) => {
   const insets = useSafeAreaInsets();
   const {isDarkTheme} = React.useContext(ThemeContext);
   const theme = isDarkTheme ? darkTheme : lightTheme;
+  const {showToast} = useToast();
   const [numberOfSemesters, setNumberOfSemesters] = useState(null);
   const [entries, setEntries] = useState([]);
   const [cgpa, setCgpa] = useState(null);
@@ -65,12 +71,7 @@ const CumulativeScreen = ({navigation}) => {
       // Check if all SGPA values are entered
       const allSgpaEntered = entries.every(entry => entry.sgpa !== '');
       if (!allSgpaEntered) {
-        Toast.show({
-          // type: 'fail',
-          text1: `Please fill the below SGPA fields`,
-          position: 'top',
-          bottomOffset: 100,
-        });
+        showToast('error', 'Attempt all the SGPA atleast!');
         return;
       }
 
@@ -87,8 +88,8 @@ const CumulativeScreen = ({navigation}) => {
 
       // Adjust the GPA calculation based on selected scale
       let adjustedSgpa = totalSgpa.div(totalSemesters);
-      if (gpaScale === 5) {
-        adjustedSgpa = adjustedSgpa.times(5).div(5);
+      if (gpaScale == 5) {
+        adjustedSgpa = adjustedSgpa.div(4).times(5).minus(1.25);
       }
       setCgpa(adjustedSgpa.toFixed(2));
       let data = {
@@ -96,6 +97,7 @@ const CumulativeScreen = ({navigation}) => {
         newChPoints: totalCreditHours.toString(),
         gpaScale: gpaScale,
       };
+      // console.log('data: ', data);
       navigationData(data);
     }
   };
@@ -105,22 +107,6 @@ const CumulativeScreen = ({navigation}) => {
       data: data,
       source: 'CGPA',
     });
-  };
-
-  const toastConfig = {
-    success: props => (
-      <BaseToast
-        text1={props.text1}
-        style={{
-          borderLeftColor: Colors.redColor,
-          backgroundColor: theme.backgroundColor,
-          color: Colors.primary,
-          width: responsiveWidth(80),
-        }}
-        contentContainerStyle={Style.contentContainerStyle}
-        text1Style={[Style.text1Style, {color: theme.textColor}]}
-      />
-    ),
   };
 
   const toggleGpaScale = () => {
@@ -335,8 +321,6 @@ const CumulativeScreen = ({navigation}) => {
             }}
           />
         )}
-
-        <Toast config={toastConfig} />
       </View>
     </View>
   );

@@ -15,7 +15,7 @@ import {
 import Entypo from 'react-native-vector-icons/Entypo';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 
-import {ThemeContext} from '../config';
+import {ThemeContext, useToast} from '../config';
 import {TextButton} from '../components';
 import Style from './styles/SemesterGpaStyle';
 import {
@@ -31,6 +31,7 @@ const SemesterGpa = ({navigation}) => {
   const insets = useSafeAreaInsets();
   const {isDarkTheme} = React.useContext(ThemeContext);
   const theme = isDarkTheme ? darkTheme : lightTheme;
+  const {showToast} = useToast();
   const [gpaConfig, setGpaConfig] = useState(commonGPAConfigScale4);
   const [subjects, setSubjects] = useState([{name: 'Subject 1', score: ''}]);
   const [gpa, setGpa] = useState(0);
@@ -150,7 +151,15 @@ const SemesterGpa = ({navigation}) => {
     return config[0].gpa;
   };
 
+  const validateInputs = () => {
+    return subjects.every(subject => subject.score.trim() !== '');
+  };
+
   const handleCalculate = () => {
+    if (!validateInputs()) {
+      showToast('error', 'Attempt the score fields');
+      return;
+    }
     let configToUse =
       selectedConfig === 'Default' ? commonGPAConfigScale4 : gpaConfig;
     const totalCreditHours = subjects.reduce(

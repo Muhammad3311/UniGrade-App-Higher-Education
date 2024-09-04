@@ -2,7 +2,6 @@ import {StyleSheet} from 'react-native';
 import {Colors} from '../../constants';
 import {
   responsiveFontSize,
-  responsiveHeight,
   responsiveWidth,
 } from 'react-native-responsive-dimensions';
 
@@ -29,6 +28,7 @@ export default StyleSheet.create({
     overflow: 'hidden',
     padding: 5,
   },
+  contentContainerStyleToast: {paddingHorizontal: responsiveWidth(4)},
   creditView: {
     backgroundColor: Colors.transparent,
     borderColor: Colors.transparent,

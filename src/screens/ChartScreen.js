@@ -15,13 +15,12 @@ import Svg, {G, Circle} from 'react-native-svg';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import ViewShot, {captureScreen} from 'react-native-view-shot';
 import RNFS from 'react-native-fs';
-import Toast, {BaseToast} from 'react-native-toast-message';
 // custom imports
 import Style from './styles/ChartScreenStyle';
 import {Header} from '../components';
 import IonIcon from 'react-native-vector-icons/Ionicons';
 import Share from 'react-native-share';
-import {ThemeContext} from '../config';
+import {ThemeContext, useToast} from '../config';
 import {Colors, darkTheme, lightTheme} from '../constants';
 import {InterstitialAd, AdEventType} from 'react-native-google-mobile-ads';
 import {
@@ -31,7 +30,7 @@ import {
 import {GRADIFY_APP_LINK} from '../utils';
 
 // const adUnitId = 'ca-app-pub-5104848143569703/9692815003';
-const adUnitId = '	ca-app-pub-3940256099942544/1033173712';
+const adUnitId = 'ca-app-pub-3940256099942544/1033173712';
 
 const interstitial = InterstitialAd.createForAdRequest(adUnitId, {
   keywords: ['education', 'books', 'learning', 'productivity', 'study'],
@@ -44,6 +43,7 @@ const ChartScreen = ({route, navigation}) => {
   const insets = useSafeAreaInsets();
   const {isDarkTheme} = React.useContext(ThemeContext);
   const theme = isDarkTheme ? darkTheme : lightTheme;
+  const {showToast} = useToast();
   const [image, setImage] = useState('');
   //const data = route.params.data; // incoming data from multiple
   const {data, source} = route.params;
@@ -56,20 +56,6 @@ const ChartScreen = ({route, navigation}) => {
   const inputRef = React.useRef();
   const halfCircle = 110 + 15;
   const circleCircumference = 2 * Math.PI * 110;
-  // Determine the maximum GPA scale dynamically
-  // const getMaxGPA = gpa => {
-  //   const gpaValue = parseFloat(gpa);
-  //   if (source === 'CGPA') {
-  //     // Use data.gpaScale for the Cumulative screen
-  //     return data.gpaScale;
-  //   } else {
-  //     // For SGPA screen or others, apply the original logic
-  //     if (gpaValue <= 4.0) return 4;
-  //     if (gpaValue <= 5.0) return 5;
-  //     return 4; // Default to 4 if not within the expected range
-  //   }
-  // };
-  // const maxGPA = data.gpaScale(totalSum.toString());
   const percentage = (totalSum / gpaScale) * 100;
   const remainingPercentage = (100 - percentage).toFixed(2);
   const max = 100;
@@ -78,7 +64,6 @@ const ChartScreen = ({route, navigation}) => {
   const chartArray = [
     {id: 1, type: 'Your Score', value: totalSum},
     {id: 2, type: 'Total Cr Hrs', value: totalChPoints},
-    // {id: 3, type: 'Total Sgp Points', value: totalSgpPoints},
     {id: 3, type: 'Aim to Achieve ', value: `${remainingPercentage}%`},
   ];
   const ref = useRef();
@@ -125,52 +110,10 @@ const ChartScreen = ({route, navigation}) => {
       setImage(filePath); // setting image to state variables
 
       // modern toast messages are implementated for success / failure alerts
-      Toast.show({
-        type: 'success',
-        text1: 'Image saved to gallery',
-        position: 'bottom',
-      });
+      showToast('success', 'Image saved to gallery');
     } catch (error) {
-      Toast.show({
-        type: 'error',
-        text1: 'Image failed to save',
-        position: 'bottom',
-      });
+      showToast('error', 'Image failed to save');
     }
-  };
-  const toastConfig = {
-    success: props => (
-      <BaseToast
-        text1={props.text1}
-        style={{
-          borderLeftColor:
-            props.text1 === 'Image saved to gallery'
-              ? Colors.primary
-              : Colors.redColor,
-          backgroundColor: theme.backgroundColor,
-          color: Colors.primary,
-          width: responsiveWidth(80),
-        }}
-        contentContainerStyle={Style.contentContainer}
-        text1Style={[Style.contentContainerText, {color: theme.textColor}]}
-      />
-    ),
-    error: props => (
-      <BaseToast
-        text1={props.text1}
-        style={{
-          borderLeftColor:
-            props.text1 === 'Image saved to gallery'
-              ? Colors.primary
-              : Colors.redColor,
-          backgroundColor: theme.backgroundColor,
-          color: Colors.primary,
-          width: responsiveWidth(80),
-        }}
-        contentContainerStyle={Style.contentContainer}
-        text1Style={[Style.contentContainerText, {color: theme.textColor}]}
-      />
-    ),
   };
 
   const animation = toValue => {
@@ -214,21 +157,17 @@ const ChartScreen = ({route, navigation}) => {
 
   // Function to share app name and results
   const shareResults = async () => {
+    setShareClickCounter(shareClickCounter + 1);
+    if (shareClickCounter % 2 === 1 && loaded) {
+      interstitial.show();
+    }
     try {
-      setShareClickCounter(shareClickCounter + 1);
-      if (shareClickCounter % 2 === 1 && loaded) {
-        interstitial.show();
-      }
       await Share.open({
         title: 'Share Results',
-        message: `Check out my results on MyApp! ${GRADIFY_APP_LINK}\nYour Score: ${totalSum}\nSgp Points: ${totalChPoints}\nAim to Achieve: ${remainingPercentage}%`,
+        message: `Hey, check out my results on Gradify! ${GRADIFY_APP_LINK}\nYour Score: ${totalSum}\nSgp Points: ${totalChPoints}\nAim to Achieve: ${remainingPercentage}%`,
       });
     } catch (error) {
-      Toast.show({
-        type: 'error',
-        text1: 'Failed to share',
-        position: 'bottom',
-      });
+      showToast('error', 'Failed to share');
     }
   };
 
@@ -392,9 +331,7 @@ const ChartScreen = ({route, navigation}) => {
         style={Style.viewShot}
         onCapture={captureScreen}
         ref={ref}></ViewShot>
-      <View style={{bottom: insets.bottom - responsiveHeight(10)}}>
-        <Toast bottomOffset={200} config={toastConfig} />
-      </View>
+      <View style={{bottom: insets.bottom - responsiveHeight(10)}}></View>
     </SafeAreaView>
   );
 };

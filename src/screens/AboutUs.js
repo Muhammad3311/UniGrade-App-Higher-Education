@@ -19,8 +19,7 @@ const AboutUs = () => {
   const paragraph = AboutParagraph;
   const businessLink = 'follow us on Instagram';
   const authorName = 'DeTech Digital Studio';
-  // const rateApp = 'Rate Gradify on playstore';
-  const rateApp = 'DeTech Digital Studio';
+  const rateApp = 'Rate Gradify on playstore';
 
   const handlePress = () => {
     Linking.openURL(GRADIFY_APP_LINK);
@@ -109,17 +108,11 @@ const AboutUs = () => {
                 style={{...Style.iconText, color: theme.lightTextColor}}>
                 {rateApp}
               </Text>
-              {/* <Text
-                allowFontScaling={false}
-                style={Style.linkText}
-                onPress={handlePress}>
-                gradify playstore link
-              </Text> */}
               <Text
                 allowFontScaling={false}
                 style={Style.linkText}
                 onPress={handlePress}>
-                detech digital studio link
+                gradify playstore link
               </Text>
             </View>
           </View>

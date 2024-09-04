@@ -134,7 +134,8 @@ const MainScreen = () => {
       }}>
       <StatusBar
         barStyle={theme.statusContent}
-        backgroundColor={theme.backgroundColor}
+        backgroundColor={Colors.transparent}
+        translucent
       />
       {renderHeader()}
       <View style={Style.adContainer}>
