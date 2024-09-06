@@ -1,18 +1,4 @@
 // Default Kust GPA mapping configuration
-// export const kustGPAConfig = [
-//   {letterGrade: 'A', marksRange: '86-100', gpa: '4.0'},
-//   {letterGrade: 'A-', marksRange: '82-85', gpa: '3.67-3.92'},
-//   {letterGrade: 'B+', marksRange: '78-81', gpa: '3.33-3.58'},
-//   {letterGrade: 'B', marksRange: '74-77', gpa: '3.00-3.25'},
-//   {letterGrade: 'B-', marksRange: '70-73', gpa: '2.67-2.92'},
-//   {letterGrade: 'C+', marksRange: '66-69', gpa: '2.33-2.58'},
-//   {letterGrade: 'C', marksRange: '62-65', gpa: '2.00-2.25'},
-//   {letterGrade: 'C-', marksRange: '58-61', gpa: '1.67-1.92'},
-//   {letterGrade: 'D+', marksRange: '54-57', gpa: '1.33-1.58'},
-//   {letterGrade: 'D', marksRange: '50-53', gpa: '1.00-1.25'},
-//   {letterGrade: 'F', marksRange: '0-49', gpa: '0.0'},
-// ];
-
 export const kustGPAConfig = [
   // Range 82 - 100
   {letterGrade: 'A', marksRange: '86-100', gpa: '4'},
