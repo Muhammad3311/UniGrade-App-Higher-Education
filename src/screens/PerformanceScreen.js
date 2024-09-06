@@ -10,13 +10,12 @@ import {
 import {RewardedAd, RewardedAdEventType} from 'react-native-google-mobile-ads';
 
 // custom imports
-import {kustGPAConfig} from '../constants';
+import {commonGPAConfigScale4} from '../constants';
 import Style from './styles/PerformanceScreenStyle';
 import {ThemeContext} from '../config';
 import {Colors, darkTheme, lightTheme} from '../constants';
 
-// const adUnitIdRewarded = 'ca-app-pub-5104848143569703/1431181608';
-const adUnitIdRewarded = 'ca-app-pub-3940256099942544/5224354917';
+const adUnitIdRewarded = 'ca-app-pub-5104848143569703/1431181608';
 
 const rewarded = RewardedAd.createForAdRequest(adUnitIdRewarded, {
   keywords: ['education', 'books', 'learning', 'productivity', 'study'],
@@ -52,7 +51,7 @@ const PerformaceScreen = () => {
   }, []);
 
   useEffect(() => {
-    setChartData(kustGPAConfig);
+    setChartData(commonGPAConfigScale4);
   }, []);
 
   const chartConfig = React.useMemo(
@@ -91,7 +90,7 @@ const PerformaceScreen = () => {
                 Style.textStyle,
                 {
                   color:
-                    item.marksRange == '86-100'
+                    item.marksRange == '90-100'
                       ? Colors.primary
                       : theme.lightTextColor,
                 },
@@ -140,6 +139,9 @@ const PerformaceScreen = () => {
           allowFontScaling={false}
           style={[Style.mainTitle, {color: theme.textColor}]}>
           Grade Point Average Chart
+        </Text>
+        <Text allowFontScaling={false} style={Style.mainSubTitle}>
+          Worldwide Common Scale - 4
         </Text>
         <LineChart
           animate={true}

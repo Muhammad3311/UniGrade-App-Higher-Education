@@ -5,7 +5,7 @@ import {
   responsiveFontSize,
   responsiveWidth,
 } from 'react-native-responsive-dimensions';
-import {ThemeContext} from './ThemeContext';
+import {ThemeContext} from '../config';
 
 const ToastContext = createContext();
 

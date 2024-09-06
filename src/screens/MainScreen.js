@@ -45,8 +45,7 @@ const MainScreen = () => {
   const ugmSystem = 'Gradify GPA Calculator';
   const successMessage = " You're one step away to track your success record";
 
-  // const adUnitId = 'ca-app-pub-5104848143569703/9884386694'; // real id
-  const adUnitId = 'ca-app-pub-3940256099942544/9214589741'; // test id
+  const adUnitId = 'ca-app-pub-5104848143569703/9884386694';
 
   // animation function for circle
   const animation = toValue => {

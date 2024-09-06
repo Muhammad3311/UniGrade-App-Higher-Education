@@ -29,8 +29,7 @@ import {
 } from 'react-native-responsive-dimensions';
 import {GRADIFY_APP_LINK} from '../utils';
 
-// const adUnitId = 'ca-app-pub-5104848143569703/9692815003';
-const adUnitId = 'ca-app-pub-3940256099942544/1033173712';
+const adUnitId = 'ca-app-pub-5104848143569703/9692815003';
 
 const interstitial = InterstitialAd.createForAdRequest(adUnitId, {
   keywords: ['education', 'books', 'learning', 'productivity', 'study'],

@@ -20,13 +20,7 @@ import {useSafeAreaInsets} from 'react-native-safe-area-context';
 // custom imports
 import Style from './styles/CumulativeScreenStyle';
 import {ThemeContext, useToast} from '../config';
-import {
-  Colors,
-  lightTheme,
-  darkTheme,
-  commonGPAConfigScale5,
-  commonGPAConfigScale4,
-} from '../constants';
+import {Colors, lightTheme, darkTheme} from '../constants';
 import {TextButton} from '../components';
 
 const CumulativeScreen = ({navigation}) => {

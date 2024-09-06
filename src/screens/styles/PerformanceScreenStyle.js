@@ -32,9 +32,16 @@ export default StyleSheet.create({
     width: responsiveWidth(100),
   },
   mainTitle: {
-    color: Colors.white,
     fontFamily: 'Roboto-Medium',
     fontSize: responsiveFontSize(3),
+    paddingTop: responsiveHeight(1),
+    textAlign: 'center',
+  },
+  mainSubTitle: {
+    color: Colors.primary,
+    fontFamily: 'Roboto-Medium',
+    fontSize: responsiveFontSize(2),
+    lineHeight: 15,
     paddingVertical: responsiveHeight(1),
     textAlign: 'center',
   },

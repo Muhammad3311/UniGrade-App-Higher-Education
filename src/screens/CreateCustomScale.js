@@ -29,7 +29,12 @@ import {
 
 // custom imports
 import Style from './styles/CreateCustomScaleStyle';
-import {Colors, kustGPAConfig, lightTheme, darkTheme} from '../constants';
+import {
+  Colors,
+  commonGPAConfigScale4,
+  lightTheme,
+  darkTheme,
+} from '../constants';
 import {ThemeContext} from '../config';
 import {Header, TextButton} from '../components';
 
@@ -38,7 +43,7 @@ const CreateCustomScale = ({navigation}) => {
   const {isDarkTheme} = React.useContext(ThemeContext);
   const theme = isDarkTheme ? darkTheme : lightTheme;
   const [localGpaConfig, setLocalGpaConfig] = useState(() =>
-    JSON.parse(JSON.stringify(kustGPAConfig)),
+    JSON.parse(JSON.stringify(commonGPAConfigScale4)),
   );
   const [isGpaExpanded, setIsGpaExpanded] = useState(true);
   const [showConfigs, setShowConfigs] = useState(false);
