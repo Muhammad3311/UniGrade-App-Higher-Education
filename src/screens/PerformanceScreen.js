@@ -7,7 +7,7 @@ import {
   responsiveHeight,
   responsiveWidth,
 } from 'react-native-responsive-dimensions';
-import {RewardedAd, RewardedAdEventType} from 'react-native-google-mobile-ads';
+// import {RewardedAd, RewardedAdEventType} from 'react-native-google-mobile-ads';
 
 // custom imports
 import {commonGPAConfigScale4} from '../constants';
@@ -15,40 +15,40 @@ import Style from './styles/PerformanceScreenStyle';
 import {ThemeContext} from '../config';
 import {Colors, darkTheme, lightTheme} from '../constants';
 
-const adUnitIdRewarded = 'ca-app-pub-5104848143569703/1431181608';
+// const adUnitIdRewarded = 'ca-app-pub-5104848143569703/1431181608';
 
-const rewarded = RewardedAd.createForAdRequest(adUnitIdRewarded, {
-  keywords: ['education', 'books', 'learning', 'productivity', 'study'],
-  requestNonPersonalizedAdsOnly: true,
-});
+// const rewarded = RewardedAd.createForAdRequest(adUnitIdRewarded, {
+//   keywords: ['education', 'books', 'learning', 'productivity', 'study'],
+//   requestNonPersonalizedAdsOnly: true,
+// });
 
 const PerformaceScreen = () => {
   const insets = useSafeAreaInsets();
   const {isDarkTheme} = React.useContext(ThemeContext);
   const theme = isDarkTheme ? darkTheme : lightTheme;
   const [chartdata, setChartData] = useState([]);
-  const [adLoaded, setAdLoaded] = useState(false);
+  // const [adLoaded, setAdLoaded] = useState(false);
   // preparing and loading ads
-  React.useEffect(() => {
-    const unsubscribeLoaded = rewarded.addAdEventListener(
-      RewardedAdEventType.LOADED,
-      () => {
-        setAdLoaded(true);
-        rewarded.show();
-      },
-    );
-    const unsubscribeEarned = rewarded.addAdEventListener(
-      RewardedAdEventType.EARNED_REWARD,
-      reward => {
-        //console.log('User earned reward of ', reward);
-      },
-    );
-    rewarded.load();
-    return () => {
-      unsubscribeLoaded();
-      unsubscribeEarned();
-    };
-  }, []);
+  // React.useEffect(() => {
+  //   const unsubscribeLoaded = rewarded.addAdEventListener(
+  //     RewardedAdEventType.LOADED,
+  //     () => {
+  //       setAdLoaded(true);
+  //       rewarded.show();
+  //     },
+  //   );
+  //   const unsubscribeEarned = rewarded.addAdEventListener(
+  //     RewardedAdEventType.EARNED_REWARD,
+  //     reward => {
+  //       //console.log('User earned reward of ', reward);
+  //     },
+  //   );
+  //   rewarded.load();
+  //   return () => {
+  //     unsubscribeLoaded();
+  //     unsubscribeEarned();
+  //   };
+  // }, []);
 
   useEffect(() => {
     setChartData(commonGPAConfigScale4);
